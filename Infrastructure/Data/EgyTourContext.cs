@@ -40,6 +40,10 @@ namespace Infrastructure.Data
                 .HasOne(a => a.Writer)
                 .WithMany(b => b.WrittenPosts);
 
+            modelBuilder.Entity<Service>()
+                .HasMany(a=>a.Images)
+                .WithOne();
+
             modelBuilder.Entity<Post>()
                 .HasMany(a => a.Likers)
                 .WithMany(b => b.LikedPosts);
@@ -83,12 +87,7 @@ namespace Infrastructure.Data
 
             modelBuilder.Entity<Activity>()
                 .HasMany(a => a.Notes)
-                .WithOne();
-            
-
-
-
+                .WithOne();           
         }
-
     }
 }

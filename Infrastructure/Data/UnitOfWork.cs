@@ -1,4 +1,5 @@
-﻿using Domain.Interfaces;
+﻿using Domain.Entities;
+using Domain.Interfaces;
 using Infrastructure.Repositories;
 using System;
 using System.Collections.Generic;
@@ -13,10 +14,13 @@ namespace Infrastructure.Data
         private readonly EgyTourContext _context;
         public IPostRepository Posts { get; private set; }
 
-        public UnitOfWork(EgyTourContext context)
+        public IGenericRepository<Service> _services { get; private set; }
+
+        public UnitOfWork(EgyTourContext context , IGenericRepository<Service> services )
         {
             _context=context;
             Posts = new PostRepository(_context);
+             _services = services;
         }
 
 

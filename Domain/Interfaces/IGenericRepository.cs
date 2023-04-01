@@ -12,7 +12,10 @@ namespace Domain.Interfaces
         T GetById(int id);
         Task<T> GetByIdAsync(int id);
 
-        IEnumerable<T> Find(Expression<Func<T, bool>> predicate);
+        IEnumerable<T> Find(
+            Expression<Func<T, bool>> predicate,
+           Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
+            string includeProperties = "");
         Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate);
 
         T Add(T entity);

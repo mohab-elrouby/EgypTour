@@ -17,7 +17,6 @@ namespace Domain.Entities
         public int ReviwerId { get; private set; }
         public virtual Tourist Reviwer { get; private set; }
 
-
         //Constructors
         public Review(string content , float rating  , Tourist writer)
         {

@@ -18,7 +18,7 @@ namespace Domain.Entities
 
         public string  Password { get; private set; }
 
-        public string ProfilePictureUrl { get; private set; }
+        public string? ProfilePictureUrl { get; private set; }
 
         public string City { get; private set; }
 
