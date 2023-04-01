@@ -9,6 +9,7 @@ namespace Domain.Interfaces
     public interface IUnitOfWork:IDisposable
     {
         IPostRepository Posts { get; }
+        ICommentRepository Comment { get; }
         int Commit();
     }
 }
