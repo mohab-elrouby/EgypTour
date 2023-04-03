@@ -61,13 +61,57 @@ namespace Presentation.Controllers
                 };
             }
         }
+<<<<<<< HEAD
         [HttpGet]
         [Route("GetByPostId")]
         public GenericResponse<List<CommentDTO>> GetByPostId([FromQuery] int postId)
+=======
+<<<<<<< HEAD
+        [HttpGet]
+        [Route("GetByPostId")]
+        public GenericResponse<List<CommentDTO>> GetByPostId([FromQuery]int postId)
+>>>>>>> d729ee470768fc1dfb37a57a39de6ea21ab7ed7a
         {
             try
             {
                 var comments = _unitOfWork.Comment.GetByPostsId(postId).ToList();
+<<<<<<< HEAD
+=======
+
+                if (comments.Count == 0)
+                {
+                    return new GenericResponse<List<CommentDTO>>()
+                    {
+                        StatusCode = 404,
+                        Message = "No Data",
+
+                    };
+                }
+                else
+                {
+                    var commentDto = _mapper.Map<List<CommentDTO>>(comments);
+                    return new GenericResponse<List<CommentDTO>>()
+                    {
+                        StatusCode = 200,
+                        Message = "The Process of Get Data Sucessfull",
+                        Data = commentDto
+
+                    };
+                }
+            }
+            catch
+            {
+                return new GenericResponse<List<CommentDTO>>()
+                {
+                    StatusCode = 500,
+                    Message = "Internal Error",
+
+                };
+            }
+        }
+=======
+>>>>>>> 2277183994b950702e569ad351db5696bddfa6b9
+>>>>>>> d729ee470768fc1dfb37a57a39de6ea21ab7ed7a
 
                 if (comments.Count == 0)
                 {
@@ -117,8 +161,12 @@ namespace Presentation.Controllers
                 else
                 {
                     var comment = _mapper.Map<Comment>(commentDTO);
+<<<<<<< HEAD
+                    
+=======
                     comment.PostId = null;
                     comment.WriterId = null;
+>>>>>>> 2277183994b950702e569ad351db5696bddfa6b9
                     _unitOfWork.Comment.Add(comment);
                     _unitOfWork.Commit();
                     return new GenericResponse<CommentDTO>()
@@ -159,8 +207,12 @@ namespace Presentation.Controllers
                 {
                     //   var commentGetOne = _unitOfWork.Comment.GetById(id);
                     var comment = _mapper.Map<Comment>(commentDTO);
+<<<<<<< HEAD
+                   
+=======
                     comment.PostId = null;
                     comment.WriterId = null;
+>>>>>>> 2277183994b950702e569ad351db5696bddfa6b9
                     _unitOfWork.Comment.Update(comment);
                     _unitOfWork.Commit();
                     return new GenericResponse<CommentDTO>()

@@ -10,15 +10,15 @@ namespace Domain.Entities
 {
     public class Post
     {
-        public int Id { get; private set; }
-        public virtual List<Image> Pictures { get; private set; }
-        public DateTime DatePosted { get; private set; }
+        public int Id { get; set; }
+        public virtual List<Image> Pictures { get; set; }
+        public DateTime DatePosted { get; set; }
 
-        public virtual List<Tourist> Likers { get; private set; } = new();
-        public virtual List<Comment> Comments { get; private set; } = new();
-        public int WriterId { get; private set; }
-        public virtual Tourist Writer { get; private set; }
-        public string Content { get; private set; }  
+        public virtual List<Tourist> Likers { get; set; } = new();
+        public virtual List<Comment> Comments { get; set; } = new();
+        public int WriterId { get; set; }
+        public virtual Tourist Writer { get; set; }
+        public string Content { get; set; }  
         
         
 
