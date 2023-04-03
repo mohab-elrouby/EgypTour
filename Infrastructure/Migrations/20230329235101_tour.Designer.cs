@@ -4,6 +4,7 @@ using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(EgyTourContext))]
-    partial class EgyTourContextModelSnapshot : ModelSnapshot
+    [Migration("20230329235101_tour")]
+    partial class tour
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -72,13 +75,13 @@ namespace Infrastructure.Migrations
                     b.Property<string>("Content")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("Date")
+                    b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("PostId")
+                    b.Property<int>("PostId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("WriterId")
+                    b.Property<int>("WriterId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -468,11 +471,15 @@ namespace Infrastructure.Migrations
                 {
                     b.HasOne("Domain.Entities.Post", "Post")
                         .WithMany("Comments")
-                        .HasForeignKey("PostId");
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Domain.Entities.Tourist", "Writer")
                         .WithMany("Comments")
-                        .HasForeignKey("WriterId");
+                        .HasForeignKey("WriterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Post");
 
