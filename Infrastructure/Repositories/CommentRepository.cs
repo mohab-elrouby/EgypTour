@@ -17,5 +17,9 @@ namespace Infrastructure.Repositories
         {
             _db= db;
         }
+        public IEnumerable<Comment> GetByPostsId(int postId)
+        {
+            return _db.Comments.Where(c => c.PostId== postId);
+        }
     }
 }

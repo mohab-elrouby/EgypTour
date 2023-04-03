@@ -13,13 +13,14 @@ namespace Infrastructure.Data
         private readonly EgyTourContext _context;
         public IPostRepository Posts { get; private set; }
         public ICommentRepository Comment { get; private set; }
-
+        public ILocalPersonRepository LocalPerson { get; private set; }
 
         public UnitOfWork(EgyTourContext context)
         {
             _context=context;
             Posts = new PostRepository(_context);
             Comment= new CommentRepository(_context);
+            LocalPerson= new LocalPersonRepository(_context);   
         }
 
 

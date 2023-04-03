@@ -61,7 +61,45 @@ namespace Presentation.Controllers
                 };
             }
         }
+        [HttpGet]
+        [Route("GetByPostId")]
+        public GenericResponse<List<CommentDTO>> GetByPostId([FromQuery] int postId)
+        {
+            try
+            {
+                var comments = _unitOfWork.Comment.GetByPostsId(postId).ToList();
 
+                if (comments.Count == 0)
+                {
+                    return new GenericResponse<List<CommentDTO>>()
+                    {
+                        StatusCode = 404,
+                        Message = "No Data",
+
+                    };
+                }
+                else
+                {
+                    var commentDto = _mapper.Map<List<CommentDTO>>(comments);
+                    return new GenericResponse<List<CommentDTO>>()
+                    {
+                        StatusCode = 200,
+                        Message = "The Process of Get Data Sucessfull",
+                        Data = commentDto
+
+                    };
+                }
+            }
+            catch
+            {
+                return new GenericResponse<List<CommentDTO>>()
+                {
+                    StatusCode = 500,
+                    Message = "Internal Error",
+
+                };
+            }
+        }
         [HttpPost]
         public GenericResponse<CommentDTO> Add([FromBody] CommentDTO commentDTO)
         {

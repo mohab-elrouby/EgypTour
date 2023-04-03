@@ -9,5 +9,6 @@ namespace Domain.Interfaces
 {
     public interface ICommentRepository:IGenericRepository<Comment>
     {
+        IEnumerable<Comment> GetByPostsId(int postId);
     }
 }

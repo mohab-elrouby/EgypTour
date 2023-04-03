@@ -10,6 +10,8 @@ namespace Domain.Interfaces
     {
         IPostRepository Posts { get; }
         ICommentRepository Comment { get; }
+        ILocalPersonRepository LocalPerson { get; }
+
         int Commit();
     }
 }
