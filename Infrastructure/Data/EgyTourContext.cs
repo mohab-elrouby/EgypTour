@@ -20,11 +20,7 @@ namespace Infrastructure.Data
         public DbSet<LocalPerson> LocalPersons { get; set;}
         public DbSet<Service> Services { get; set;}
         public DbSet<Post> Posts { get; set;}
-<<<<<<< HEAD
         public DbSet<Comment> Comments { get; set; }
-=======
-        public DbSet<Comment> Comments { get; set;}
->>>>>>> d729ee470768fc1dfb37a57a39de6ea21ab7ed7a
         public DbSet<Trip> Trips { get; set;}
         public DbSet<Review> Reviews { get; set;}
         public DbSet<ToDoList> ToDoLists { get; set;}
