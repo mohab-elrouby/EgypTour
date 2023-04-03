@@ -10,7 +10,7 @@ namespace Domain.Entities
     {
         public int ServiceReviewdId { get; private set; }
         public virtual Service ServiceReviewd { get; private set; }
-        public ServiceReview(string content, float rating, Tourist writer) : base(content, rating, writer) { }
+        public ServiceReview( float rating, Tourist writer, string? content) : base( rating, writer, content) { }
         private ServiceReview() { }
 
     }

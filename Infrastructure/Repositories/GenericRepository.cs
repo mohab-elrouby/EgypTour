@@ -1,4 +1,5 @@
 ﻿using Domain.Interfaces;
+using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,9 +12,9 @@ namespace Infrastructure.Repositories
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
-        protected readonly DbContext _context;
+        protected readonly EgyTourContext _context;
 
-        public GenericRepository(DbContext dbContext)
+        public GenericRepository(EgyTourContext dbContext)
         {
             _context=dbContext;
         }
