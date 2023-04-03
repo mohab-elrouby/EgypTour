@@ -61,6 +61,7 @@ namespace Presentation.Controllers
                 };
             }
         }
+<<<<<<< HEAD
         [HttpGet]
         [Route("GetByPostId")]
         public GenericResponse<List<CommentDTO>> GetByPostId([FromQuery]int postId)
@@ -100,6 +101,8 @@ namespace Presentation.Controllers
                 };
             }
         }
+=======
+>>>>>>> 2277183994b950702e569ad351db5696bddfa6b9
 
         [HttpPost]
         public GenericResponse<CommentDTO> Add([FromBody] CommentDTO commentDTO)
@@ -118,7 +121,12 @@ namespace Presentation.Controllers
                 else
                 {
                     var comment = _mapper.Map<Comment>(commentDTO);
+<<<<<<< HEAD
                     
+=======
+                    comment.PostId = null;
+                    comment.WriterId = null;
+>>>>>>> 2277183994b950702e569ad351db5696bddfa6b9
                     _unitOfWork.Comment.Add(comment);
                     _unitOfWork.Commit();
                     return new GenericResponse<CommentDTO>()
@@ -159,7 +167,12 @@ namespace Presentation.Controllers
                 {
                     //   var commentGetOne = _unitOfWork.Comment.GetById(id);
                     var comment = _mapper.Map<Comment>(commentDTO);
+<<<<<<< HEAD
                    
+=======
+                    comment.PostId = null;
+                    comment.WriterId = null;
+>>>>>>> 2277183994b950702e569ad351db5696bddfa6b9
                     _unitOfWork.Comment.Update(comment);
                     _unitOfWork.Commit();
                     return new GenericResponse<CommentDTO>()
