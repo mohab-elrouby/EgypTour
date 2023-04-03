@@ -11,6 +11,8 @@ namespace Domain.Interfaces
         IPostRepository Posts { get; }
         ICommentRepository Comment { get; }
         ILocalPersonRepository LocalPerson { get; }
+        IActivityRepository Activity { get; }
+        IMessageRepository Message { get; }
 
         int Commit();
     }

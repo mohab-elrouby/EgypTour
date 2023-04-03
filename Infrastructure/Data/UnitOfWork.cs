@@ -14,13 +14,17 @@ namespace Infrastructure.Data
         public IPostRepository Posts { get; private set; }
         public ICommentRepository Comment { get; private set; }
         public ILocalPersonRepository LocalPerson { get; private set; }
+        public IActivityRepository Activity { get; private set; }
+        public IMessageRepository Message { get; private set; }
 
         public UnitOfWork(EgyTourContext context)
         {
             _context=context;
             Posts = new PostRepository(_context);
             Comment= new CommentRepository(_context);
-            LocalPerson= new LocalPersonRepository(_context);   
+            LocalPerson= new LocalPersonRepository(_context);  
+            Activity= new ActivityRepository(_context);
+            Message= new MessageRepository(_context);
         }
 
 

@@ -29,6 +29,7 @@ namespace Infrastructure.Data
         public DbSet<LocalReview> LocalReviews { get; set;}
         public DbSet<Messege> Messeges { get; set;}
         public DbSet<Note> Notes { get; set; }
+        public DbSet<Activity> Activities { get; set; }
         public DbSet<TouristFriend> touristFriends { get; set;}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

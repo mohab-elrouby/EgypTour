@@ -14,7 +14,8 @@ namespace Infrastructure.Mapper
         public MappingProfile() { 
         CreateMap<Comment,CommentDTO>().ReverseMap();
         CreateMap<LocalPerson,LocalPersonDTO>().ReverseMap();
-        
+        CreateMap<Activity,ActivityDTO>().ReverseMap();
+        CreateMap<Messege,MessageDTO>().ReverseMap();   
         }
     }
 }
