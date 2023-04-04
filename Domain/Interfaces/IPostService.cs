@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace Domain.Interfaces
 {
-    public interface IPostRepository:IGenericRepository<Post>
+    public interface IPostService
     {
-        IEnumerable<Post> GetForFriends(List<int> friendsIds);
+        IEnumerable<Post> GetForFriends(int userId);
     }
 }

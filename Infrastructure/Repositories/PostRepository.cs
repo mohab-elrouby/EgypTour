@@ -15,14 +15,10 @@ namespace Infrastructure.Repositories
 
         public PostRepository(EgyTourContext context):base(context) { }
 
-        public IEnumerable<Post> GetForFriends(int userId)
+        public IEnumerable<Post> GetForFriends(List<int> friendsId)
         {
+            return _context.Posts.Where(p => friendsId.Contains(p.WriterId)).ToList();
             throw new NotImplementedException();
-        }
-
-        public IEnumerable<Post> GetForSpecificUser(int userId)
-        {
-            return _context.Posts.Select(p => p).Where(p => p.WriterId == userId).ToList();
         }
     }
 }
