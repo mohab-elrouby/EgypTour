@@ -35,7 +35,7 @@ namespace Presentation.Controllers
                     return new GenericResponse<List<CommentDTO>>()
                     {
                         StatusCode = 404,
-                        Message = "No Data",
+                        Message = "There are no comments to display",
 
                     };
                 }
@@ -45,7 +45,7 @@ namespace Presentation.Controllers
                     return new GenericResponse<List<CommentDTO>>()
                     {
                         StatusCode = 200,
-                        Message = "The Process of Get Data Sucessfull",
+                        Message = "Get Comment Done",
                         Data = commentDto
 
                     };
@@ -74,7 +74,7 @@ namespace Presentation.Controllers
                     return new GenericResponse<List<CommentDTO>>()
                     {
                         StatusCode = 404,
-                        Message = "No Data",
+                        Message = "There are no comments to display",
 
                     };
                 }
@@ -84,7 +84,7 @@ namespace Presentation.Controllers
                     return new GenericResponse<List<CommentDTO>>()
                     {
                         StatusCode = 200,
-                        Message = "The Process of Get Data Sucessfull",
+                        Message = "Get Comment Done",
                         Data = commentDto
 
                     };
@@ -124,7 +124,7 @@ namespace Presentation.Controllers
                     return new GenericResponse<CommentDTO>()
                     {
                         StatusCode = 200,
-                        Message = "The Process of Add  Data Sucessfull",
+                        Message = "The comment has been added successfully",
                         Data = commentDTO
 
                     };
@@ -157,15 +157,14 @@ namespace Presentation.Controllers
                 }
                 else
                 {
-                    //   var commentGetOne = _unitOfWork.Comment.GetById(id);
                     var comment = _mapper.Map<Comment>(commentDTO);
-
+                    comment.Id=id;
                     _unitOfWork.Comment.Update(comment);
                     _unitOfWork.Commit();
                     return new GenericResponse<CommentDTO>()
                     {
                         StatusCode = 200,
-                        Message = "The Process of Updated Data Sucessfull",
+                        Message = "The comment has been updated successfully",
                         Data = commentDTO
 
                     };

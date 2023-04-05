@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Domain.DTO;
+using Domain.Entities;
 using Domain.Interfaces;
 using Infrastructure.Data;
 using System;
@@ -16,6 +17,7 @@ namespace Infrastructure.Repositories
         {
             _db= db;
         }
+
         public IEnumerable<Activity> GetByTripId(int TripId)
         {
             return _db.Activities.Where(a => a.TripId == TripId);

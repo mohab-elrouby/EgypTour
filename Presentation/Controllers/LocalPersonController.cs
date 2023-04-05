@@ -35,7 +35,7 @@ namespace Presentation.Controllers
                     return new GenericResponse<List<LocalPersonDTO>>()
                     {
                         StatusCode = 404,
-                        Message = "No Data",
+                        Message = "There are no results to display",
 
                     };
                 }
@@ -75,7 +75,7 @@ namespace Presentation.Controllers
                     return new GenericResponse<List<LocalPersonDTO>>()
                     {
                         StatusCode = 404,
-                        Message = "No Data",
+                        Message = "There are no results to display",
 
                     };
                 }
@@ -114,7 +114,7 @@ namespace Presentation.Controllers
                     return new GenericResponse<List<LocalPersonDTO>>()
                     {
                         StatusCode = 404,
-                        Message = "No Data",
+                        Message = "There are no results to display",
 
                     };
                 }
@@ -154,7 +154,7 @@ namespace Presentation.Controllers
                     return new GenericResponse<List<LocalPersonDTO>>()
                     {
                         StatusCode = 404,
-                        Message = "No Data",
+                        Message = "There are no results to display",
 
                     };
                 }
@@ -223,44 +223,6 @@ namespace Presentation.Controllers
             }
         }
 
-        //[Route("[Action]/{id}")]
-
-        //[HttpPut]
-        //public GenericResponse<LocalPersonDTO> Update([FromQuery] int id, [FromBody] LocalPersonDTO localPersonDTO)
-        //{
-        //    try
-        //    {
-
-        //        LocalPerson localPerson = _unitOfWork.LocalPerson.GetById(id);
-        //    if (localPerson == null)
-        //        return new GenericResponse<LocalPersonDTO>()
-        //        {
-        //            StatusCode = 404,
-        //            Message = "Enter Your Data",
-
-        //        };
-
-
-        //        _unitOfWork.LocalPerson.Update(localPerson);
-        //        _unitOfWork.Commit();
-        //        return new GenericResponse<LocalPersonDTO>()
-        //        {
-        //            StatusCode = 200,
-        //            Message = "Local person added Sucessfully"
-        //        };
-        //    }
-        //    catch
-        //    {
-        //        return new GenericResponse<LocalPersonDTO>()
-        //        {
-        //            StatusCode = 500,
-        //            Message = "Internal Error",
-
-        //        };
-        //    }
-
-        //}
-
         [HttpPut]
         public GenericResponse<LocalPersonDTO> Update([FromQuery] int id, [FromBody] LocalPersonDTO localPersonDTO)
         {
@@ -278,12 +240,13 @@ namespace Presentation.Controllers
                 else
                 {
                     var person = _mapper.Map<LocalPerson>(localPersonDTO);
+                    person.Id= id;
                     _unitOfWork.LocalPerson.Update(person);
                     _unitOfWork.Commit();
                     return new GenericResponse<LocalPersonDTO>()
                     {
                         StatusCode = 200,
-                        Message = "The Process of Updated Data Sucessfull",
+                        Message = "Data of Local Person has been updated successfully",
                         Data = localPersonDTO
 
                     };

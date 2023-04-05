@@ -1,4 +1,5 @@
-﻿using Domain.ValueObjects;
+﻿using Domain.DTO;
+using Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace Domain.Entities
     {
         private List<string> notes;
 
-        public int Id { get; private set; }
+        public int Id { get;  set; }
         public string Name { get; private set; }
         public string Description { get; private set; }
 
@@ -28,6 +29,7 @@ namespace Domain.Entities
         public virtual List<Note> Notes { get; private set; }
 
 
+
         public Activity( string name, string description, string tag, string documents, DateTime? start, DateTime? end, int tripId, List<string> notes, string location)
         {
             Name=name;
@@ -41,6 +43,26 @@ namespace Domain.Entities
             Location=location;
         }
         private Activity()
-        {}
+        { }
+        public ActivityDTO AddActivity(ActivityDTO activity)
+        {
+            return new ActivityDTO
+            {
+           
+                Name = activity.Name,
+                Description = activity.Description,
+                Documents = activity.Documents,
+                Start = activity.Start,
+                End = activity.End,
+                TripId = activity.TripId,
+                Location = activity.Location,
+                Notes = activity.Notes,
+
+
+
+
+
+            };
+        }
     }
 }

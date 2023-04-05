@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Domain.DTO;
+using Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,5 @@ namespace Domain.Interfaces
     public interface IActivityRepository : IGenericRepository<Activity>
     {
         IEnumerable<Activity> GetByTripId(int TripId);
-
     }
 }

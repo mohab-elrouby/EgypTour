@@ -7,7 +7,9 @@ using Infrastructure.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using Activity = Domain.Entities.Activity;
 
 namespace Presentation.Controllers
 {
@@ -36,7 +38,7 @@ namespace Presentation.Controllers
                     return new GenericResponse<List<ActivityDTO>>()
                     {
                         StatusCode = 404,
-                        Message = "No Data",
+                        Message = "There are no activities to display",
 
                     };
                 }
@@ -66,32 +68,31 @@ namespace Presentation.Controllers
         [HttpPost]
         public GenericResponse<ActivityDTO> Add([FromBody] ActivityDTO activityDTO)
         {
+
             try
             {
-
-                Activity activity = _unitOfWork.Activity.GetById(activityDTO.Id);
-                
-                if (activity!=null)
+                if (activityDTO==null)
                 {
-                    ActivityDTO activityDTO1 = _mapper.Map<ActivityDTO>(activity);
+                    ActivityDTO activityDTO1 = _mapper.Map<ActivityDTO>(activityDTO);
                     return new GenericResponse<ActivityDTO>()
                     {
                         StatusCode = 403,
                         Message = "Activity already exists",
-                        Data = activityDTO1
+                        Data = activityDTO
                     };
                 }
-                Activity activity1 = new Activity( name: activityDTO.Name
+                Activity activity = new Activity(name: activityDTO.Name
                     , description: activityDTO.Description, tag: activityDTO.Tag
                     , documents: activityDTO.Documents, start: activityDTO.Start,
                     end: activityDTO.End, tripId: activityDTO.TripId, notes: activityDTO.Notes,
                     location: activityDTO.Location);
-                _unitOfWork.Activity.Add(activity1);
+                _unitOfWork.Activity.Add(activity);
+                //activity.AddActivity(activityDTO);
                 _unitOfWork.Commit();
                 return new GenericResponse<ActivityDTO>()
                 {
                     StatusCode = 200,
-                    Message = "Activity added Sucessfully"
+                    Message = "Activity has been added successfully"
                 };
 
             }
@@ -124,12 +125,13 @@ namespace Presentation.Controllers
             else
             {
                 var activity = _mapper.Map<Activity>(activityDTO);
-                _unitOfWork.Activity.Update(activity);
+                    activity.Id=id;
+                    _unitOfWork.Activity.Update(activity);
                 _unitOfWork.Commit();
                 return new GenericResponse<ActivityDTO>()
                 {
                     StatusCode = 200,
-                    Message = "The Process of Updated Data Sucessfull",
+                    Message = "Activity has been updated successfully",
                     Data = activityDTO
 
                 };
@@ -158,7 +160,7 @@ namespace Presentation.Controllers
                 return new GenericResponse<ActivityDTO>()
                 {
                     StatusCode = 404,
-                    Message = "No Reviews Found",
+                    Message = "There are no activities to display",
 
                 };
             }
@@ -169,7 +171,7 @@ namespace Presentation.Controllers
                 return new GenericResponse<ActivityDTO>()
                 {
                     StatusCode = 200,
-                    Message = "The Process of Get Data Sucessfull"
+                    Message = "Activity has been deleted successfully"
 
                 };
             }

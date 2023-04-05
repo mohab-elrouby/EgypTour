@@ -8,7 +8,7 @@ namespace Domain.Entities
 {
      public class User
     {
-        public int Id { get; private set; }
+        public int Id { get;  set; }
         public string Fname { get; private set; }
 
         public string Lname { get; private set; }
