@@ -99,6 +99,11 @@ namespace Infrastructure.Data
                 .HasMany(a => a.Notes)
                 .WithOne();
 
+
+            modelBuilder.Entity<Trip>()
+                .HasOne(a => a.Owner)
+                .WithMany(b=>b.OwnedTrips);
+
             modelBuilder.HasDbFunction(typeof(LevenshteinDistance).GetMethod(nameof(LevenshteinDistance.Calculate)))
             .HasName("LevenshteinDistance");
         }

@@ -1,4 +1,4 @@
-﻿using Domain.Entities;
+using Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,10 +10,12 @@ namespace Domain.Interfaces
     public interface IUnitOfWork : IDisposable
     {
         IPostRepository Posts { get; }
+
         public IGenericRepository<Tourist> _tourists { get;}
         IServiceRepository _services {get;}
-        public IGenericRepository<ServiceReview> _serviceReviews { get; }
-
+        ILocalReviewRepository LocalReviews { get; }
+        IServiceReviewRepository _serviceReviews { get; }      
+        ITripRepository Trips { get;}
         int Commit();
     }
 }

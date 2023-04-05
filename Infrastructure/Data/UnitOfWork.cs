@@ -18,16 +18,24 @@ namespace Infrastructure.Data
 
         public IServiceRepository _services { get; private set; }
 
-        public IGenericRepository<ServiceReview> _serviceReviews { get; private set; }
+        public IServiceReviewRepository _serviceReviews { get; private set; }
+        
+        public ITripRepository Trips { get; private set; }
+        
+        public ILocalReviewRepository LocalReviews { get; private set; }
 
-        public UnitOfWork(EgyTourContext context , IServiceRepository services ,
-            IGenericRepository<Tourist> tourists ,IGenericRepository<ServiceReview> serviceReviews)
+
+        public UnitOfWork(EgyTourContext context , IServiceRepository services ,ILocalReviewRepository localReviews ,
+            IGenericRepository<Tourist> tourists ,IServiceReviewRepository serviceReviews,, ITripRepository trips)
         {
             _context=context;
             Posts = new PostRepository(_context);
             _services = services;
             _tourists = tourists;
             _serviceReviews = serviceReviews;
+             Trips = trips;
+             LocalReviews = localReviews;
+
         }
 
 

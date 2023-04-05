@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain.DTOs;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,6 +20,18 @@ namespace Domain.Entities
             Name = name;
         }
         private ToDoList() { }
+
+        public ToDoItemDTO AddToDoItem(ToDoItemDTO item)
+        {
+            return new ToDoItemDTO
+            {
+                Id = item.Id,
+                Name = item.Name,
+                ToDoListId = item.ToDoListId,
+                Status = item.Status,
+
+            };
+        }
 
     }
 }
