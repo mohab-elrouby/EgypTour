@@ -58,7 +58,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("TripId");
 
-                    b.ToTable("Activity");
+                    b.ToTable("Activities");
                 });
 
             modelBuilder.Entity("Domain.Entities.Comment", b =>
@@ -75,7 +75,7 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime?>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("PostId")
+                    b.Property<int>("PostId")
                         .HasColumnType("int");
 
                     b.Property<int?>("WriterId")
@@ -468,7 +468,9 @@ namespace Infrastructure.Migrations
                 {
                     b.HasOne("Domain.Entities.Post", "Post")
                         .WithMany("Comments")
-                        .HasForeignKey("PostId");
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Domain.Entities.Tourist", "Writer")
                         .WithMany("Comments")

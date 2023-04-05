@@ -28,5 +28,18 @@ namespace Domain.Entities
 
         public virtual List<Messege> RecievedMessages { get; private set; } = new();
 
+        public User( string fname, string lname, string email, string usernameName, 
+            string password, string city, string phone, string profilePictureUrl)
+        {
+            Fname=fname;
+            Lname=lname;
+            Email=email;
+            UsernameName=usernameName;
+            Password=password;
+            ProfilePictureUrl=profilePictureUrl;
+            City=city;
+            Phone=phone;
+
+        }
     }
 }

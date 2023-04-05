@@ -5,6 +5,7 @@ using Domain.Interfaces;
 using Domain.Response;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -186,28 +187,30 @@ namespace Presentation.Controllers
         {
             try
             {
-                if (localPersonDTO == null)
+                    LocalPerson person =_unitOfWork.LocalPerson
+                    .Find(I=>I.Email==localPersonDTO.Email||
+                    I.UsernameName==localPersonDTO.UsernameName).FirstOrDefault();
+                if(person!=null)
                 {
+                    LocalPersonDTO personDTO= _mapper.Map<LocalPersonDTO>(person);
                     return new GenericResponse<LocalPersonDTO>()
                     {
-                        StatusCode = 404,
-                        Message = "Enter Your Data",
-
+                        StatusCode = 403,
+                        Message = "Local person already exists",
+                        Data = personDTO
                     };
                 }
-                else
-                {
-                    var person = _mapper.Map<LocalPerson>(localPersonDTO);
-                    _unitOfWork.LocalPerson.Add(person);
+                LocalPerson localPerson = new LocalPerson(fname:localPersonDTO.Fname,
+                   lname:localPersonDTO.Lname,email:localPersonDTO.Email,password:localPersonDTO.Password
+                   ,city:localPersonDTO.City,profilePictureUrl:localPersonDTO.ProfilePictureUrl,phone:localPersonDTO.Phone,usernameName:localPersonDTO.UsernameName);
+                    _unitOfWork.LocalPerson.Add(localPerson);
                     _unitOfWork.Commit();
                     return new GenericResponse<LocalPersonDTO>()
                     {
                         StatusCode = 200,
-                        Message = "The Process of Add  Data Sucessfull",
-                        Data = localPersonDTO
-
+                        Message = "Local person added Sucessfully"
                     };
-                }
+                
             }
             catch
             {
@@ -219,6 +222,44 @@ namespace Presentation.Controllers
                 };
             }
         }
+
+        //[Route("[Action]/{id}")]
+
+        //[HttpPut]
+        //public GenericResponse<LocalPersonDTO> Update([FromQuery] int id, [FromBody] LocalPersonDTO localPersonDTO)
+        //{
+        //    try
+        //    {
+
+        //        LocalPerson localPerson = _unitOfWork.LocalPerson.GetById(id);
+        //    if (localPerson == null)
+        //        return new GenericResponse<LocalPersonDTO>()
+        //        {
+        //            StatusCode = 404,
+        //            Message = "Enter Your Data",
+
+        //        };
+
+
+        //        _unitOfWork.LocalPerson.Update(localPerson);
+        //        _unitOfWork.Commit();
+        //        return new GenericResponse<LocalPersonDTO>()
+        //        {
+        //            StatusCode = 200,
+        //            Message = "Local person added Sucessfully"
+        //        };
+        //    }
+        //    catch
+        //    {
+        //        return new GenericResponse<LocalPersonDTO>()
+        //        {
+        //            StatusCode = 500,
+        //            Message = "Internal Error",
+
+        //        };
+        //    }
+
+        //}
 
         [HttpPut]
         public GenericResponse<LocalPersonDTO> Update([FromQuery] int id, [FromBody] LocalPersonDTO localPersonDTO)
@@ -271,7 +312,7 @@ namespace Presentation.Controllers
                     return new GenericResponse<LocalPersonDTO>()
                     {
                         StatusCode = 404,
-                        Message = "No Reviews Found",
+                        Message = "Not Found",
 
                     };
                 }

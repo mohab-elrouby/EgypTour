@@ -19,6 +19,8 @@ namespace Domain.Entities
         public ToDoItem(string name)
         {
             Name = (name == null) ? string.Empty : name;
-        }              
+        }    
+        private ToDoItem()
+        { }
     }
 }

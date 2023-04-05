@@ -68,29 +68,32 @@ namespace Presentation.Controllers
         {
             try
             {
-                if (activityDTO == null)
+
+                Activity activity = _unitOfWork.Activity.GetById(activityDTO.Id);
+                
+                if (activity!=null)
                 {
+                    ActivityDTO activityDTO1 = _mapper.Map<ActivityDTO>(activity);
                     return new GenericResponse<ActivityDTO>()
                     {
-                        StatusCode = 404,
-                        Message = "Enter Your Data",
-
+                        StatusCode = 403,
+                        Message = "Activity already exists",
+                        Data = activityDTO1
                     };
                 }
-                else
+                Activity activity1 = new Activity( name: activityDTO.Name
+                    , description: activityDTO.Description, tag: activityDTO.Tag
+                    , documents: activityDTO.Documents, start: activityDTO.Start,
+                    end: activityDTO.End, tripId: activityDTO.TripId, notes: activityDTO.Notes,
+                    location: activityDTO.Location);
+                _unitOfWork.Activity.Add(activity1);
+                _unitOfWork.Commit();
+                return new GenericResponse<ActivityDTO>()
                 {
-                    var activity = _mapper.Map<Activity>(activityDTO);
+                    StatusCode = 200,
+                    Message = "Activity added Sucessfully"
+                };
 
-                    _unitOfWork.Activity.Add(activity);
-                    _unitOfWork.Commit();
-                    return new GenericResponse<ActivityDTO>()
-                    {
-                        StatusCode = 200,
-                        Message = "The Process of Add  Data Sucessfull",
-                        Data = activityDTO
-
-                    };
-                }
             }
             catch
             {
@@ -102,8 +105,9 @@ namespace Presentation.Controllers
                 };
             }
         }
-    
-    [HttpPut]
+
+
+        [HttpPut]
     public GenericResponse<ActivityDTO> Update([FromQuery] int id, [FromBody] ActivityDTO activityDTO)
     {
         try

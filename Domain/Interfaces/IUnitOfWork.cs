@@ -13,6 +13,7 @@ namespace Domain.Interfaces
         ILocalPersonRepository LocalPerson { get; }
         IActivityRepository Activity { get; }
         IMessageRepository Message { get; }
+        IToDoItemRepository ToDoItem { get; }
 
         int Commit();
     }

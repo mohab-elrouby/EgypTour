@@ -16,6 +16,7 @@ namespace Infrastructure.Data
         public ILocalPersonRepository LocalPerson { get; private set; }
         public IActivityRepository Activity { get; private set; }
         public IMessageRepository Message { get; private set; }
+        public IToDoItemRepository ToDoItem { get; private set; }
 
         public UnitOfWork(EgyTourContext context)
         {
@@ -25,6 +26,7 @@ namespace Infrastructure.Data
             LocalPerson= new LocalPersonRepository(_context);  
             Activity= new ActivityRepository(_context);
             Message= new MessageRepository(_context);
+            ToDoItem= new ToDoItemRepository(_context); 
         }
 
 

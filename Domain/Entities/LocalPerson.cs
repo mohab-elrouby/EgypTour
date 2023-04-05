@@ -20,5 +20,10 @@ namespace Domain.Entities
                 throw new ArgumentNullException("review must not be null");
             }
         }
+
+        public LocalPerson(string fname, string lname, string email, string usernameName,
+            string password, string city, string phone, string profilePictureUrl):base(fname,lname,email,
+                usernameName,password,city,phone,profilePictureUrl)
+        { }
     }
 }

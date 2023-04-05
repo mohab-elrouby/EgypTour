@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(EgyTourContext))]
-    [Migration("20230329235101_tour")]
-    partial class tour
+    [Migration("20230404123728_EgyTour")]
+    partial class EgyTour
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -61,7 +61,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("TripId");
 
-                    b.ToTable("Activity");
+                    b.ToTable("Activities");
                 });
 
             modelBuilder.Entity("Domain.Entities.Comment", b =>
@@ -75,13 +75,13 @@ namespace Infrastructure.Migrations
                     b.Property<string>("Content")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("Date")
+                    b.Property<DateTime?>("Date")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("PostId")
                         .HasColumnType("int");
 
-                    b.Property<int>("WriterId")
+                    b.Property<int?>("WriterId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -477,9 +477,7 @@ namespace Infrastructure.Migrations
 
                     b.HasOne("Domain.Entities.Tourist", "Writer")
                         .WithMany("Comments")
-                        .HasForeignKey("WriterId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("WriterId");
 
                     b.Navigation("Post");
 

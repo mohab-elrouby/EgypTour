@@ -15,7 +15,8 @@ namespace Infrastructure.Mapper
         CreateMap<Comment,CommentDTO>().ReverseMap();
         CreateMap<LocalPerson,LocalPersonDTO>().ReverseMap();
         CreateMap<Activity,ActivityDTO>().ReverseMap();
-        CreateMap<Messege,MessageDTO>().ReverseMap();   
+        CreateMap<Messege,MessageDTO>().ReverseMap();  
+        CreateMap<ToDoItem,ToDoItemDTO>().ReverseMap();
         }
     }
 }

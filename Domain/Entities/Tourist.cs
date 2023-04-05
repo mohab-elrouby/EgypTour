@@ -15,6 +15,9 @@ namespace Domain.Entities
         public virtual List<Post> LikedPosts { get; private set; } = new();
         public virtual List<Comment> Comments { get; private set; } = new();
         public virtual List<Trip> Trips { get; private set; } = new();
-
+        public Tourist(string fname, string lname, string email, string usernameName,
+         string password, string city, string phone, string profilePictureUrl) : base(fname, lname, email,
+             usernameName, password, city, phone, profilePictureUrl)
+        { }
     }
 }

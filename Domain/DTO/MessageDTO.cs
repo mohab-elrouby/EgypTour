@@ -8,14 +8,14 @@ namespace Domain.DTO
 {
     public class MessageDTO
     {
-        public int Id { get; private set; }
+        public int Id { get;  set; }
 
-        public string Content { get; private set; }
+        public string Content { get;  set; }
 
-        public DateTime SendDate { get; private set; }
+        public DateTime SendDate { get;  set; }
 
-        public int SenderId { get; private set; }
+        public int SenderId { get;  set; }
 
-        public int RecieverId { get; private set; }
+        public int RecieverId { get;  set; }
     }
 }
