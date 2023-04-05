@@ -13,7 +13,7 @@ namespace Domain.Interfaces
         ILocalReviewRepository LocalReviews { get; }
         IServiceReviewRepository ServiceReviews { get; }
       
-         //IGenericRepository<LocalPerson> LocalPersons { get;}
+         ITripRepository Trips { get;}
         int Commit();
     }
 }

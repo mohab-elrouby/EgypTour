@@ -15,6 +15,7 @@ namespace Domain.Entities
         public virtual List<Post> LikedPosts { get; private set; } = new();
         public virtual List<Comment> Comments { get; private set; } = new();
         public virtual List<Trip> Trips { get; private set; } = new();
+        public virtual List<Trip> OwnedTrips { get; private set; } = new();
 
     }
 }

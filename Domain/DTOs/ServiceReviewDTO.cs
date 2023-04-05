@@ -17,7 +17,7 @@ namespace Domain.DTO
         public float Rating { get; set; }
        
         public int ServiceId { get; set; }
-        public ReviewerDTO reviewer { get; set; }
+        public TouristDTO reviewer { get; set; }
         public static ServiceReviewDTO fromServiceReview(ServiceReview review)
         {
             return new ServiceReviewDTO
@@ -26,7 +26,7 @@ namespace Domain.DTO
                 Date = review.Time,
                 Content = review.Content,
                 Rating = review.Rating,
-                reviewer = ReviewerDTO.FromTourist(review.Reviwer),
+                reviewer = TouristDTO.FromTourist(review.Reviwer),
             };
         }
     }

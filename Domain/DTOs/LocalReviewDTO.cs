@@ -17,7 +17,7 @@ namespace Domain.DTO
         public float Rating { get; set; }
         public int LocalPersonId { get;  set; }
       
-        public ReviewerDTO reviewer { get; set; }
+        public TouristDTO reviewer { get; set; }
 
         public static LocalReviewDTO fromLocalReview(LocalReview review)
         {
@@ -27,7 +27,7 @@ namespace Domain.DTO
                 Date = review.Time,
                 Content = review.Content,
                 Rating = review.Rating,
-                reviewer = ReviewerDTO.FromTourist(review.Reviwer),
+                reviewer = TouristDTO.FromTourist(review.Reviwer),
             };
         }
 

@@ -84,9 +84,11 @@ namespace Infrastructure.Data
             modelBuilder.Entity<Activity>()
                 .HasMany(a => a.Notes)
                 .WithOne();
-            
 
 
+            modelBuilder.Entity<Trip>()
+                .HasOne(a => a.Owner)
+                .WithMany(b=>b.OwnedTrips);
 
         }
 

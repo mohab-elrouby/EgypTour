@@ -26,7 +26,8 @@ namespace Presentation
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped<ILocalReviewRepository, localReviewRepository>();
             builder.Services.AddScoped<IServiceReviewRepository, ServiceReviewRepository>();
-         
+            builder.Services.AddScoped<ITripRepository, TripRepository>();
+
             builder.Services.AddAutoMapper(typeof(MappingProfile));
             var app = builder.Build();
 

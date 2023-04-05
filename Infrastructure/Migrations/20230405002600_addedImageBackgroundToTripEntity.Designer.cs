@@ -4,6 +4,7 @@ using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(EgyTourContext))]
-    partial class EgyTourContextModelSnapshot : ModelSnapshot
+    [Migration("20230405002600_addedImageBackgroundToTripEntity")]
+    partial class addedImageBackgroundToTripEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,7 +37,11 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("End")
+                    b.Property<string>("Documents")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("End")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Location")
@@ -44,7 +51,7 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("Start")
+                    b.Property<DateTime?>("Start")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Tag")
@@ -425,13 +432,13 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("TouristTrip", b =>
                 {
-                    b.Property<int>("TripViewersId")
+                    b.Property<int>("TouristsId")
                         .HasColumnType("int");
 
                     b.Property<int>("TripsId")
                         .HasColumnType("int");
 
-                    b.HasKey("TripViewersId", "TripsId");
+                    b.HasKey("TouristsId", "TripsId");
 
                     b.HasIndex("TripsId");
 
@@ -630,7 +637,7 @@ namespace Infrastructure.Migrations
                 {
                     b.HasOne("Domain.Entities.Tourist", null)
                         .WithMany()
-                        .HasForeignKey("TripViewersId")
+                        .HasForeignKey("TouristsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
