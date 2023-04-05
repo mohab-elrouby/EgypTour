@@ -1,9 +1,12 @@
+using Domain.DTOs;
 using Domain.Entities;
 using Domain.Interfaces;
+
+using Domain.Interfaces.UseCaseInterfaces;
+using Domain.Services;
 using Infrastructure.Data;
-using Infrastructure.Mapper;
 using Infrastructure.Repositories;
-using Microsoft.AspNetCore.Builder;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,26 +24,35 @@ namespace Presentation
             // Add services to the container.
             builder.Services.AddSwaggerGen();
             builder.Services.AddControllers();
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen();
+
             builder.Services.AddDbContext<EgyTourContext>(
             options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            builder.Services.AddScoped<IGenericRepository<ServiceReview>, GenericRepository<ServiceReview>>();
+            builder.Services.AddScoped<IGenericRepository<Tourist>,GenericRepository<Tourist>>();
+            builder.Services.AddScoped<IServiceRepository, ServiceRepository>();
+            builder.Services.AddScoped<IAddServiceReviewUseCase,AddServiceReviewUseCase>();
             builder.Services.AddScoped<ILocalReviewRepository, localReviewRepository>();
-            builder.Services.AddScoped<IServiceReviewRepository, ServiceReviewRepository>();
             builder.Services.AddScoped<ITripRepository, TripRepository>();
+            builder.Services.AddScoped<IServiceReviewRepository, ServiceReviewRepository>();  
 
-            builder.Services.AddAutoMapper(typeof(MappingProfile));
-            var app = builder.Build();
-
-           
+            var app = builder.Build(); 
+            
             // Configure the HTTP request pipeline.
+
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
+            
             app.UseAuthorization();
 
 

@@ -18,7 +18,6 @@ namespace Domain.Entities
         public DateTime Time { get; private set; }
         public virtual Tourist Reviwer { get; private set; }
 
-
         //Constructors
         public Review( float rating  , Tourist writer, string? content = null)
         {

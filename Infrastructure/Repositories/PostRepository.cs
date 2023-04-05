@@ -11,7 +11,6 @@ namespace Infrastructure.Repositories
 {
     public class PostRepository : GenericRepository<Post>, IPostRepository
     {
-        private readonly EgyTourContext _context;
 
         public PostRepository(EgyTourContext context):base(context) { }
 

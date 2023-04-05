@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(EgyTourContext))]
-    [Migration("20230329205751_initialCreate2")]
-    partial class initialCreate2
+    [Migration("20230404161628_m1")]
+    partial class m1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -192,13 +192,12 @@ namespace Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Adress")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("LocationId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -215,6 +214,8 @@ namespace Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("LocationId");
 
                     b.ToTable("Services");
                 });
@@ -315,10 +316,6 @@ namespace Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Discriminator")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -347,7 +344,7 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UsernameName")
+                    b.Property<string>("UserName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -371,6 +368,9 @@ namespace Infrastructure.Migrations
                     b.Property<int?>("PostId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("ServiceId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Url")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -379,7 +379,29 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("PostId");
 
+                    b.HasIndex("ServiceId");
+
                     b.ToTable("Image");
+                });
+
+            modelBuilder.Entity("Domain.ValueObjects.Location", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CityName")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Street")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Location", (string)null);
                 });
 
             modelBuilder.Entity("Domain.ValueObjects.Note", b =>
@@ -466,6 +488,9 @@ namespace Infrastructure.Migrations
                 {
                     b.HasBaseType("Domain.Entities.User");
 
+                    b.Property<int>("City")
+                        .HasColumnType("int");
+
                     b.HasDiscriminator().HasValue("LocalPerson");
                 });
 
@@ -541,6 +566,17 @@ namespace Infrastructure.Migrations
                     b.Navigation("Writer");
                 });
 
+            modelBuilder.Entity("Domain.Entities.Service", b =>
+                {
+                    b.HasOne("Domain.ValueObjects.Location", "Location")
+                        .WithMany()
+                        .HasForeignKey("LocationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Location");
+                });
+
             modelBuilder.Entity("Domain.Entities.ToDoItem", b =>
                 {
                     b.HasOne("Domain.Entities.ToDoList", "ToDoList")
@@ -587,6 +623,10 @@ namespace Infrastructure.Migrations
                     b.HasOne("Domain.Entities.Post", null)
                         .WithMany("Pictures")
                         .HasForeignKey("PostId");
+
+                    b.HasOne("Domain.Entities.Service", null)
+                        .WithMany("Images")
+                        .HasForeignKey("ServiceId");
                 });
 
             modelBuilder.Entity("Domain.ValueObjects.Note", b =>
@@ -685,6 +725,8 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.Service", b =>
                 {
+                    b.Navigation("Images");
+
                     b.Navigation("Reviews");
                 });
 
