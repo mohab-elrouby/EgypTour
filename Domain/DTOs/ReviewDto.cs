@@ -3,26 +3,27 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Domain.DTOs
 {
-    public class ReviewDto
+    public class ReviewDTO
     {
-        public int Id { get; set; }
-        public string Content { get;  set; }
+        public int Id { get;private set; }
+        public string Content { get; set; } = "";
 
         public float Rating { get;  set; }
-        public ReviewerDTO reviewer { get;  set; }
+        public ReviewerDTO? Reviewer { get; private set; }
 
-        public static ReviewDto FromReview(Review review)
+        public static ReviewDTO FromReview(Review review)
         {
-            return new ReviewDto()
+            return new ReviewDTO()
             {
                 Id = review.Id,
                 Content = review.Content,
                 Rating = review.Rating,
-                reviewer = ReviewerDTO.FromTourist(review.Reviwer)
+                Reviewer = ReviewerDTO.FromTourist(review.Reviwer)
             };
         }
     }

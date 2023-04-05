@@ -1,6 +1,7 @@
 using Domain.DTOs;
 using Domain.Entities;
 using Domain.Interfaces;
+using Domain.Interfaces.UseCaseInterfaces;
 using Domain.Services;
 using Infrastructure.Data;
 using Infrastructure.Repositories;
@@ -25,8 +26,10 @@ namespace Presentation
             builder.Services.AddDbContext<EgyTourContext>(
             options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-            builder.Services.AddScoped<IGenericRepository<Service>, GenericRepository<Service>>();
-            builder.Services.AddTransient(typeof(ICrudService<ServiceDTO>), typeof(ServiceService));
+            builder.Services.AddScoped<IGenericRepository<ServiceReview>, GenericRepository<ServiceReview>>();
+            builder.Services.AddScoped<IGenericRepository<Tourist>,GenericRepository<Tourist>>();
+            builder.Services.AddScoped<IServiceRepository, ServiceRepository>();
+            builder.Services.AddScoped<IAddServiceReviewUseCase,AddServiceReviewUseCase>();
             var app = builder.Build();
 
 

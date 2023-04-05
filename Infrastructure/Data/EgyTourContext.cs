@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 using Domain.Entities;
 using System.Reflection.Metadata;
 using Domain.ValueObjects;
+using Domain.Enums;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System.Net;
+using Domain.Services;
 
 namespace Infrastructure.Data
 {
@@ -31,10 +35,11 @@ namespace Infrastructure.Data
         public DbSet<Note> Notes { get; set; }
         public DbSet<TouristFriend> touristFriends { get; set;}
 
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //modelBuilder.Entity<LocalReview>().ToTable("LoacalReviews");
-            //modelBuilder.Entity<ServiceReview>().ToTable("ServiceReviews");
+         
+
             modelBuilder.Entity<TouristFriend>().HasKey(t => new { t.FriendId, t.TouristId });
             modelBuilder.Entity<Post>()
                 .HasOne(a => a.Writer)
@@ -81,13 +86,21 @@ namespace Infrastructure.Data
             modelBuilder.Entity<Image>().Property<int>("Id");
             modelBuilder.Entity<Image>().HasKey("Id");
 
+            modelBuilder.Entity<Location>().Property<int>("Id");
+            modelBuilder.Entity<Location>().HasKey("Id");
+
+            modelBuilder.Entity<Location>().ToTable("Location");
+
             modelBuilder.Entity<Post>()
              .HasMany(a => a.Pictures)
              .WithOne();
 
             modelBuilder.Entity<Activity>()
                 .HasMany(a => a.Notes)
-                .WithOne();           
+                .WithOne();
+
+            modelBuilder.HasDbFunction(typeof(LevenshteinDistance).GetMethod(nameof(LevenshteinDistance.Calculate)))
+            .HasName("LevenshteinDistance");
         }
     }
 }

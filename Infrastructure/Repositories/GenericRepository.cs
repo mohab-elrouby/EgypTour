@@ -34,6 +34,10 @@ namespace Infrastructure.Repositories
         public virtual async Task<T> Delete(int id)
         {
              T entity = GetById(id);
+             if(entity == null)
+            {
+                throw new Exception("There is not such Entity");
+            }
             _context.Set<T>().Remove(entity);
              return entity;
         }
@@ -41,10 +45,10 @@ namespace Infrastructure.Repositories
         public virtual IEnumerable<T> Find(
             Expression<Func<T, bool>> predicate,
             Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
-            string includeProperties = "")
+            string includeProperties = "",int skip=0 ,int take=8)
         {
             IQueryable<T> query = _context.Set<T>();
-            query =  query.Where(predicate);
+            query =  query.Where(predicate).Skip(skip).Take(take);
 
             foreach (var includeProperty in includeProperties.Split
                  (new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
@@ -54,11 +58,11 @@ namespace Infrastructure.Repositories
 
             if (orderBy != null)
             {
-                return orderBy(query).ToList();
+                return orderBy(query);
             }
             else
             {
-                return query.ToList();
+                return query;
             }
         }
 
@@ -71,7 +75,7 @@ namespace Infrastructure.Repositories
         public virtual IEnumerable<T> GetAll()
         {
             _context.Set<T>().SingleOrDefault<T>();
-            return _context.Set<T>().ToList();
+            return _context.Set<T>();
         }
 
         public virtual T GetById(int id)

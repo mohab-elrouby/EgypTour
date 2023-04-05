@@ -14,29 +14,29 @@ namespace Domain.Entities
         public string Name { get; private set;}
 
         public string Description { get; private set;}
+        public Location Location { get; private set;}
 
-
-        public TimeOnly WorkingHoursStart { get; private set;}
-        public TimeOnly WorkingHoursEnd { get; private set;}
+        public DateTime WorkingHoursStart { get; private set;}
+        public DateTime WorkingHoursEnd { get; private set;}
         public string phone { get; private set;}
-        public string Adress { get; private set;}
 
 
         public virtual List<ServiceReview> Reviews { get; private set; } = new();
 
-
+        public string ProfileImage { get; private set;}
         public List<Image> Images { get; private set; } = new();
 
-        public Service(string name, string description, TimeOnly workingHoursStart, TimeOnly workingHoursEnd, string phone, string adress)
+        public Service(string name, string description, DateTime workingHoursStart, DateTime workingHoursEnd, string phone, Location location,string profileImage)
         {
+            ProfileImage = profileImage;
             Name = name;
             Description = description;
             WorkingHoursStart = workingHoursStart;
             WorkingHoursEnd = workingHoursEnd;
             this.phone = phone;
-            Adress = adress;
+            Location = location;
         }
-        private Service() {}
+        private Service() { }
         public void AddImage(string url)
         {
             Image image = new Image(url);
@@ -54,9 +54,13 @@ namespace Domain.Entities
                 throw new ArgumentException("images must not be null or empty collection");
             }
         }
-        public void AddReview(ServiceReview review)
+        public void AddReview(string content , float rating , Tourist Writer)
         {
-            ArgumentNullException.ThrowIfNull(review);
+            if(rating < 0 || rating > 5)
+            {
+                throw new ArgumentOutOfRangeException(nameof(rating));
+            }
+            ServiceReview review = new ServiceReview(content,rating,Writer);
             Reviews.Add(review);
         }
         public void Update(ServiceDTO serviceDTO)
@@ -65,9 +69,11 @@ namespace Domain.Entities
             this.Name=serviceDTO.Name;
             this.Description=serviceDTO.Description;
             this.phone = serviceDTO.phone;
-            this.Adress = serviceDTO.Adress;
+            this.Location = serviceDTO.Location;
             this.WorkingHoursEnd = serviceDTO.WorkingHoursEnd;
             this.WorkingHoursStart = serviceDTO.WorkingHoursStart;
         }
+
+    
     }
 }

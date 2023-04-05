@@ -11,24 +11,20 @@ namespace Domain.DTOs
 {
     public class ServiceDTO
     {
-        public int Id { get; set;}
+        public int Id { get; private set; } = default(int);
         public string Name { get;  set; }
 
         public string Description { get;  set; }
 
-        public TimeOnly WorkingHoursStart { get;  set; }
-        public TimeOnly WorkingHoursEnd { get;  set; }
+        public DateTime WorkingHoursStart { get;  set; }
+        public DateTime WorkingHoursEnd { get;  set; }
         public string phone { get;  set; }
-        public string Adress { get; set; }
-
-
-        public virtual List<ReviewDto> Reviews { get; set; } = new();
-
+        public Location Location { get; set; }
+        public string ProfileImage { get; set; }
         public List<Image> Images { get; set; } = new();
 
         public static ServiceDTO FromService(Service service)
         {
-            ArgumentNullException.ThrowIfNull(service);
             return new ServiceDTO()
             {
                 Id = service.Id,
@@ -37,9 +33,9 @@ namespace Domain.DTOs
                 WorkingHoursStart = service.WorkingHoursStart,
                 WorkingHoursEnd = service.WorkingHoursEnd,
                 phone = service.phone,
-                Adress = service.Adress,
+                Location = service.Location,
+                ProfileImage= service.ProfileImage,
                 Images = service.Images.ToList(),
-                Reviews = service.Reviews.Select(r => ReviewDto.FromReview(r)).ToList()               
             };
         }
     }

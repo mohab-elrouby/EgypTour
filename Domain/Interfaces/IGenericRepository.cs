@@ -15,7 +15,7 @@ namespace Domain.Interfaces
         IEnumerable<T> Find(
             Expression<Func<T, bool>> predicate,
            Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
-            string includeProperties = "");
+            string includeProperties = "", int skip = 0, int take = 7);
         Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate);
 
         T Add(T entity);

@@ -10,7 +10,10 @@ namespace Domain.Interfaces
     public interface IUnitOfWork : IDisposable
     {
         IPostRepository Posts { get; }
-        IGenericRepository<Service> _services {get;}
+        public IGenericRepository<Tourist> _tourists { get;}
+        IServiceRepository _services {get;}
+        public IGenericRepository<ServiceReview> _serviceReviews { get; }
+
         int Commit();
     }
 }
