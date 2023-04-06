@@ -54,13 +54,13 @@ namespace Domain.Entities
                 throw new ArgumentException("images must not be null or empty collection");
             }
         }
-        public void AddReview(string content , float rating , Tourist Writer)
+        public void AddReview(string content , float rating , Tourist writer)
         {
             if(rating < 0 || rating > 5)
             {
                 throw new ArgumentOutOfRangeException(nameof(rating));
             }
-            ServiceReview review = new ServiceReview(content,rating,Writer);
+            ServiceReview review = new ServiceReview(rating, writer,content);
             Reviews.Add(review);
         }
         public void Update(ServiceDTO serviceDTO)

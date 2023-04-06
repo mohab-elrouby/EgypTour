@@ -17,9 +17,9 @@ namespace Domain.DTOs
         public DateTime? End { get;  set; }
 
         public string BackgroundImage { get; set; }
-        public string? Location { get;  set; } // Location will be changed to object
-        public Tourist Owner { get; private set; }
-        public List<TouristDTO> Tourist { get; set; }
+        public string? Location { get;  set; } 
+        public TouristDTO Owner { get; private set; }
+        public List<TouristDTO> Viewers { get; set; }
         public List<ActivityDTO> Activities { get; private set; }
         public List<ToDOListDTO> ToDOLists { get; set; }
 
@@ -31,16 +31,13 @@ namespace Domain.DTOs
                 Name = trip.Name,
                 Start = trip.Start,
                 End = trip.End,
-                Owner = trip.Owner,
+                Owner = TouristDTO.FromTourist(trip.Owner),
                 Location = trip.Location,
                 BackgroundImage = trip.BackgroundImage,
                 Activities = trip.Activities.Select(t => ActivityDTO.FromActivity(t)).ToList(),
-                Tourist = trip.TripViewers.Select(t => TouristDTO.FromTourist(t)).ToList(),
+                Viewers = trip.TripViewers.Select(t => TouristDTO.FromTourist(t)).ToList(),
                 ToDOLists = trip.ToDoLists.Select(list => ToDOListDTO.FromToDoList(list)).ToList(),
-            };     
-            
-           
-         
+            };              
         }
     }
 }

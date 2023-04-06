@@ -14,7 +14,7 @@ namespace Domain.DTOs
         public string Content { get; set; } = "";
 
         public float Rating { get;  set; }
-        public ReviewerDTO? Reviewer { get; private set; }
+        public TouristDTO? Reviewer { get; private set; }
 
         public static ReviewDTO FromReview(Review review)
         {
@@ -23,7 +23,7 @@ namespace Domain.DTOs
                 Id = review.Id,
                 Content = review.Content,
                 Rating = review.Rating,
-                Reviewer = ReviewerDTO.FromTourist(review.Reviwer)
+                Reviewer = TouristDTO.FromTourist(review.Reviwer)
             };
         }
     }

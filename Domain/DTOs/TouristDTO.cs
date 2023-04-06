@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Domain.DTOs
 {
-    public class ReviewerDTO
+    public class TouristDTO
     {
         public int Id { get; set; }
         public string Fname { get; set; }
@@ -15,9 +15,9 @@ namespace Domain.DTOs
         
         public string? ProfilePicUrl { get; set; }
 
-        public static ReviewerDTO FromTourist(Tourist tourist)
+        public static TouristDTO FromTourist(Tourist tourist)
         {
-            return new ReviewerDTO
+            return new TouristDTO
             {
                 Id = tourist.Id,
                 Fname = tourist.Fname,

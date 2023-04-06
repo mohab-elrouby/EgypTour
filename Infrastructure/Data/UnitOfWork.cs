@@ -26,7 +26,7 @@ namespace Infrastructure.Data
 
 
         public UnitOfWork(EgyTourContext context , IServiceRepository services ,ILocalReviewRepository localReviews ,
-            IGenericRepository<Tourist> tourists ,IServiceReviewRepository serviceReviews,, ITripRepository trips)
+            IGenericRepository<Tourist> tourists ,IServiceReviewRepository serviceReviews, ITripRepository trips)
         {
             _context=context;
             Posts = new PostRepository(_context);

@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Domain.Interfaces;
+﻿using Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Domain.Response;
 using Domain.DTO;
@@ -64,49 +63,6 @@ namespace Presentation.Controllers
             }
         }
 
-        // POST api/<LocalReviewsController>
-        //[HttpPost]
-        //public GenericResponse<LocalReviewDTO> Add([FromBody] LocalReviewDTO localReviewsDto)
-        //{
-        //    try
-        //    {
-        //        if (localReviewsDto == null)
-        //        {
-        //            return new GenericResponse<LocalReviewDTO>()
-        //            {
-        //                StatusCode = 404,
-        //                Message = "No Reviews Found",
-
-        //            };
-        //        }
-        //        else
-        //        {
-        //            var localReview = _mapper.Map<LocalReview>(localReviewsDto);
-        //            _unitOfWork.LocalReviews.Add(localReview);
-        //            _unitOfWork.Commit();
-        //            return new GenericResponse<LocalReviewDTO>()
-        //            {
-        //                StatusCode = 200,
-        //                Message = "The Process of Get Data Sucessfull",
-        //                Data = localReviewsDto
-
-        //            };
-        //        }
-
-        //    }
-        //    catch
-        //    {
-        //        return new GenericResponse<LocalReviewDTO>()
-        //        {
-        //            StatusCode = 500,
-        //            Message = "Internal Error",
-
-        //        };
-        //    }
-
-        //}
-
-        // PUT api/<LocalReviewsController>/5
 
         [Route("[Action]/{id}")]
 
