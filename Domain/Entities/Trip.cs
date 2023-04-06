@@ -57,17 +57,11 @@ namespace Domain.Entities
         public void AddActivity(ActivityDTO activity)
         {
             Activity _activity = new Activity(activity.Name, activity.Location, activity.Start, activity.End);
-
+            Activities.Add(_activity);
         }
-        public ToDOListDTO AddToDoList(ToDOListDTO toDoList)
+        public void AddToDoList(ToDOListDTO toDoList)
         {
-            return new ToDOListDTO
-            {
-                Id = toDoList.Id,
-                Name = toDoList.Name,
-                TripId = toDoList.TripId,
-
-            };
+            ToDoList _toDoList = new ToDoList(toDoList.Name);
         }
         private Trip()
         {

@@ -26,7 +26,7 @@ namespace Presentation.Controllers
         {
             try
             {
-                List<ServiceReviewDTO> serviceReviews = _unitOfWork.ServiceReviews.GetByServiceId(id, skip, take)
+                List<ServiceReviewDTO> serviceReviews = _unitOfWork._serviceReviews.GetByServiceId(id, skip, take)
                     .Select(review => ServiceReviewDTO.fromServiceReview(review)).ToList();
                 if (serviceReviews.Count()== 0)
                 {
@@ -68,7 +68,7 @@ namespace Presentation.Controllers
         {
             try
             {
-                List<ServiceReviewDTO> serviceReviews = _unitOfWork.ServiceReviews.GetByTouristId(id, skip, take)
+                List<ServiceReviewDTO> serviceReviews = _unitOfWork._serviceReviews.GetByTouristId(id, skip, take)
                     .Select(review => ServiceReviewDTO.fromServiceReview(review)).ToList();
                 if (serviceReviews.Count()== 0)
                 {
@@ -155,7 +155,7 @@ namespace Presentation.Controllers
             try
             {
 
-                ServiceReview serviceReview = _unitOfWork.ServiceReviews.GetById(id);
+                ServiceReview serviceReview = _unitOfWork._serviceReviews.GetById(id);
                 if (serviceReview == null)
                 {
                     return NotFound();
@@ -171,7 +171,7 @@ namespace Presentation.Controllers
                 }
 
 
-                _unitOfWork.ServiceReviews.Update(serviceReview);
+                _unitOfWork._serviceReviews.Update(serviceReview);
                 _unitOfWork.Commit();
                 return Ok();
 
@@ -189,7 +189,7 @@ namespace Presentation.Controllers
         [HttpDelete]
         public GenericResponse<ServiceReviewDTO> Delete(int id)
         {
-            var localReview = _unitOfWork.ServiceReviews.GetById(id);
+            var localReview = _unitOfWork._serviceReviews.GetById(id);
             try
             {
                 if (localReview == null)
@@ -203,7 +203,7 @@ namespace Presentation.Controllers
                 }
                 else
                 {
-                    _unitOfWork.ServiceReviews.Delete(id);
+                    _unitOfWork._serviceReviews.Delete(id);
                     _unitOfWork.Commit();
                     return new GenericResponse<ServiceReviewDTO>()
                     {

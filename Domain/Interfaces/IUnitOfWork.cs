@@ -16,6 +16,7 @@ namespace Domain.Interfaces
         ILocalReviewRepository LocalReviews { get; }
         IServiceReviewRepository _serviceReviews { get; }      
         ITripRepository Trips { get;}
+        public IGenericRepository<Activity> _activities { get; }
         int Commit();
     }
 }

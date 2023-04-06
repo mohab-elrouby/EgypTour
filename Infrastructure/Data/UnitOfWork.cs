@@ -23,10 +23,11 @@ namespace Infrastructure.Data
         public ITripRepository Trips { get; private set; }
         
         public ILocalReviewRepository LocalReviews { get; private set; }
-
+        public IGenericRepository<Activity> _activities { get; }
 
         public UnitOfWork(EgyTourContext context , IServiceRepository services ,ILocalReviewRepository localReviews ,
-            IGenericRepository<Tourist> tourists ,IServiceReviewRepository serviceReviews,, ITripRepository trips)
+            IGenericRepository<Tourist> tourists ,IServiceReviewRepository serviceReviews, ITripRepository trips,
+            IGenericRepository<Activity> activities)
         {
             _context=context;
             Posts = new PostRepository(_context);
@@ -35,6 +36,7 @@ namespace Infrastructure.Data
             _serviceReviews = serviceReviews;
              Trips = trips;
              LocalReviews = localReviews;
+            _activities = activities;
 
         }
 

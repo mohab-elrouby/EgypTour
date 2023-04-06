@@ -37,7 +37,8 @@ namespace Presentation
             builder.Services.AddScoped<IAddServiceReviewUseCase,AddServiceReviewUseCase>();
             builder.Services.AddScoped<ILocalReviewRepository, localReviewRepository>();
             builder.Services.AddScoped<ITripRepository, TripRepository>();
-            builder.Services.AddScoped<IServiceReviewRepository, ServiceReviewRepository>();  
+            builder.Services.AddScoped<IServiceReviewRepository, ServiceReviewRepository>();
+            builder.Services.AddScoped<IGenericRepository<Activity>, GenericRepository<Activity>>();
 
             var app = builder.Build(); 
             

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(EgyTourContext))]
-    [Migration("20230404210517_m2")]
-    partial class m2
+    [Migration("20230405232625_create EgyTourDb")]
+    partial class createEgyTourDb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -37,11 +37,7 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Documents")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("End")
+                    b.Property<DateTime>("End")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Location")
@@ -51,7 +47,7 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("Start")
+                    b.Property<DateTime>("Start")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Tag")
@@ -162,7 +158,6 @@ namespace Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Content")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Discriminator")
@@ -174,6 +169,9 @@ namespace Infrastructure.Migrations
 
                     b.Property<int>("ReviwerId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("Time")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -294,6 +292,10 @@ namespace Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("BackgroundImage")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime?>("End")
                         .HasColumnType("datetime2");
 
@@ -304,10 +306,15 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("OwnerId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("Start")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("OwnerId");
 
                     b.ToTable("Trips");
                 });
@@ -447,13 +454,13 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("TouristTrip", b =>
                 {
-                    b.Property<int>("TouristsId")
+                    b.Property<int>("TripViewersId")
                         .HasColumnType("int");
 
                     b.Property<int>("TripsId")
                         .HasColumnType("int");
 
-                    b.HasKey("TouristsId", "TripsId");
+                    b.HasKey("TripViewersId", "TripsId");
 
                     b.HasIndex("TripsId");
 
@@ -622,6 +629,17 @@ namespace Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Domain.Entities.Trip", b =>
+                {
+                    b.HasOne("Domain.Entities.Tourist", "Owner")
+                        .WithMany("OwnedTrips")
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Owner");
+                });
+
             modelBuilder.Entity("Domain.ValueObjects.Image", b =>
                 {
                     b.HasOne("Domain.Entities.Post", null)
@@ -659,7 +677,7 @@ namespace Infrastructure.Migrations
                 {
                     b.HasOne("Domain.Entities.Tourist", null)
                         .WithMany()
-                        .HasForeignKey("TouristsId")
+                        .HasForeignKey("TripViewersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -765,6 +783,8 @@ namespace Infrastructure.Migrations
                     b.Navigation("Friends");
 
                     b.Navigation("LocalReviews");
+
+                    b.Navigation("OwnedTrips");
 
                     b.Navigation("ServiceReviews");
 
