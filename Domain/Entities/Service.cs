@@ -61,6 +61,7 @@ namespace Domain.Entities
                 throw new ArgumentOutOfRangeException(nameof(rating));
             }
             ServiceReview review = new ServiceReview(rating, writer,content);
+
             Reviews.Add(review);
         }
         public void Update(ServiceDTO serviceDTO)

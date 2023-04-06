@@ -11,9 +11,9 @@ namespace Domain.Entities
     {
         public int Id { get; private set; }
         public string Name { get; private set; }
-        public string Description { get; private set; }
+        public string? Description { get; private set; }
 
-        public string Tag { get;private set; }
+        public string? Tag { get;private set; } 
        
 
         public DateTime Start { get; private set;}
@@ -23,13 +23,19 @@ namespace Domain.Entities
         public virtual Trip Trip { get; private set; }
         public string? Location { get; private set; }
 
-        public virtual List<Note> Notes { get; private set; }
+        public virtual List<Note>? Notes { get; private set; }
 
-        public Activity(string name ,string location , DateTime start, DateTime end) { 
+        public Activity(string name ,string location , DateTime start, DateTime end ,List<Note> notes,string description
+            ,string tag)
+        { 
             Name = name;
             Location = location;
             Start= start;
             End= end;
+            Notes = notes;
+            Description = description;
+            Tag = tag;            
         }
+        private Activity() { }
     }
 }

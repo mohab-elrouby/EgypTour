@@ -10,6 +10,6 @@ namespace Domain.Interfaces
 {
     public interface ITripRepository: IGenericRepository<Trip>
     {
-
+       
     }
 }

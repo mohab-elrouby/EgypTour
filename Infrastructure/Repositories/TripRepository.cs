@@ -16,9 +16,7 @@ namespace Infrastructure.Repositories
         {
             _db = db;
         }
-        //IEnumerable<Trip> GetByCreatorId(int id, int skip, int take)
-        //{
-            
-        //}
+
+       
     }
 }

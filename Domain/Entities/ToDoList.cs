@@ -17,21 +17,11 @@ namespace Domain.Entities
         public virtual Trip Trip { get; private set;}
         public ToDoList(string name)
         {
-            Name = name;
+            Name = (name == null) ? string.Empty : name;
         }
         private ToDoList() { }
 
-        public ToDoItemDTO AddToDoItem(ToDoItemDTO item)
-        {
-            return new ToDoItemDTO
-            {
-                Id = item.Id,
-                Name = item.Name,
-                ToDoListId = item.ToDoListId,
-                Status = item.Status,
-
-            };
-        }
+        
 
     }
 }
