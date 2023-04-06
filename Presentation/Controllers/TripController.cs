@@ -64,5 +64,32 @@ namespace Presentation.Controllers
             }
         }
 
+        [Route("[Action]")]
+        [HttpDelete]
+        public IActionResult Delete(int id)
+        {
+            Trip trip = _unitOfWork.Trips.GetById(id);
+            if(trip == null)
+            {
+                return NotFound("Trip doesn't exist or Already Deleted");
+            }
+            _unitOfWork.Trips.Delete(id);
+            _unitOfWork.Commit();
+            return Ok();
+        }
+
+        [Route("[Action]")]
+        [HttpPut]
+        public IActionResult Update([FromHeader] int id, [FromBody] ActivityDTO activityDto)
+        {
+            Trip trip = _unitOfWork.Trips.GetById(id);
+            if (trip == null)
+            {
+                return NotFound("Trip doesn't exist or Already Deleted");
+            }
+            _unitOfWork.Trips.Update(trip);
+            _unitOfWork.Commit();
+            return Ok();
+        }
     }
 }
