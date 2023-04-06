@@ -106,6 +106,10 @@ namespace Infrastructure.Data
 
             modelBuilder.HasDbFunction(typeof(LevenshteinDistance).GetMethod(nameof(LevenshteinDistance.Calculate)))
             .HasName("LevenshteinDistance");
+
+           
+             
+               
         }
     }
 }

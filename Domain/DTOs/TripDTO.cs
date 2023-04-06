@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,7 @@ namespace Domain.DTOs
         public DateTime? End { get;  set; }
 
         public string BackgroundImage { get; set; }
-        public string? Location { get;  set; } 
+        public Location? Location { get;  set; } 
         public TouristDTO Owner { get; private set; }
         public List<TouristDTO> Viewers { get; set; }
         public List<ActivityDTO> Activities { get; private set; }

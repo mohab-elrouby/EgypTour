@@ -80,15 +80,29 @@ namespace Presentation.Controllers
 
         [Route("[Action]")]
         [HttpPut]
-        public IActionResult Update([FromHeader] int id, [FromBody] ActivityDTO activityDto)
+        public IActionResult Update([FromHeader] int id, [FromBody] TripDTO tripDto)
         {
             Trip trip = _unitOfWork.Trips.GetById(id);
             if (trip == null)
             {
                 return NotFound("Trip doesn't exist or Already Deleted");
             }
+            trip.Update(tripDto);
             _unitOfWork.Trips.Update(trip);
             _unitOfWork.Commit();
+            return Ok();
+        }
+
+        [Route("[Action]")]
+        [HttpGet]
+        public IActionResult GetServiceRecommendition(int id)
+        {
+            Trip trip = _unitOfWork.Trips.GetById(id);
+            if (trip == null)
+            {
+                return NotFound("Trip doesn't exist or Already Deleted");
+            }
+          
             return Ok();
         }
     }
