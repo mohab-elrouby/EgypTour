@@ -136,7 +136,7 @@ namespace Presentation.Controllers
 
         [Route("[Action]")]
         [HttpGet]
-        public IActionResult GetServiceRecommendition(int id)
+        public IActionResult GetActivityRecommendition(int id)
         {
             Trip trip = _unitOfWork.Trips.GetById(id);
             if (trip == null)
