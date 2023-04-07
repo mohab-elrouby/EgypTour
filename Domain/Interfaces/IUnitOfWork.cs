@@ -19,6 +19,8 @@ namespace Domain.Interfaces
         public IGenericRepository<Activity> _activities { get; }
         public IGenericRepository<ToDoList> _toDoLists { get; }
         public IGenericRepository<ToDoItem> _toDoItems { get; }
+
+        public IGenericRepository<LocalPerson> _localPersons { get; }
         int Commit();
     }
 }

@@ -41,7 +41,7 @@ namespace Presentation
             builder.Services.AddScoped<IGenericRepository<Activity>, GenericRepository<Activity>>();
             builder.Services.AddScoped<IGenericRepository<ToDoList>, GenericRepository<ToDoList>>();
             builder.Services.AddScoped<IGenericRepository<ToDoItem>, GenericRepository<ToDoItem>>();
-
+            builder.Services.AddScoped<IGenericRepository<LocalPerson>, GenericRepository<LocalPerson>>();
             var app = builder.Build(); 
             
             // Configure the HTTP request pipeline.

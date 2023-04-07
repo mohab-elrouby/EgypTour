@@ -26,10 +26,12 @@ namespace Infrastructure.Data
         public IGenericRepository<Activity> _activities { get; }
         public IGenericRepository<ToDoList> _toDoLists { get; }
         public IGenericRepository<ToDoItem> _toDoItems { get; }
+        public IGenericRepository<LocalPerson> _localPersons { get; }
 
         public UnitOfWork(EgyTourContext context , IServiceRepository services ,ILocalReviewRepository localReviews ,
             IGenericRepository<Tourist> tourists ,IServiceReviewRepository serviceReviews, ITripRepository trips,
-            IGenericRepository<Activity> activities , IGenericRepository<ToDoList> toDoLists , IGenericRepository<ToDoItem> toDoItems)
+            IGenericRepository<Activity> activities , IGenericRepository<ToDoList> toDoLists , IGenericRepository<ToDoItem> toDoItems , 
+            IGenericRepository<LocalPerson> localPersons)
         {
             _context=context;
             Posts = new PostRepository(_context);
@@ -41,7 +43,7 @@ namespace Infrastructure.Data
             _activities = activities;
             _toDoLists = toDoLists;
             _toDoItems = toDoItems;
-
+            _localPersons = localPersons;
         }
 
 
