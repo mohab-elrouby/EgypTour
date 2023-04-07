@@ -1,7 +1,7 @@
 ﻿using Domain.DTOs;
+using Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,7 +18,9 @@ namespace Domain.Entities
 
         public string? Location { get; private set; }
         public Tourist Owner { get; private set; }
-        public string BackgroundImage { get; set; }
+        public string BackgroundImage { get; private set; }
+
+        public List<Image> images { get; private set; } = new();
         public virtual List<Activity> Activities { get; private set; } = new();
         public virtual List<ToDoList> ToDoLists { get; private set; } = new();
         public virtual List<Tourist> TripViewers { get; private set; } = new();
@@ -60,6 +62,26 @@ namespace Domain.Entities
                 ,activity.Notes,activity.Description,activity.Tag
                 );
             Activities.Add(_activity);
+        }
+
+        public void AddImage(string imageParth)
+        {
+            Image image = new Image(imageParth);
+            images.Add(image);
+        }
+
+        public void RemoveImage(string imageParth)
+        {
+            Image image = images.Where(i => i.Url == imageParth).FirstOrDefault();
+            if (image == null)
+            {
+                throw new KeyNotFoundException($"Trip{Id} doesn't have such image");
+            }
+            else
+            {
+                images.Remove(image);
+            }
+            
         }
         public void AddToDoList(ToDOListDTO toDoList)
         {

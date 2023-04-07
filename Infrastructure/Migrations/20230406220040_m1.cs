@@ -212,6 +212,26 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Services_Images",
+                columns: table => new
+                {
+                    ServiceId = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Url = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Services_Images", x => new { x.ServiceId, x.Id });
+                    table.ForeignKey(
+                        name: "FK_Services_Images_Services_ServiceId",
+                        column: x => x.ServiceId,
+                        principalTable: "Services",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Comments",
                 columns: table => new
                 {
@@ -240,28 +260,23 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Image",
+                name: "Posts_Pictures",
                 columns: table => new
                 {
+                    PostId = table.Column<int>(type: "int", nullable: false),
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Url = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PostId = table.Column<int>(type: "int", nullable: true),
-                    ServiceId = table.Column<int>(type: "int", nullable: true)
+                    Url = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Image", x => x.Id);
+                    table.PrimaryKey("PK_Posts_Pictures", x => new { x.PostId, x.Id });
                     table.ForeignKey(
-                        name: "FK_Image_Posts_PostId",
+                        name: "FK_Posts_Pictures_Posts_PostId",
                         column: x => x.PostId,
                         principalTable: "Posts",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Image_Services_ServiceId",
-                        column: x => x.ServiceId,
-                        principalTable: "Services",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -358,6 +373,26 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Trips_images",
+                columns: table => new
+                {
+                    TripId = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Url = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Trips_images", x => new { x.TripId, x.Id });
+                    table.ForeignKey(
+                        name: "FK_Trips_images_Trips_TripId",
+                        column: x => x.TripId,
+                        principalTable: "Trips",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Notes",
                 columns: table => new
                 {
@@ -411,16 +446,6 @@ namespace Infrastructure.Migrations
                 name: "IX_Comments_WriterId",
                 table: "Comments",
                 column: "WriterId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Image_PostId",
-                table: "Image",
-                column: "PostId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Image_ServiceId",
-                table: "Image",
-                column: "ServiceId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Messeges_RecieverId",
@@ -505,19 +530,22 @@ namespace Infrastructure.Migrations
                 name: "Comments");
 
             migrationBuilder.DropTable(
-                name: "Image");
-
-            migrationBuilder.DropTable(
                 name: "Messeges");
 
             migrationBuilder.DropTable(
                 name: "Notes");
 
             migrationBuilder.DropTable(
+                name: "Posts_Pictures");
+
+            migrationBuilder.DropTable(
                 name: "PostTourist");
 
             migrationBuilder.DropTable(
                 name: "Reviews");
+
+            migrationBuilder.DropTable(
+                name: "Services_Images");
 
             migrationBuilder.DropTable(
                 name: "ToDoItems");
@@ -527,6 +555,9 @@ namespace Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "TouristTrip");
+
+            migrationBuilder.DropTable(
+                name: "Trips_images");
 
             migrationBuilder.DropTable(
                 name: "Activity");
