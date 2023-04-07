@@ -9,14 +9,14 @@ namespace Domain.ValueObjects
 {
     public class Location
     {
-        public CityName CityName { get; set; }
+        public CityName CityName { get;private set; }
 
-        public string Street { get; set; }
+        public Country Country { get;private set; }
 
-        public Location(CityName cityName, string street)
+        public Location(CityName cityName, Country country)
         {
             CityName = cityName;
-            Street = street;
+            Country = country;
         }
     }
 }

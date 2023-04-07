@@ -11,7 +11,7 @@ namespace Domain.Entities
     {
         public virtual List<LocalReview> Reviews { get; private set; } = new();
 
-        public CityName City { get; private set;}
+        public CityName City { get; private set;} 
         public LocalPerson(CityName city,string fname, string lname, string email, string userName, string password, string phone, string profilePictureUrl = "")
             :base(fname, lname, email, userName, password, phone, profilePictureUrl)
         {

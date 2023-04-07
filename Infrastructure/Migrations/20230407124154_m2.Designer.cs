@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(EgyTourContext))]
-    [Migration("20230406150815_m1")]
-    partial class m1
+    [Migration("20230407124154_m2")]
+    partial class m2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -39,8 +39,8 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("End")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Location")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("LocationId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -56,6 +56,8 @@ namespace Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("LocationId");
 
                     b.HasIndex("TripId");
 
@@ -297,8 +299,8 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime?>("End")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Location")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("LocationId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -311,6 +313,8 @@ namespace Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("LocationId");
 
                     b.HasIndex("OwnerId");
 
@@ -366,33 +370,6 @@ namespace Infrastructure.Migrations
                     b.UseTphMappingStrategy();
                 });
 
-            modelBuilder.Entity("Domain.ValueObjects.Image", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("PostId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ServiceId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Url")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PostId");
-
-                    b.HasIndex("ServiceId");
-
-                    b.ToTable("Image");
-                });
-
             modelBuilder.Entity("Domain.ValueObjects.Location", b =>
                 {
                     b.Property<int>("Id")
@@ -404,9 +381,8 @@ namespace Infrastructure.Migrations
                     b.Property<int>("CityName")
                         .HasColumnType("int");
 
-                    b.Property<string>("Street")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Country")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -517,11 +493,17 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.Activity", b =>
                 {
+                    b.HasOne("Domain.ValueObjects.Location", "Location")
+                        .WithMany()
+                        .HasForeignKey("LocationId");
+
                     b.HasOne("Domain.Entities.Trip", "Trip")
                         .WithMany("Activities")
                         .HasForeignKey("TripId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Location");
 
                     b.Navigation("Trip");
                 });
@@ -572,6 +554,31 @@ namespace Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.OwnsMany("Domain.ValueObjects.Image", "Pictures", b1 =>
+                        {
+                            b1.Property<int>("PostId")
+                                .HasColumnType("int");
+
+                            b1.Property<int>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("int");
+
+                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<int>("Id"));
+
+                            b1.Property<string>("Url")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("PostId", "Id");
+
+                            b1.ToTable("Posts_Pictures");
+
+                            b1.WithOwner()
+                                .HasForeignKey("PostId");
+                        });
+
+                    b.Navigation("Pictures");
+
                     b.Navigation("Writer");
                 });
 
@@ -582,6 +589,31 @@ namespace Infrastructure.Migrations
                         .HasForeignKey("LocationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.OwnsMany("Domain.ValueObjects.Image", "Images", b1 =>
+                        {
+                            b1.Property<int>("ServiceId")
+                                .HasColumnType("int");
+
+                            b1.Property<int>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("int");
+
+                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<int>("Id"));
+
+                            b1.Property<string>("Url")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("ServiceId", "Id");
+
+                            b1.ToTable("Services_Images");
+
+                            b1.WithOwner()
+                                .HasForeignKey("ServiceId");
+                        });
+
+                    b.Navigation("Images");
 
                     b.Navigation("Location");
                 });
@@ -629,24 +661,44 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.Trip", b =>
                 {
+                    b.HasOne("Domain.ValueObjects.Location", "Location")
+                        .WithMany()
+                        .HasForeignKey("LocationId");
+
                     b.HasOne("Domain.Entities.Tourist", "Owner")
                         .WithMany("OwnedTrips")
                         .HasForeignKey("OwnerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.OwnsMany("Domain.ValueObjects.Image", "images", b1 =>
+                        {
+                            b1.Property<int>("TripId")
+                                .HasColumnType("int");
+
+                            b1.Property<int>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("int");
+
+                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<int>("Id"));
+
+                            b1.Property<string>("Url")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("TripId", "Id");
+
+                            b1.ToTable("Trips_images");
+
+                            b1.WithOwner()
+                                .HasForeignKey("TripId");
+                        });
+
+                    b.Navigation("Location");
+
                     b.Navigation("Owner");
-                });
 
-            modelBuilder.Entity("Domain.ValueObjects.Image", b =>
-                {
-                    b.HasOne("Domain.Entities.Post", null)
-                        .WithMany("Pictures")
-                        .HasForeignKey("PostId");
-
-                    b.HasOne("Domain.Entities.Service", null)
-                        .WithMany("Images")
-                        .HasForeignKey("ServiceId");
+                    b.Navigation("images");
                 });
 
             modelBuilder.Entity("Domain.ValueObjects.Note", b =>
@@ -739,14 +791,10 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Entities.Post", b =>
                 {
                     b.Navigation("Comments");
-
-                    b.Navigation("Pictures");
                 });
 
             modelBuilder.Entity("Domain.Entities.Service", b =>
                 {
-                    b.Navigation("Images");
-
                     b.Navigation("Reviews");
                 });
 
