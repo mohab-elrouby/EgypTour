@@ -48,13 +48,13 @@ namespace Presentation.Controllers
 
         [Route("[Action]")]
         [HttpPost]
-        public async Task<IActionResult> AddActivity(int tripId, [FromBody] ActivityDTO activityDTO)
+        public IActionResult AddActivity(int tripId, [FromBody] ActivityDTO activityDTO)
         {
             Trip trip = _unitOfWork.Trips.GetById(tripId);
 
             if (trip != null)
             {
-                trip.AddActivity(activityDTO);
+               trip.AddActivity(activityDTO);
                 _unitOfWork.Commit();
                 return Ok();
             }
@@ -102,8 +102,24 @@ namespace Presentation.Controllers
             {
                 return NotFound("Trip doesn't exist or Already Deleted");
             }
-          
+            // missing rating 
+            List <Service> services = _unitOfWork._services.Find(predicate:x => x.Location.CityName == trip.Location.CityName).ToList();
+            return Ok();
+        }
+
+        [Route("[Action]")]
+        [HttpPost]
+        public IActionResult AddToDOList([FromHeader] int id, [FromBody] ToDOListDTO toDOListDTO)
+        {
+            Trip trip = _unitOfWork.Trips.GetById(id);
+            if (trip == null)
+            {
+                return NotFound("Trip doesn't exist or Already Deleted");
+            }
+            trip.AddToDoList(toDOListDTO);
+            _unitOfWork.Commit();
             return Ok();
         }
     }
+
 }

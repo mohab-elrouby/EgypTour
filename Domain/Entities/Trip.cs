@@ -67,6 +67,7 @@ namespace Domain.Entities
         public void AddToDoList(ToDOListDTO toDoList)
         {
             ToDoList _toDoList = new ToDoList(toDoList.Name);
+            ToDoLists.Add(_toDoList);
         }
         private Trip()
         {

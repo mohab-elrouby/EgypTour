@@ -21,7 +21,10 @@ namespace Domain.Entities
         }
         private ToDoList() { }
 
-        
+        public void Update(ToDOListDTO toDOListDTO)
+        {
+            Name = toDOListDTO.Name;
+        }
 
     }
 }

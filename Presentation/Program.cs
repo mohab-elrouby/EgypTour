@@ -39,6 +39,8 @@ namespace Presentation
             builder.Services.AddScoped<ITripRepository, TripRepository>();
             builder.Services.AddScoped<IServiceReviewRepository, ServiceReviewRepository>();
             builder.Services.AddScoped<IGenericRepository<Activity>, GenericRepository<Activity>>();
+            builder.Services.AddScoped<IGenericRepository<ToDoList>, GenericRepository<ToDoList>>();
+            builder.Services.AddScoped<IGenericRepository<ToDoItem>, GenericRepository<ToDoItem>>();
 
             var app = builder.Build(); 
             

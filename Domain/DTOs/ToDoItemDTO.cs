@@ -14,14 +14,12 @@ namespace Domain.DTOs
 
         public string Name { get;  set; }
 
-        public int ToDoListId { get;  set; }
         public ToDoItemStatus Status { get;  set; }
         public static ToDoItemDTO FromtoDoItem(ToDoItem ToDoItem) {
             return new ToDoItemDTO
             {
                 Id = ToDoItem.Id,
                 Name = ToDoItem.Name,
-                ToDoListId = ToDoItem.ToDoListId,
                 Status = ToDoItem.Status
             };
         }
