@@ -3,11 +3,10 @@ using Domain.Entities;
 using Domain.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Presentation.Services;
 
 namespace Presentation.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class TripController : ControllerBase
     {
@@ -93,50 +92,10 @@ namespace Presentation.Controllers
             _unitOfWork.Commit();
             return Ok();
         }
-        [Route("[Action]/{tripId}")]
-        [HttpPost]
-        public IActionResult AddTripImage([FromForm] IFormFile file, int tripId)
-        {
-            Trip trip = _unitOfWork.Trips.GetById(tripId);
-            if (trip == null)
-            {
-                return NotFound("Trip doesn't exist");
-            }
-            // Create a unique path
-            string uniqueName = WriteDeleteFileService.Write(file, "wwwroot/trip-images/");
-            string imageUrl = $"/trip-images/{uniqueName}";
-            trip.AddImage(imageUrl);
-            _unitOfWork.Commit();
-            return Ok("image uploaded successfually");                     
-        }
-
-        [HttpPatch("{tripId}/[Action]")]
-        public IActionResult DeleteImage(int tripId, string imagePath)
-        {
-            Trip trip = _unitOfWork.Trips.Find(predicate: i => i.Id == tripId, includeProperties: "images").FirstOrDefault();
-            if (trip == null)
-            {
-                return NotFound("Trip doesn't exist");
-            }
-            try
-            {
-                WriteDeleteFileService.Delete(imagePath);
-                trip.RemoveImage(imagePath);
-                return Ok();
-            }
-            catch (KeyNotFoundException ex)
-            {
-                return NotFound(ex.Message);
-            }
-            catch (Exception)
-            {
-                return BadRequest("Can't Delete image , Try Again Later");
-            }
-        }
 
         [Route("[Action]")]
         [HttpGet]
-        public IActionResult GetActivityRecommendition(int id)
+        public IActionResult GetServiceRecommendition(int id)
         {
             Trip trip = _unitOfWork.Trips.GetById(id);
             if (trip == null)
@@ -144,7 +103,8 @@ namespace Presentation.Controllers
                 return NotFound("Trip doesn't exist or Already Deleted");
             }
             // missing rating 
-            List <Service> services = _unitOfWork._services.Find(predicate:x => x.Location.CityName == trip.Location.CityName).ToList();
+            List <Service> services = _unitOfWork._services.
+                Find(predicate:x => x.Location.CityName == trip.Location.CityName,orderBy:q=>q.OrderBy(q=>q.Reviews.Average(b=>b.Rating))).ToList();
             return Ok();
         }
 
