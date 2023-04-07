@@ -1,5 +1,6 @@
 ﻿using Domain.DTOs;
 using Domain.Entities;
+using Domain.Enums;
 using Domain.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -134,19 +135,6 @@ namespace Presentation.Controllers
             }
         }
 
-        [Route("[Action]")]
-        [HttpGet]
-        public IActionResult GetActivityRecommendition(int id)
-        {
-            Trip trip = _unitOfWork.Trips.GetById(id);
-            if (trip == null)
-            {
-                return NotFound("Trip doesn't exist or Already Deleted");
-            }
-            // missing rating 
-            List <Service> services = _unitOfWork._services.Find(predicate:x => x.Location.CityName == trip.Location.CityName).ToList();
-            return Ok();
-        }
 
         [Route("[Action]")]
         [HttpPost]
@@ -161,6 +149,25 @@ namespace Presentation.Controllers
             _unitOfWork.Commit();
             return Ok();
         }
+
+        [Route("[Action]/{ActivityId}")]
+        [HttpGet]
+        public IActionResult GetCityRecommendations(CityName city)
+        {
+            List<ServiceRecommendationDTO> serviceRecommendations = _unitOfWork._services.Find(predicate: x => x.Location.CityName == city, orderBy: a => a.OrderBy(b => b.Reviews.Average(c => c.Rating)))
+                .Select(i => ServiceRecommendationDTO.FromService(i, i.Reviews.Average(a => a.Rating))).ToList();
+
+            List<LocalPersonRecommendationDTO> localPeopleRecommendations = _unitOfWork._localPersons.Find(predicate: x => x.City == city, orderBy: a => a.OrderBy(b => b.Reviews.Average(c => c.Rating)))
+                .Select(i => LocalPersonRecommendationDTO.FromLocalPerson(i, i.Reviews.Average(a => a.Rating))).ToList();
+
+            RecommendationsDto recommendationsDto = new RecommendationsDto()
+            {
+                serviceRecommendations = serviceRecommendations,
+                localPersonRecommendations = localPeopleRecommendations
+            }; 
+            return Ok(recommendationsDto);
+        }
+
     }
 
 }

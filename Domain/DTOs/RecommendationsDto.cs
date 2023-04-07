@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace Domain.DTOs
 {
-    internal class RecommendationsDto
+    public class RecommendationsDto
     {
+        public List<ServiceRecommendationDTO> serviceRecommendations { get; set; }
+        public List<LocalPersonRecommendationDTO> localPersonRecommendations { get; set; }
     }
 }
