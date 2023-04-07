@@ -11,16 +11,14 @@ namespace Domain.DTOs
     {
         public int Id { get;  set; }
         public string Name { get;  set; }
-        public int TripId { get;  set; }
-        public List<ToDoItemDTO> Items { get;  set; }
+        //public List<ToDoItemDTO> Items { get; set; } = new();
 
         public static ToDOListDTO FromToDoList(ToDoList ToDoList) {
             return new ToDOListDTO
             {
                 Id = ToDoList.Id,
                 Name = ToDoList.Name,
-                TripId = ToDoList.TripId,
-                Items = ToDoList.ToDoItems.Select(i => ToDoItemDTO.FromtoDoItem(i)).ToList()
+                //Items = ToDoList.ToDoItems.Select(i => ToDoItemDTO.FromtoDoItem(i)).ToList()
             };
         }
     }

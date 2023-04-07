@@ -16,7 +16,7 @@ namespace Domain.Entities
 
         public DateTime? End { get; private set; } 
 
-        public string? Location { get; private set; }
+        public Location? Location { get; private set; }
         public Tourist Owner { get; private set; }
         public string BackgroundImage { get; private set; }
 
@@ -30,22 +30,24 @@ namespace Domain.Entities
             Start = DateTime.Now;
             End = DateTime.MinValue;
         }
-        public Trip(string name, DateTime? start, DateTime? end, string? location, string backgroundImage="")
+        public Trip(string name, DateTime? start, DateTime? end, Location? location, string backgroundImage="")
         {
            Name=name;
            Start = (start == null) ? DateTime.Now : start;
            End = (end == null) ? DateTime.MinValue : end;
            Location = location;
-            BackgroundImage = backgroundImage;
+           BackgroundImage = backgroundImage;
         }
 
-        public void Update(string? name , string?location,string backgroundImage,DateTime start , DateTime end)
+        public void Update(TripDTO tripDTO)
         {
-            Name = name;
-            Location = location;
-            BackgroundImage = backgroundImage;
-            Start = start;
-            End = end;
+            ArgumentNullException.ThrowIfNull(tripDTO);
+            Name = tripDTO.Name;
+            Start = tripDTO.Start;
+            End = tripDTO.End;
+            Location = tripDTO.Location;
+            BackgroundImage = tripDTO.BackgroundImage;
+          
         }
 
         public void AddTourist(Tourist tourist)
@@ -86,6 +88,7 @@ namespace Domain.Entities
         public void AddToDoList(ToDOListDTO toDoList)
         {
             ToDoList _toDoList = new ToDoList(toDoList.Name);
+            ToDoLists.Add(_toDoList);
         }
         private Trip()
         {

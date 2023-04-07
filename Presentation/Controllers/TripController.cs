@@ -49,13 +49,13 @@ namespace Presentation.Controllers
 
         [Route("[Action]")]
         [HttpPost]
-        public async Task<IActionResult> AddActivity(int tripId, [FromBody] ActivityDTO activityDTO)
+        public IActionResult AddActivity(int tripId, [FromBody] ActivityDTO activityDTO)
         {
             Trip trip = _unitOfWork.Trips.GetById(tripId);
 
             if (trip != null)
             {
-                trip.AddActivity(activityDTO);
+               trip.AddActivity(activityDTO);
                 _unitOfWork.Commit();
                 return Ok();
             }
@@ -81,13 +81,14 @@ namespace Presentation.Controllers
 
         [Route("[Action]")]
         [HttpPut]
-        public IActionResult Update([FromHeader] int id, [FromBody] ActivityDTO activityDto)
+        public IActionResult Update([FromHeader] int id, [FromBody] TripDTO tripDto)
         {
             Trip trip = _unitOfWork.Trips.GetById(id);
             if (trip == null)
             {
                 return NotFound("Trip doesn't exist or Already Deleted");
             }
+            trip.Update(tripDto);
             _unitOfWork.Trips.Update(trip);
             _unitOfWork.Commit();
             return Ok();
@@ -109,11 +110,11 @@ namespace Presentation.Controllers
             return Ok("image uploaded successfually");                     
         }
 
-        [HttpPatch("{tripId}/[Action]")]               
-        public IActionResult DeleteImage(int tripId , string imagePath)
+        [HttpPatch("{tripId}/[Action]")]
+        public IActionResult DeleteImage(int tripId, string imagePath)
         {
-            Trip trip = _unitOfWork.Trips.Find(predicate: i => i.Id == tripId,includeProperties: "images").FirstOrDefault();
-            if(trip == null)
+            Trip trip = _unitOfWork.Trips.Find(predicate: i => i.Id == tripId, includeProperties: "images").FirstOrDefault();
+            if (trip == null)
             {
                 return NotFound("Trip doesn't exist");
             }
@@ -121,17 +122,45 @@ namespace Presentation.Controllers
             {
                 WriteDeleteFileService.Delete(imagePath);
                 trip.RemoveImage(imagePath);
+                return Ok();
             }
             catch (KeyNotFoundException ex)
             {
                 return NotFound(ex.Message);
             }
-            catch(Exception)
+            catch (Exception)
             {
                 return BadRequest("Can't Delete image , Try Again Later");
             }
+        }
+
+        [Route("[Action]")]
+        [HttpGet]
+        public IActionResult GetServiceRecommendition(int id)
+        {
+            Trip trip = _unitOfWork.Trips.GetById(id);
+            if (trip == null)
+            {
+                return NotFound("Trip doesn't exist or Already Deleted");
+            }
+            // missing rating 
+            List <Service> services = _unitOfWork._services.Find(predicate:x => x.Location.CityName == trip.Location.CityName).ToList();
+            return Ok();
+        }
+
+        [Route("[Action]")]
+        [HttpPost]
+        public IActionResult AddToDOList([FromHeader] int id, [FromBody] ToDOListDTO toDOListDTO)
+        {
+            Trip trip = _unitOfWork.Trips.GetById(id);
+            if (trip == null)
+            {
+                return NotFound("Trip doesn't exist or Already Deleted");
+            }
+            trip.AddToDoList(toDOListDTO);
             _unitOfWork.Commit();
             return Ok();
         }
     }
+
 }

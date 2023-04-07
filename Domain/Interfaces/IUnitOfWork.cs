@@ -17,6 +17,8 @@ namespace Domain.Interfaces
         IServiceReviewRepository _serviceReviews { get; }      
         ITripRepository Trips { get;}
         public IGenericRepository<Activity> _activities { get; }
+        public IGenericRepository<ToDoList> _toDoLists { get; }
+        public IGenericRepository<ToDoItem> _toDoItems { get; }
         int Commit();
     }
 }

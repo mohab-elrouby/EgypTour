@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(EgyTourContext))]
-    [Migration("20230406220040_m1")]
+    [Migration("20230407122435_m1")]
     partial class m1
     {
         /// <inheritdoc />
@@ -39,8 +39,8 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("End")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Location")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("LocationId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -56,6 +56,8 @@ namespace Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("LocationId");
 
                     b.HasIndex("TripId");
 
@@ -297,8 +299,8 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime?>("End")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Location")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("LocationId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -311,6 +313,8 @@ namespace Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("LocationId");
 
                     b.HasIndex("OwnerId");
 
@@ -490,11 +494,17 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.Activity", b =>
                 {
+                    b.HasOne("Domain.ValueObjects.Location", "Location")
+                        .WithMany()
+                        .HasForeignKey("LocationId");
+
                     b.HasOne("Domain.Entities.Trip", "Trip")
                         .WithMany("Activities")
                         .HasForeignKey("TripId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Location");
 
                     b.Navigation("Trip");
                 });
@@ -652,6 +662,10 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.Trip", b =>
                 {
+                    b.HasOne("Domain.ValueObjects.Location", "Location")
+                        .WithMany()
+                        .HasForeignKey("LocationId");
+
                     b.HasOne("Domain.Entities.Tourist", "Owner")
                         .WithMany("OwnedTrips")
                         .HasForeignKey("OwnerId")
@@ -680,6 +694,8 @@ namespace Infrastructure.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("TripId");
                         });
+
+                    b.Navigation("Location");
 
                     b.Navigation("Owner");
 

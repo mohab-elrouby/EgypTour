@@ -19,7 +19,7 @@ namespace Domain.DTOs
         public DateTime Start { get; set; } = DateTime.MinValue;
 
         public DateTime End { get; set; } = DateTime.MinValue;
-        public string Location { get;  set; } = string.Empty;
+        public Location? Location { get; set; } 
 
         public  List<Note> Notes { get; set; } = new();
 

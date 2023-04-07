@@ -159,13 +159,18 @@ namespace Infrastructure.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Start = table.Column<DateTime>(type: "datetime2", nullable: true),
                     End = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Location = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LocationId = table.Column<int>(type: "int", nullable: true),
                     OwnerId = table.Column<int>(type: "int", nullable: false),
                     BackgroundImage = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Trips", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Trips_Location_LocationId",
+                        column: x => x.LocationId,
+                        principalTable: "Location",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Trips_User_OwnerId",
                         column: x => x.OwnerId,
@@ -315,11 +320,16 @@ namespace Infrastructure.Migrations
                     Start = table.Column<DateTime>(type: "datetime2", nullable: false),
                     End = table.Column<DateTime>(type: "datetime2", nullable: false),
                     TripId = table.Column<int>(type: "int", nullable: false),
-                    Location = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    LocationId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Activity", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Activity_Location_LocationId",
+                        column: x => x.LocationId,
+                        principalTable: "Location",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Activity_Trips_TripId",
                         column: x => x.TripId,
@@ -433,6 +443,11 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Activity_LocationId",
+                table: "Activity",
+                column: "LocationId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Activity_TripId",
                 table: "Activity",
                 column: "TripId");
@@ -513,6 +528,11 @@ namespace Infrastructure.Migrations
                 column: "TripsId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Trips_LocationId",
+                table: "Trips",
+                column: "LocationId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Trips_OwnerId",
                 table: "Trips",
                 column: "OwnerId");
@@ -572,10 +592,10 @@ namespace Infrastructure.Migrations
                 name: "ToDoLists");
 
             migrationBuilder.DropTable(
-                name: "Location");
+                name: "Trips");
 
             migrationBuilder.DropTable(
-                name: "Trips");
+                name: "Location");
 
             migrationBuilder.DropTable(
                 name: "User");

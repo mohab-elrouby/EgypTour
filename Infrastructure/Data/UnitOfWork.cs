@@ -24,10 +24,12 @@ namespace Infrastructure.Data
         
         public ILocalReviewRepository LocalReviews { get; private set; }
         public IGenericRepository<Activity> _activities { get; }
+        public IGenericRepository<ToDoList> _toDoLists { get; }
+        public IGenericRepository<ToDoItem> _toDoItems { get; }
 
         public UnitOfWork(EgyTourContext context , IServiceRepository services ,ILocalReviewRepository localReviews ,
             IGenericRepository<Tourist> tourists ,IServiceReviewRepository serviceReviews, ITripRepository trips,
-            IGenericRepository<Activity> activities)
+            IGenericRepository<Activity> activities , IGenericRepository<ToDoList> toDoLists , IGenericRepository<ToDoItem> toDoItems)
         {
             _context=context;
             Posts = new PostRepository(_context);
@@ -37,6 +39,8 @@ namespace Infrastructure.Data
              Trips = trips;
              LocalReviews = localReviews;
             _activities = activities;
+            _toDoLists = toDoLists;
+            _toDoItems = toDoItems;
 
         }
 
