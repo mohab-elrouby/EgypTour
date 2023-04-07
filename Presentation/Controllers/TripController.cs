@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class TripController : ControllerBase
     {
@@ -95,20 +95,6 @@ namespace Presentation.Controllers
         }
 
         [Route("[Action]")]
-        [HttpGet]
-        public IActionResult GetActivityRecommendition(int id)
-        {
-            Trip trip = _unitOfWork.Trips.GetById(id);
-            if (trip == null)
-            {
-                return NotFound("Trip doesn't exist or Already Deleted");
-            }
-            // missing rating 
-            List <Service> services = _unitOfWork._services.Find(predicate:x => x.Location.CityName == trip.Location.CityName).ToList();
-            return Ok();
-        }
-
-        [Route("[Action]")]
         [HttpPost]
         public IActionResult AddToDOList([FromHeader] int id, [FromBody] ToDOListDTO toDOListDTO)
         {
@@ -122,7 +108,7 @@ namespace Presentation.Controllers
             return Ok();
         }
 
-        [Route("[Action]/{ActivityId}")]
+        [Route("[Action]")]
         [HttpGet]
         public IActionResult GetCityRecommendations(CityName city)
         {
