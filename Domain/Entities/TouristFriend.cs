@@ -13,6 +13,15 @@ namespace Domain.Entities
 
         public int FriendId { get; set; }
         public virtual User Friend { get; set; }
+
+        public TouristFriend(int touristId, int friendId)
+        {
+            TouristId=touristId;
+            FriendId=friendId;
+        }
+        public TouristFriend()
+        {
+        }
     }
 }
 

@@ -23,9 +23,16 @@ namespace Presentation.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            try {
-                return Ok(unitOfWork.Posts.GetAll().Select(p => PostDTO.FromEntity(p)));
-            } catch (Exception ex)
+            try 
+            {
+                var allPosts = unitOfWork.Posts.GetAll().Select(p => PostDTO.FromEntity(p));
+                if(allPosts == null)
+                {
+                    return NotFound();
+                }
+                return Ok(allPosts);
+            }
+            catch (Exception ex)
             {
                 return StatusCode(500, ex.StackTrace);
             }
@@ -33,11 +40,16 @@ namespace Presentation.Controllers
 
 
         [HttpGet("{id:int}", Name = "GetById")]
-        public IActionResult GetById()
+        public IActionResult GetById(int id)
         {
             try
             {
-                return Ok(unitOfWork.Posts.GetAll().Select(p => PostDTO.FromEntity(p)));
+                var post = unitOfWork.Posts.GetById(id);
+                if(post == null)
+                {
+                    return NotFound();
+                }
+                return Ok(PostDTO.FromEntity(post));
             }
             catch (Exception ex)
             {
@@ -85,7 +97,12 @@ namespace Presentation.Controllers
         {
             try
             {
-                return Ok(PostService.GetForFriends(id).Select(p => PostDTO.FromEntity(p)));
+                var friendsPosts = PostService.GetForFriends(id).Select(p => PostDTO.FromEntity(p));
+                if(friendsPosts == null)
+                {
+                    return BadRequest();
+                }
+                return Ok(friendsPosts.ToList());
             } catch (Exception ex)
             {
                 return StatusCode(statusCode: 500, ex.StackTrace);
@@ -105,7 +122,7 @@ namespace Presentation.Controllers
             }
         }
 
-        [HttpPost("{PostId:int}/like", Name ="LikePost")]
+        [HttpPatch("{PostId:int}/like", Name ="LikePost")]
         public IActionResult Like(int PostId, [FromBody] int likerId)
         {
             try
@@ -129,7 +146,7 @@ namespace Presentation.Controllers
             }
         }
 
-        [HttpPost("{PostId:int}/comment", Name = "CommentPost")]
+        [HttpPatch("{PostId:int}/comment", Name = "CommentPost")]
         public IActionResult Comment(int PostId, CommentDTO comment)
         {
             try

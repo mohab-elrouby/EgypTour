@@ -11,6 +11,9 @@ namespace Domain.Interfaces
     {
         IPostRepository Posts { get; }
         IGenericRepository<Tourist> Tourists { get; }
+        IGenericRepository<LocalPerson> LocalPersons { get; }
+        IGenericRepository<TouristFriend> TouristFriends { get; }
+
         int Commit();
     }
 }

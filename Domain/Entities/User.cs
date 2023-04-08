@@ -27,6 +27,29 @@ namespace Domain.Entities
         public virtual List<Messege> SentMessages { get; private set; } = new();
 
         public virtual List<Messege> RecievedMessages { get; private set; } = new();
+        public byte[] PasswordHash { get; private set; }
+        public byte[] PasswordSalt { get; private set; }
 
+        public User(string fname, string lname, string email, string usernameName, string password, string profilePictureUrl, string city, string phone)
+        {
+            Fname=fname;
+            Lname=lname;
+            Email=email;
+            UsernameName=usernameName;
+            Password=password;
+            ProfilePictureUrl=profilePictureUrl;
+            City=city;
+            Phone=phone;
+        }
+
+        public User()
+        {
+        }
+
+        public void EncryptPassword(byte[] passwordHash, byte[] passwordSalt)
+        {
+            this.PasswordHash= passwordHash;
+            this.PasswordSalt= passwordSalt;
+        }
     }
 }
