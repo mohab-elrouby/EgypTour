@@ -24,7 +24,7 @@ namespace Presentation.Controllers
         {
             try
             {
-                var allTourists = unitOfWork.Tourists.GetAll().ToList();
+                var allTourists = unitOfWork._tourists.GetAll().ToList();
                 if(allTourists != null) 
                 {
                     return Ok(allTourists);
@@ -42,7 +42,7 @@ namespace Presentation.Controllers
         {
             try
             {
-                var user = unitOfWork.Tourists.GetById(id);
+                var user = unitOfWork._tourists.GetById(id);
                 if (user != null)
                 {
                     return Ok(user);
@@ -68,7 +68,7 @@ namespace Presentation.Controllers
             newUser.EncryptPassword(passwordHash, passwordSalt);
             try
             {
-                unitOfWork.Tourists.Add(newUser);
+                unitOfWork._tourists.Add(newUser);
                 unitOfWork.Commit();
                 string url = Url.Link("GetByTouristId", new { id = newUser.Id });
                 return Created(url, newUser);
@@ -117,8 +117,8 @@ namespace Presentation.Controllers
         {
             try
             {
-                var user = unitOfWork.Tourists.GetById(userId);
-                var friend = unitOfWork.Tourists.GetById(friendId);
+                var user = unitOfWork._tourists.GetById(userId);
+                var friend = unitOfWork._tourists.GetById(friendId);
                 if (user == null || friend == null)
                 {
                     return NotFound();
@@ -138,14 +138,14 @@ namespace Presentation.Controllers
         {
             try
             {
-                var user = unitOfWork.Tourists.GetById(userId);
-                var friend = unitOfWork.Tourists.GetById(friendId);
-                if (user == null || friend == null)
+                var user = unitOfWork._tourists.GetById(userId);
+                var touristFriend = unitOfWork.TouristFriends.Find(tf => (tf.TouristId == userId && tf.FriendId == friendId));
+                if (touristFriend == null)
                 {
                     return NotFound();
                 }
-                user.DeleteFriend(friend);
-                unitOfWork.Tourists.Update(user);
+                user.DeleteFriend(touristFriend.FirstOrDefault());
+                unitOfWork._tourists.Update(user);
                 unitOfWork.Commit();
                 return Ok();
             }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain.DTO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,11 +11,12 @@ namespace Domain.Entities
     {
         public int PersonReviewdId { get; private set; }
         public virtual LocalPerson PersonReviewd { get; private set; }
-        public LocalReview(string content, float rating, Tourist writer , LocalPerson local) : base(content, rating, writer)
+        public LocalReview(float rating, Tourist writer, string? content) : base(rating, writer, content)
         {
-            PersonReviewd = local;
         }
         private LocalReview() { }
 
     }
+
+   
 }

@@ -9,5 +9,10 @@ namespace Domain.ValueObjects
     public class Image
     {
         public string Url { get;private set; }
+        public Image(string url)
+        {
+            if(url == null) throw new ArgumentNullException("url");
+            this.Url = url;
+        }
     }
 }

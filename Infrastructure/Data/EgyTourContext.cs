@@ -7,6 +7,11 @@ using System.Threading.Tasks;
 using Domain.Entities;
 using System.Reflection.Metadata;
 using Domain.ValueObjects;
+using Domain.Enums;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System.Net;
+using Domain.Services;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Infrastructure.Data
 {
@@ -31,29 +36,31 @@ namespace Infrastructure.Data
         public DbSet<Note> Notes { get; set; }
         public DbSet<TouristFriend> touristFriends { get; set;}
 
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //modelBuilder.Entity<LocalReview>().ToTable("LoacalReviews");
-            //modelBuilder.Entity<ServiceReview>().ToTable("ServiceReviews");
+         
+
             modelBuilder.Entity<TouristFriend>().HasKey(t => new { t.FriendId, t.TouristId });
             modelBuilder.Entity<Post>()
                 .HasOne(a => a.Writer)
                 .WithMany(b => b.WrittenPosts);
 
+
             modelBuilder.Entity<Post>()
                 .HasMany(a => a.Likers)
                 .WithMany(b => b.LikedPosts);
 
+            modelBuilder.Entity<Post>().OwnsMany(p => p.Pictures);
             modelBuilder.Entity<Messege>()
                 .HasOne(a => a.Sender)
                 .WithMany(b => b.SentMessages)
-                .OnDelete(DeleteBehavior.Restrict) ;
+                .OnDelete(DeleteBehavior.Restrict);
                 
 
             modelBuilder.Entity<Messege>()
                .HasOne(a => a.Reciever)
-               .WithMany(b => b.RecievedMessages)
-            ;
+               .WithMany(b => b.RecievedMessages);
 
             modelBuilder.Entity<LocalReview>()
                 .HasOne(a => a.Reviwer)
@@ -74,20 +81,35 @@ namespace Infrastructure.Data
             modelBuilder.Entity<Note>().Property<int>("Id");
             modelBuilder.Entity<Note>().HasKey("Id");
 
-            modelBuilder.Entity<Image>().Property<int>("Id");
-            modelBuilder.Entity<Image>().HasKey("Id");
 
-            modelBuilder.Entity<Post>()
-             .HasMany(a => a.Pictures)
-             .WithOne();
+
+
+
+            modelBuilder.Entity<Location>().Property<int>("Id");
+            modelBuilder.Entity<Location>().HasKey("Id");
+
+            modelBuilder.Entity<Location>().ToTable("Location");
+
 
             modelBuilder.Entity<Activity>()
                 .HasMany(a => a.Notes)
                 .WithOne();
-            
 
 
+            modelBuilder.Entity<Trip>()
+                .HasOne(a => a.Owner)
+                .WithMany(b=>b.OwnedTrips);
+
+            modelBuilder.Entity<Trip>().OwnsMany(i => i.images);
+
+            modelBuilder.Entity<Service>().OwnsMany(s => s.Images);
+
+            modelBuilder.HasDbFunction(typeof(LevenshteinDistance).GetMethod(nameof(LevenshteinDistance.Calculate)))
+            .HasName("LevenshteinDistance");
+
+           
+             
+               
         }
-
     }
 }

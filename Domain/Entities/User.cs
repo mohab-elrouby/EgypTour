@@ -14,13 +14,12 @@ namespace Domain.Entities
         public string Lname { get; private set; }
         public string Email { get; private set; }
 
-        public string UsernameName { get; private set; }
+        public string UserName { get; private set; }
 
         public string  Password { get; private set; }
 
         public string ProfilePictureUrl { get; private set; }
 
-        public string City { get; private set; }
 
         public string Phone { get; private set; }
 
@@ -30,15 +29,14 @@ namespace Domain.Entities
         public byte[] PasswordHash { get; private set; }
         public byte[] PasswordSalt { get; private set; }
 
-        public User(string fname, string lname, string email, string usernameName, string password, string profilePictureUrl, string city, string phone)
+        public User(string fname, string lname, string email, string usernameName, string password, string profilePictureUrl, string phone)
         {
             Fname=fname;
             Lname=lname;
             Email=email;
-            UsernameName=usernameName;
+            UserName=usernameName;
             Password=password;
             ProfilePictureUrl=profilePictureUrl;
-            City=city;
             Phone=phone;
         }
 

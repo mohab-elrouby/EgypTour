@@ -133,7 +133,7 @@ namespace Presentation.Controllers
             try
             {
                 var post = unitOfWork.Posts.GetById(PostId); 
-                var liker = unitOfWork.Tourists.GetById(likerId);
+                var liker = unitOfWork._tourists.GetById(likerId);
                 if (post!=null && liker !=null)
                 {
                     post.AddLiker(liker);
@@ -157,7 +157,7 @@ namespace Presentation.Controllers
             try
             {
                 var post = unitOfWork.Posts.GetById(PostId);
-                var liker = unitOfWork.Tourists.GetById(likerId);
+                var liker = unitOfWork._tourists.GetById(likerId);
                 if (post!=null && liker !=null)
                 {
                     post.RemoveLiker(liker);
@@ -225,6 +225,5 @@ namespace Presentation.Controllers
                 return StatusCode(statusCode: 500, ex.StackTrace);
             }
         }
-
     }
 }

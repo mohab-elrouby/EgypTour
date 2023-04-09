@@ -1,4 +1,4 @@
-﻿using Domain.Entities;
+using Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,10 +7,20 @@ using System.Threading.Tasks;
 
 namespace Domain.Interfaces
 {
-    public interface IUnitOfWork:IDisposable
+    public interface IUnitOfWork : IDisposable
     {
         IPostRepository Posts { get; }
-        IGenericRepository<Tourist> Tourists { get; }
+
+        public IGenericRepository<Tourist> _tourists { get;}
+        IServiceRepository _services {get;}
+        ILocalReviewRepository LocalReviews { get; }
+        IServiceReviewRepository _serviceReviews { get; }      
+        ITripRepository Trips { get;}
+        public IGenericRepository<Activity> _activities { get; }
+        public IGenericRepository<ToDoList> _toDoLists { get; }
+        public IGenericRepository<ToDoItem> _toDoItems { get; }
+
+        public IGenericRepository<LocalPerson> _localPersons { get; }
         IGenericRepository<LocalPerson> LocalPersons { get; }
         IGenericRepository<TouristFriend> TouristFriends { get; }
 

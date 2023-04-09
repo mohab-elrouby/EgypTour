@@ -41,7 +41,7 @@ namespace Domain.Services
 
         public string Login(string username, string password)
         {
-            var user = touristRepository.Find(t => t.UsernameName == username).FirstOrDefault();
+            var user = touristRepository.Find(t => t.UserName == username).FirstOrDefault();
             
             if (user == null)
             {

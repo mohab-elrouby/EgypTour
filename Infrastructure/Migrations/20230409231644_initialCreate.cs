@@ -6,43 +6,23 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class initialCreate2 : Migration
+    public partial class initialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Services",
+                name: "Location",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    WorkingHoursStart = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    WorkingHoursEnd = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Adress = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    CityName = table.Column<int>(type: "int", nullable: false),
+                    Country = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Services", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Trips",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Start = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    End = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Location = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Trips", x => x.Id);
+                    table.PrimaryKey("PK_Location", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -54,66 +34,41 @@ namespace Infrastructure.Migrations
                     Fname = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Lname = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UsernameName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ProfilePictureUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    City = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PasswordHash = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    PasswordSalt = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
                     Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TouristId = table.Column<int>(type: "int", nullable: true)
+                    City = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_User", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_User_User_TouristId",
-                        column: x => x.TouristId,
-                        principalTable: "User",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "Activity",
+                name: "Services",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Tag = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Documents = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Start = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    End = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    TripId = table.Column<int>(type: "int", nullable: false),
-                    Location = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    LocationId = table.Column<int>(type: "int", nullable: false),
+                    WorkingHoursStart = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    WorkingHoursEnd = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ProfileImage = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Activity", x => x.Id);
+                    table.PrimaryKey("PK_Services", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Activity_Trips_TripId",
-                        column: x => x.TripId,
-                        principalTable: "Trips",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ToDoLists",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TripId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ToDoLists", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ToDoLists_Trips_TripId",
-                        column: x => x.TripId,
-                        principalTable: "Trips",
+                        name: "FK_Services_Location_LocationId",
+                        column: x => x.LocationId,
+                        principalTable: "Location",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -168,14 +123,68 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "touristFriends",
+                columns: table => new
+                {
+                    TouristId = table.Column<int>(type: "int", nullable: false),
+                    FriendId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_touristFriends", x => new { x.FriendId, x.TouristId });
+                    table.ForeignKey(
+                        name: "FK_touristFriends_User_FriendId",
+                        column: x => x.FriendId,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_touristFriends_User_TouristId",
+                        column: x => x.TouristId,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Trips",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Start = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    End = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LocationId = table.Column<int>(type: "int", nullable: true),
+                    OwnerId = table.Column<int>(type: "int", nullable: false),
+                    BackgroundImage = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Trips", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Trips_Location_LocationId",
+                        column: x => x.LocationId,
+                        principalTable: "Location",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Trips_User_OwnerId",
+                        column: x => x.OwnerId,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Reviews",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Rating = table.Column<float>(type: "real", nullable: false),
                     ReviwerId = table.Column<int>(type: "int", nullable: false),
+                    Time = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PersonReviewdId = table.Column<int>(type: "int", nullable: true),
                     ServiceReviewdId = table.Column<int>(type: "int", nullable: true)
@@ -204,39 +213,157 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "touristFriends",
+                name: "Services_Images",
                 columns: table => new
                 {
-                    TouristId = table.Column<int>(type: "int", nullable: false),
-                    FriendId = table.Column<int>(type: "int", nullable: false)
+                    ServiceId = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Url = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_touristFriends", x => new { x.FriendId, x.TouristId });
+                    table.PrimaryKey("PK_Services_Images", x => new { x.ServiceId, x.Id });
                     table.ForeignKey(
-                        name: "FK_touristFriends_User_FriendId",
-                        column: x => x.FriendId,
-                        principalTable: "User",
+                        name: "FK_Services_Images_Services_ServiceId",
+                        column: x => x.ServiceId,
+                        principalTable: "Services",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Comments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    PostId = table.Column<int>(type: "int", nullable: false),
+                    WriterId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Comments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Comments_Posts_PostId",
+                        column: x => x.PostId,
+                        principalTable: "Posts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_touristFriends_User_TouristId",
-                        column: x => x.TouristId,
+                        name: "FK_Comments_User_WriterId",
+                        column: x => x.WriterId,
                         principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
+                name: "Posts_Pictures",
+                columns: table => new
+                {
+                    PostId = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Url = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Posts_Pictures", x => new { x.PostId, x.Id });
+                    table.ForeignKey(
+                        name: "FK_Posts_Pictures_Posts_PostId",
+                        column: x => x.PostId,
+                        principalTable: "Posts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PostTourist",
+                columns: table => new
+                {
+                    LikedPostsId = table.Column<int>(type: "int", nullable: false),
+                    LikersId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PostTourist", x => new { x.LikedPostsId, x.LikersId });
+                    table.ForeignKey(
+                        name: "FK_PostTourist_Posts_LikedPostsId",
+                        column: x => x.LikedPostsId,
+                        principalTable: "Posts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PostTourist_User_LikersId",
+                        column: x => x.LikersId,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Activity",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Tag = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Start = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    End = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TripId = table.Column<int>(type: "int", nullable: false),
+                    LocationId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Activity", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Activity_Location_LocationId",
+                        column: x => x.LocationId,
+                        principalTable: "Location",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Activity_Trips_TripId",
+                        column: x => x.TripId,
+                        principalTable: "Trips",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ToDoLists",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TripId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ToDoLists", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ToDoLists_Trips_TripId",
+                        column: x => x.TripId,
+                        principalTable: "Trips",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "TouristTrip",
                 columns: table => new
                 {
-                    TouristsId = table.Column<int>(type: "int", nullable: false),
+                    TripViewersId = table.Column<int>(type: "int", nullable: false),
                     TripsId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TouristTrip", x => new { x.TouristsId, x.TripsId });
+                    table.PrimaryKey("PK_TouristTrip", x => new { x.TripViewersId, x.TripsId });
                     table.ForeignKey(
                         name: "FK_TouristTrip_Trips_TripsId",
                         column: x => x.TripsId,
@@ -244,9 +371,29 @@ namespace Infrastructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_TouristTrip_User_TouristsId",
-                        column: x => x.TouristsId,
+                        name: "FK_TouristTrip_User_TripViewersId",
+                        column: x => x.TripViewersId,
                         principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Trips_images",
+                columns: table => new
+                {
+                    TripId = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Url = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Trips_images", x => new { x.TripId, x.Id });
+                    table.ForeignKey(
+                        name: "FK_Trips_images_Trips_TripId",
+                        column: x => x.TripId,
+                        principalTable: "Trips",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -291,76 +438,10 @@ namespace Infrastructure.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "Comments",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    PostId = table.Column<int>(type: "int", nullable: false),
-                    WriterId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Comments", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Comments_Posts_PostId",
-                        column: x => x.PostId,
-                        principalTable: "Posts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Comments_User_WriterId",
-                        column: x => x.WriterId,
-                        principalTable: "User",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Image",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Url = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PostId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Image", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Image_Posts_PostId",
-                        column: x => x.PostId,
-                        principalTable: "Posts",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "PostTourist",
-                columns: table => new
-                {
-                    LikedPostsId = table.Column<int>(type: "int", nullable: false),
-                    LikersId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PostTourist", x => new { x.LikedPostsId, x.LikersId });
-                    table.ForeignKey(
-                        name: "FK_PostTourist_Posts_LikedPostsId",
-                        column: x => x.LikedPostsId,
-                        principalTable: "Posts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_PostTourist_User_LikersId",
-                        column: x => x.LikersId,
-                        principalTable: "User",
-                        principalColumn: "Id", 
-                        onDelete: ReferentialAction.NoAction);
-                });
+            migrationBuilder.CreateIndex(
+                name: "IX_Activity_LocationId",
+                table: "Activity",
+                column: "LocationId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Activity_TripId",
@@ -376,11 +457,6 @@ namespace Infrastructure.Migrations
                 name: "IX_Comments_WriterId",
                 table: "Comments",
                 column: "WriterId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Image_PostId",
-                table: "Image",
-                column: "PostId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Messeges_RecieverId",
@@ -423,6 +499,11 @@ namespace Infrastructure.Migrations
                 column: "ServiceReviewdId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Services_LocationId",
+                table: "Services",
+                column: "LocationId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ToDoItems_ToDoListId",
                 table: "ToDoItems",
                 column: "ToDoListId");
@@ -443,9 +524,14 @@ namespace Infrastructure.Migrations
                 column: "TripsId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_User_TouristId",
-                table: "User",
-                column: "TouristId");
+                name: "IX_Trips_LocationId",
+                table: "Trips",
+                column: "LocationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Trips_OwnerId",
+                table: "Trips",
+                column: "OwnerId");
         }
 
         /// <inheritdoc />
@@ -455,19 +541,22 @@ namespace Infrastructure.Migrations
                 name: "Comments");
 
             migrationBuilder.DropTable(
-                name: "Image");
-
-            migrationBuilder.DropTable(
                 name: "Messeges");
 
             migrationBuilder.DropTable(
                 name: "Notes");
 
             migrationBuilder.DropTable(
+                name: "Posts_Pictures");
+
+            migrationBuilder.DropTable(
                 name: "PostTourist");
 
             migrationBuilder.DropTable(
                 name: "Reviews");
+
+            migrationBuilder.DropTable(
+                name: "Services_Images");
 
             migrationBuilder.DropTable(
                 name: "ToDoItems");
@@ -477,6 +566,9 @@ namespace Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "TouristTrip");
+
+            migrationBuilder.DropTable(
+                name: "Trips_images");
 
             migrationBuilder.DropTable(
                 name: "Activity");
@@ -491,10 +583,13 @@ namespace Infrastructure.Migrations
                 name: "ToDoLists");
 
             migrationBuilder.DropTable(
-                name: "User");
+                name: "Trips");
 
             migrationBuilder.DropTable(
-                name: "Trips");
+                name: "Location");
+
+            migrationBuilder.DropTable(
+                name: "User");
         }
     }
 }

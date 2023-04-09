@@ -23,7 +23,7 @@ namespace Infrastructure.Services
         {
             List<Claim> claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, user.UsernameName),
+                new Claim(ClaimTypes.Name, user.UserName),
                 new Claim(ClaimTypes.Role, user.GetType().ToString()),
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
             };

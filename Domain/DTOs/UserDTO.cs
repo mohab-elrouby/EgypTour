@@ -24,14 +24,13 @@ namespace Domain.DTOs
             return new UserDTO()
             {
                 Id = user.Id,
-                City= user.City,
                 Phone= user.Phone,
                 Email= user.Email,
                 Fname = user.Fname,
                 Lname = user.Lname, 
                 Password= user.Password,
                 ProfilePictureUrl= user.ProfilePictureUrl,
-                UsernameName = user.UsernameName
+                UsernameName = user.UserName
             };
         }
 

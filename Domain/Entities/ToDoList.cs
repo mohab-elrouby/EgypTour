@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain.DTOs;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,9 +17,19 @@ namespace Domain.Entities
         public virtual Trip Trip { get; private set;}
         public ToDoList(string name)
         {
-            Name = name;
+            Name = (name == null) ? string.Empty : name;
         }
         private ToDoList() { }
 
+        public void Update(ToDOListDTO toDOListDTO)
+        {
+            Name = toDOListDTO.Name;
+        }
+
+        public void AddToDoItem(ToDoItemDTO toDOItemDTO)
+        {
+            ToDoItem toDoItem = new ToDoItem(toDOItemDTO.Name , toDOItemDTO.Status);
+            ToDoItems.Add(toDoItem);
+        }
     }
 }
