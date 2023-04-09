@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class ToDoListController : ControllerBase
     {
@@ -23,7 +23,7 @@ namespace Presentation.Controllers
             ToDoList toDoList = _unitOfWork._toDoLists.GetById(id);
             if (toDoList == null)
             {
-                return NotFound("Trip doesn't exist or Already Deleted");
+                return NotFound("ToDoList doesn't exist or Already Deleted");
             }
             toDoList.Update(toDOListDTO);
             _unitOfWork._toDoLists.Update(toDoList);
@@ -38,11 +38,24 @@ namespace Presentation.Controllers
             ToDoList toDoList = _unitOfWork._toDoLists.GetById(id);
             if (toDoList == null)
             {
-                return NotFound("Trip doesn't exist or Already Deleted");
+                return NotFound("ToDoList doesn't exist or Already Deleted");
             }
             _unitOfWork._toDoLists.Delete(id);
             _unitOfWork.Commit();
             return Ok();
         }
+        [Route("[Action]")]
+        [HttpPost]
+        public IActionResult AddToDoItem(int id , [FromBody]ToDoItemDTO toDoItemDTO)
+        {
+            ToDoList toDoList = _unitOfWork._toDoLists.GetById(id);
+            if (toDoList == null)
+            {
+                return NotFound("ToDoList doesn't exist or Already Deleted");
+            }
+            toDoList.AddToDoItem(toDoItemDTO);
+            return Ok();
+        }
+
     }
 }

@@ -95,47 +95,6 @@ namespace Presentation.Controllers
             _unitOfWork.Commit();
             return Ok();
         }
-        [Route("[Action]/{tripId}")]
-        [HttpPost]
-        public IActionResult AddTripImage([FromForm] IFormFile file, int tripId)
-        {
-            Trip trip = _unitOfWork.Trips.GetById(tripId);
-            if (trip == null)
-            {
-                return NotFound("Trip doesn't exist");
-            }
-            // Create a unique path
-            string uniqueName = WriteDeleteFileService.Write(file, "wwwroot/trip-images/");
-            string imageUrl = $"/trip-images/{uniqueName}";
-            trip.AddImage(imageUrl);
-            _unitOfWork.Commit();
-            return Ok("image uploaded successfually");                     
-        }
-
-        [HttpPatch("{tripId}/[Action]")]
-        public IActionResult DeleteImage(int tripId, string imagePath)
-        {
-            Trip trip = _unitOfWork.Trips.Find(predicate: i => i.Id == tripId, includeProperties: "images").FirstOrDefault();
-            if (trip == null)
-            {
-                return NotFound("Trip doesn't exist");
-            }
-            try
-            {
-                WriteDeleteFileService.Delete(imagePath);
-                trip.RemoveImage(imagePath);
-                return Ok();
-            }
-            catch (KeyNotFoundException ex)
-            {
-                return NotFound(ex.Message);
-            }
-            catch (Exception)
-            {
-                return BadRequest("Can't Delete image , Try Again Later");
-            }
-        }
-
 
         [Route("[Action]")]
         [HttpPost]

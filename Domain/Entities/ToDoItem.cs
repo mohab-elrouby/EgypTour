@@ -1,4 +1,5 @@
-﻿using Domain.Enums;
+﻿using Domain.DTOs;
+using Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,9 +17,23 @@ namespace Domain.Entities
         public int ToDoListId { get; private set; }
         public virtual ToDoList ToDoList { get; private set; }
         public ToDoItemStatus Status { get; private set; }
-        public ToDoItem(string name)
+
+        public ToDoItem(string name, ToDoItemStatus status)
         {
             Name = (name == null) ? string.Empty : name;
-        }              
+            Status = status;
+        }
+        public void UpdateName(string name)
+        {
+            Name =name;
+        }
+        public void MarkDone()
+        {
+            Status=ToDoItemStatus.Checked;
+        }
+        public void MarkNotDone()
+        {
+            Status=ToDoItemStatus.NotChecked;
+        }
     }
 }

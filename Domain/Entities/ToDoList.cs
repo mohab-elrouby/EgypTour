@@ -26,5 +26,10 @@ namespace Domain.Entities
             Name = toDOListDTO.Name;
         }
 
+        public void AddToDoItem(ToDoItemDTO toDOItemDTO)
+        {
+            ToDoItem toDoItem = new ToDoItem(toDOItemDTO.Name , toDOItemDTO.Status);
+            ToDoItems.Add(toDoItem);
+        }
     }
 }
