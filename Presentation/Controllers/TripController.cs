@@ -5,6 +5,7 @@ using Domain.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Services;
+using System.Collections.Generic;
 
 namespace Presentation.Controllers
 {
@@ -150,14 +151,14 @@ namespace Presentation.Controllers
             return Ok();
         }
 
-        [Route("[Action]/{ActivityId}")]
+        [Route("[Action]")]
         [HttpGet]
         public IActionResult GetCityRecommendations(CityName city)
         {
-            List<ServiceRecommendationDTO> serviceRecommendations = _unitOfWork._services.Find(predicate: x => x.Location.CityName == city, orderBy: a => a.OrderBy(b => b.Reviews.Average(c => c.Rating)))
+            List<ServiceRecommendationDTO> serviceRecommendations = _unitOfWork._services.Find(predicate: x => x.Location.CityName == city,includeProperties:"Reviews",orderBy: a => a.OrderByDescending(b => b.Reviews.Average(c => c.Rating)))
                 .Select(i => ServiceRecommendationDTO.FromService(i, i.Reviews.Average(a => a.Rating))).ToList();
 
-            List<LocalPersonRecommendationDTO> localPeopleRecommendations = _unitOfWork._localPersons.Find(predicate: x => x.City == city, orderBy: a => a.OrderBy(b => b.Reviews.Average(c => c.Rating)))
+            List<LocalPersonRecommendationDTO> localPeopleRecommendations = _unitOfWork._localPersons.Find(predicate: x => x.City == city,includeProperties:"Reviews", orderBy: a => a.OrderByDescending(b => b.Reviews.Average(c => c.Rating)))
                 .Select(i => LocalPersonRecommendationDTO.FromLocalPerson(i, i.Reviews.Average(a => a.Rating))).ToList();
 
             RecommendationsDto recommendationsDto = new RecommendationsDto()
