@@ -100,7 +100,7 @@ namespace Presentation.Controllers
                 var friendsPosts = PostService.GetForFriends(id).Select(p => PostDTO.FromEntity(p));
                 if(friendsPosts == null)
                 {
-                    return BadRequest();
+                    return NotFound();
                 }
                 return Ok(friendsPosts.ToList());
             } catch (Exception ex)
@@ -114,7 +114,12 @@ namespace Presentation.Controllers
         {
             try
             {
-                return Ok(unitOfWork.Posts.Find(p => p.WriterId == id));
+                var posts = unitOfWork.Posts.Find(p => p.WriterId == id);
+                if(posts == null)
+                {
+                    return BadRequest();
+                }
+                return Ok(posts.ToList());
             }
             catch (Exception ex)
             {
@@ -146,6 +151,31 @@ namespace Presentation.Controllers
             }
         }
 
+        [HttpPatch("{PostId:int}/unlike", Name = "UnLikePost")]
+        public IActionResult UnLike(int PostId, [FromBody] int likerId)
+        {
+            try
+            {
+                var post = unitOfWork.Posts.GetById(PostId);
+                var liker = unitOfWork.Tourists.GetById(likerId);
+                if (post!=null && liker !=null)
+                {
+                    post.RemoveLiker(liker);
+                    unitOfWork.Posts.Update(post);
+                    unitOfWork.Commit();
+                    return Ok();
+                }
+                else
+                {
+                    return BadRequest();
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(statusCode: 500, ex.StackTrace);
+            }
+        }
+
         [HttpPatch("{PostId:int}/comment", Name = "CommentPost")]
         public IActionResult Comment(int PostId, CommentDTO comment)
         {
@@ -156,6 +186,31 @@ namespace Presentation.Controllers
                 {
                     var cmnt = CommentDTO.ToEntity(comment);
                     post.AddComment(cmnt);
+                    unitOfWork.Posts.Update(post);
+                    unitOfWork.Commit();
+                    return Ok();
+                }
+                else
+                {
+                    return BadRequest();
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(statusCode: 500, ex.StackTrace);
+            }
+        }
+
+        [HttpPatch("{PostId:int}/uncomment", Name = "UnCommentPost")]
+        public IActionResult UnComment(int PostId, CommentDTO comment)
+        {
+            try
+            {
+                var post = unitOfWork.Posts.GetById(PostId);
+                if (post!=null)
+                {
+                    var cmnt = CommentDTO.ToEntity(comment);
+                    post.RemoveComment(cmnt);
                     unitOfWork.Posts.Update(post);
                     unitOfWork.Commit();
                     return Ok();

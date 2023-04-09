@@ -102,7 +102,7 @@ namespace Presentation.Controllers
                 // relationship this query needs to check if the id exists in either columns.
                 if (freinds == null)
                 {
-                    return BadRequest();
+                    return NotFound();
                 }
                 return Ok(freinds.ToList());
             }
@@ -112,7 +112,7 @@ namespace Presentation.Controllers
             }
         }
 
-        [HttpPatch]
+        [HttpPatch("addFriend")]
         public IActionResult AddFriend(int userId, int friendId)
         {
             try
@@ -123,6 +123,30 @@ namespace Presentation.Controllers
                 {
                     return NotFound();
                 }
+                unitOfWork.TouristFriends.Add(new TouristFriend(userId, friendId));
+                unitOfWork.Commit();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.StackTrace);
+            }
+        }
+
+        [HttpPatch("removeFriend")]
+        public IActionResult RemoveFriend(int userId, int friendId)
+        {
+            try
+            {
+                var user = unitOfWork.Tourists.GetById(userId);
+                var friend = unitOfWork.Tourists.GetById(friendId);
+                if (user == null || friend == null)
+                {
+                    return NotFound();
+                }
+                user.DeleteFriend(friend);
+                unitOfWork.Tourists.Update(user);
+                unitOfWork.Commit();
                 return Ok();
             }
             catch (Exception ex)
