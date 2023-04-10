@@ -16,7 +16,6 @@ namespace Presentation.Controllers
         public ServiceReviewController(IUnitOfWork unitOfWork)
         {
             _unitOfWork=unitOfWork;
-
         }
 
         [Route("[Action]/{id}")]
@@ -26,7 +25,7 @@ namespace Presentation.Controllers
             try
             {
                 List<ServiceReviewDTO> serviceReviews = _unitOfWork._serviceReviews.GetByServiceId(id, skip, take)
-                    .Select(review => ServiceReviewDTO.fromServiceReview(review)).ToList();
+                    .Select(review => ServiceReviewDTO.FromServiceReview(review)).ToList();
                 if (serviceReviews.Count()== 0)
                 {
                     return new GenericResponse<List<ServiceReviewDTO>>()
@@ -68,7 +67,7 @@ namespace Presentation.Controllers
             try
             {
                 List<ServiceReviewDTO> serviceReviews = _unitOfWork._serviceReviews.GetByTouristId(id, skip, take)
-                    .Select(review => ServiceReviewDTO.fromServiceReview(review)).ToList();
+                    .Select(review => ServiceReviewDTO.FromServiceReview(review)).ToList();
                 if (serviceReviews.Count()== 0)
                 {
                     return new GenericResponse<List<ServiceReviewDTO>>()

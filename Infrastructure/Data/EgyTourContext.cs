@@ -78,22 +78,12 @@ namespace Infrastructure.Data
 
            
 
-            modelBuilder.Entity<Note>().Property<int>("Id");
-            modelBuilder.Entity<Note>().HasKey("Id");
-
-
-
-
-
             modelBuilder.Entity<Location>().Property<int>("Id");
             modelBuilder.Entity<Location>().HasKey("Id");
 
             modelBuilder.Entity<Location>().ToTable("Location");
 
-
-            modelBuilder.Entity<Activity>()
-                .HasMany(a => a.Notes)
-                .WithOne();
+            modelBuilder.Entity<Activity>().OwnsMany(i => i.Notes);
 
 
             modelBuilder.Entity<Trip>()

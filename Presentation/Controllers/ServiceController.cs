@@ -7,6 +7,7 @@ using Domain.Services;
 using Domain.ValueObjects;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Presentation.Services;
 
 namespace Presentation.Controllers
 {
@@ -22,12 +23,13 @@ namespace Presentation.Controllers
             _addServiceReviewUseCase= addServiceReviewUseCase;
         }
 
-        [HttpGet("{id}")]
+        [Route("[Action]/{id}")]
+        [HttpGet]
 
         public IActionResult GetById(int id)
         {
 
-            Service service = _unitOfWork._services.GetById(id);
+            Service service = _unitOfWork._services.Find(i=>i.Id==id,includeProperties: "Reviews.Reviwer,Location").FirstOrDefault();
             if(service == null)
             {
                 return NotFound("Service Doesn't Exist");
@@ -36,8 +38,19 @@ namespace Presentation.Controllers
             return Ok(serviceDTO);
         }
 
+        [Route("[Action]/{city}")]
+        [HttpGet]
+        public IActionResult GetAllByCity(CityName city,int skip=0,int take=8)
+        {
+            List<ServiceSearchDTO> services = _unitOfWork._services.Find(predicate: i => i.Location.CityName == city,includeProperties: "Reviews.Reviwer,Location",
+                orderBy:i=>i.OrderByDescending(a=>a.Reviews.Average(b=>b.Rating)), skip : skip, take : take).
+                Select(i=>ServiceSearchDTO.FromService(service:i,avgRating:i.Reviews.Average(a=>a.Rating))).ToList();
 
-        [Route("/[Action]")]
+            return Ok(services);
+        }
+
+
+        [Route("[Action]")]
         [HttpPost]
         public IActionResult Update([FromHeader] int id ,[FromBody] ServiceDTO serviceDto)
         {
@@ -51,7 +64,7 @@ namespace Presentation.Controllers
             }
             return NotFound("Service Doesn't exist");
         }
-        [Route("/Create")]
+        [Route("[Action]")]
         [HttpPut]
         public async Task<IActionResult> Create(ServiceDTO serviceDto)
         {
@@ -82,7 +95,7 @@ namespace Presentation.Controllers
             _unitOfWork.Commit();
             return Ok();
         }
-        [Route("/[Action]")]
+        [Route("[Action]")]
         [HttpGet]
         public IActionResult Search(string searchString, CityName? city=null, int skip=0 ,int take=8,float rating = 0)
         {
@@ -104,7 +117,7 @@ namespace Presentation.Controllers
                 return BadRequest("you must specify a city");
             }                
         }
-        [Route("/[Action]")]
+        [Route("[Action]")]
         [HttpPost]
         public IActionResult AddReview([FromHeader]int userId,[FromBody]ReviewDTO review,[FromHeader]int serviceId)
         {
@@ -116,6 +129,74 @@ namespace Presentation.Controllers
             catch (ArgumentException ex)
             {
                 return StatusCode(409,ex.Message);      
+            }
+        }
+
+        [Route("[Action]")]
+        [HttpPost]
+        public IActionResult UpdateProfileImage([FromForm] IFormFile file, int serviceId)
+        {
+            Service service = _unitOfWork._services.GetById(serviceId);
+            if (service == null)
+            {
+                return NotFound("Service doesn't exist");
+            }
+            if(service.ProfileImage != "")
+            {
+                try
+                {
+                    WriteDeleteFileService.Delete(service.ProfileImage);
+                }
+                catch(Exception ex)
+                {
+                    return BadRequest(ex.Message);
+                }       
+            }
+            string uniqueName = WriteDeleteFileService.Write(file, "wwwroot/service-images/");
+            string fullImagePath = $"/service-images/{uniqueName}";
+            service.UpdateProfileImage(fullImagePath);
+            _unitOfWork.Commit();
+            return Ok();
+        }
+        [Route("[Action]")]
+        [HttpPost]
+        public IActionResult AddServiceImage([FromForm] IFormFile file, int serviceId)
+        {
+            Service service = _unitOfWork._services.GetById(serviceId);
+            if (service == null)
+            {
+                return NotFound("Service doesn't exist");
+            }
+
+            string uniqueName = WriteDeleteFileService.Write(file, "wwwroot/service-images/");
+            string imageUrl = $"/service-images/{uniqueName}";
+            service.AddImage(imageUrl);
+            _unitOfWork.Commit();
+            return Ok("image uploaded successfually");
+        }
+
+        [HttpPatch("[Action]")]
+        public IActionResult DeleteImage(int serviceId, string imagePath)
+        {
+            Service service = _unitOfWork._services.Find(predicate: i => i.Id == serviceId, includeProperties: "Images").FirstOrDefault();
+            if (service == null)
+            {
+                return NotFound("Trip doesn't exist");
+            }
+            try
+            {
+                WriteDeleteFileService.Delete(imagePath);
+                service.RemoveImage(imagePath);
+                _unitOfWork.Commit();
+                return Ok("Image Deleted successfually");
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception)
+            {
+                return BadRequest("Can't Delete image , Try Again Later");
             }
         }
     }

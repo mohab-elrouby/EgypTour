@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Domain.DTO;
+using Domain.Entities;
 using Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
@@ -22,7 +23,7 @@ namespace Domain.DTOs
         public Location Location { get; set; }
         public string ProfileImage { get; set; }
         public List<Image> Images { get; set; } = new();
-
+        public List<ServiceReviewDTO> reviews { get;set; } = new();
         public static ServiceDTO FromService(Service service)
         {
             return new ServiceDTO()
@@ -36,6 +37,7 @@ namespace Domain.DTOs
                 Location = service.Location,
                 ProfileImage= service.ProfileImage,
                 Images = service.Images.ToList(),
+                reviews = service.Reviews.Select(i=>ServiceReviewDTO.FromServiceReview(i)).ToList()
             };
         }
     }
