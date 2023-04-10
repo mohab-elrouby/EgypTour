@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
+using Microsoft.OpenApi.Models;
 
 namespace Presentation
 {
@@ -22,19 +23,26 @@ namespace Presentation
             var builder = WebApplication.CreateBuilder(args);
             builder.Services.AddEndpointsApiExplorer();
             // Add services to the container.
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "EgypTour rest WebApi Documentations",
+                    Version= "v1"
+                });
+            });
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
 
             builder.Services.AddDbContext<EgyTourContext>(
             options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+            #region Register Services
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped<IGenericRepository<ServiceReview>, GenericRepository<ServiceReview>>();
-            builder.Services.AddScoped<IGenericRepository<Tourist>,GenericRepository<Tourist>>();
+            builder.Services.AddScoped<IGenericRepository<Tourist>, GenericRepository<Tourist>>();
             builder.Services.AddScoped<IServiceRepository, ServiceRepository>();
-            builder.Services.AddScoped<IAddServiceReviewUseCase,AddServiceReviewUseCase>();
+            builder.Services.AddScoped<IAddServiceReviewUseCase, AddServiceReviewUseCase>();
             builder.Services.AddScoped<ILocalReviewRepository, localReviewRepository>();
             builder.Services.AddScoped<ITripRepository, TripRepository>();
             builder.Services.AddScoped<IServiceReviewRepository, ServiceReviewRepository>();
@@ -44,14 +52,14 @@ namespace Presentation
             builder.Services.AddScoped<IGenericRepository<LocalPerson>, GenericRepository<LocalPerson>>();
             builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
             builder.Services.AddScoped<IJwtProvider, JwtProvider>();
-            var app = builder.Build(); 
-            
+            #endregion
+            var app = builder.Build();
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
-                app.UseSwaggerUI(c => {
-                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V2");
+                app.UseSwaggerUI(options => {
+                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
                 });
             }
 
