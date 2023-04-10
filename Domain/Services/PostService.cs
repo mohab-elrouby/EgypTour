@@ -20,10 +20,10 @@ namespace Domain.Services
             touristRepository=GenericRepository;
         }
 
-        public IEnumerable<Post> GetForFriends(int userId)
+        public IEnumerable<Post> GetForFriends(int userId, int skip = 0, int take = 8)
         {
             var friends = touristRepository.Find(f => f.TouristId == userId).Select(p => p.FriendId).ToList();
-            return postRepository.GetForFriends(friends);
+            return postRepository.GetForFriends(friends, skip:skip, take:take);
         }
     }
 }

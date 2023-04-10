@@ -9,6 +9,6 @@ namespace Domain.Interfaces
 {
     public interface IPostService
     {
-        IEnumerable<Post> GetForFriends(int userId);
+        IEnumerable<Post> GetForFriends(int userId, int skip = 0, int take = 8);
     }
 }

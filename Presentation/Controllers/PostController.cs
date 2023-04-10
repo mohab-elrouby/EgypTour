@@ -7,7 +7,7 @@ using System;
 
 namespace Presentation.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class PostController : ControllerBase
     {
@@ -93,11 +93,11 @@ namespace Presentation.Controllers
         }
 
         [HttpGet("{userId:int}/friends", Name = "GetforFriends")]
-        public IActionResult GetForFriends(int id)
+        public IActionResult GetForFriends(int id, int skip = 0, int take = 8)
         {
             try
             {
-                var friendsPosts = PostService.GetForFriends(id).Select(p => PostDTO.FromEntity(p));
+                var friendsPosts = PostService.GetForFriends(id, skip: skip, take: take).Select(p => PostDTO.FromEntity(p));
                 if(friendsPosts == null)
                 {
                     return NotFound();
@@ -110,11 +110,11 @@ namespace Presentation.Controllers
         }
 
         [HttpGet("users/{userId:int}", Name = "GetforUser")]
-        public IActionResult GetForUser(int id)
+        public IActionResult GetForUser(int id, int skip = 0, int take = 8)
         {
             try
             {
-                var posts = unitOfWork.Posts.Find(p => p.WriterId == id);
+                var posts = unitOfWork.Posts.Find(p => p.WriterId == id, skip: skip, take:skip).Select(p => PostDTO.FromEntity(p));
                 if(posts == null)
                 {
                     return BadRequest();

@@ -1,12 +1,14 @@
 ﻿using Domain.DTOs;
 using Domain.Entities;
 using Domain.Interfaces;
+using Infrastructure.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Presentation.Services;
 
 namespace Presentation.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class TouristController : ControllerBase
     {
@@ -57,15 +59,18 @@ namespace Presentation.Controllers
         }
 
         [HttpPost]
-        public IActionResult Add(UserDTO userDTO)
+        public IActionResult Add(UserDTO userDTO, [FromForm] IFormFile file)
         {
             if(userDTO == null)
             {
                 return BadRequest();
             }
             var newUser = UserDTO.ToTourist(userDTO);
+            string uniqueName = WriteDeleteFileService.Write(file, "wwwroot/user-images/");
+            string imageUrl = $"/user-images/{uniqueName}";
             _authenticationService.CreatePasswordHash(newUser.Password, out byte[] passwordHash, out byte[] passwordSalt);
             newUser.EncryptPassword(passwordHash, passwordSalt);
+            newUser.UploadImage(imageUrl);
             try
             {
                 unitOfWork._tourists.Add(newUser);
@@ -91,11 +96,11 @@ namespace Presentation.Controllers
         }
 
         [HttpGet("GetFriends")]
-        public IActionResult GetFriends(int userId)
+        public IActionResult GetFriends(int userId, int skip = 0, int take = 8)
         {
             try
             {
-                var freinds = unitOfWork.TouristFriends.Find(f => f.TouristId == userId);
+                var freinds = unitOfWork.TouristFriends.Find(f => f.TouristId == userId, skip: skip, take: take, includeProperties: "Friend");
                 // this works right now because if we add user2 to the friends list of user1 it's saved as follows
                 // 1, 2; and if you save user1 to user2 friends list in another context, it will also be saved
                 // 2, 1; this is called "Asymmetric" many to many relationship. if in the futere we use "Symmetric"
@@ -104,7 +109,7 @@ namespace Presentation.Controllers
                 {
                     return NotFound();
                 }
-                return Ok(freinds.ToList());
+                return Ok(freinds.Select(f => new {f.Friend.Id, f.Friend.Fname, f.Friend.Lname, f.Friend.ProfilePictureUrl}));
             }
             catch (Exception ex)
             {
@@ -154,6 +159,5 @@ namespace Presentation.Controllers
                 return StatusCode(500, ex.StackTrace);
             }
         }
-
     }
 }

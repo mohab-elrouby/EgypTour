@@ -49,5 +49,10 @@ namespace Domain.Entities
             this.PasswordHash= passwordHash;
             this.PasswordSalt= passwordSalt;
         }
+
+        public void UploadImage(string imageUrl)
+        {
+            this.ProfilePictureUrl = imageUrl;
+        }
     }
 }

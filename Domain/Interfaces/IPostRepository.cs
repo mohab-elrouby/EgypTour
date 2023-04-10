@@ -9,6 +9,6 @@ namespace Domain.Interfaces
 {
     public interface IPostRepository:IGenericRepository<Post>
     {
-        IEnumerable<Post> GetForFriends(List<int> friendsIds);
+        IEnumerable<Post> GetForFriends(List<int> friendsIds, int skip = 0, int take = 8);
     }
 }

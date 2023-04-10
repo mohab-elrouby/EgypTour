@@ -9,11 +9,32 @@ namespace Domain.Enums
     public enum CityName
     {
         Cairo,
-        Aswan,
-        Fayoum,
         Alexandria,
-        Sinai,
-        SharmElshaikh
-
+        Aswan,
+        Asyut,
+        Beheira,
+        BeniSuef,
+        Dakahlia,
+        Damietta,
+        Faiyum,
+        Gharbia,
+        Giza,
+        Ismailia,
+        KafrElSheikh,
+        Luxor,
+        Matruh,
+        Minya,
+        Monufia,
+        NewValley,
+        NorthSinai,
+        PortSaid,
+        Qalyubia,
+        Qena,
+        RedSea,
+        Sharqia,
+        Sohag,
+        SouthSinai,
+        Suez
     }
+
 }
