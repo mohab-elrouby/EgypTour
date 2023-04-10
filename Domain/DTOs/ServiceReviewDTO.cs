@@ -17,8 +17,8 @@ namespace Domain.DTO
         public float Rating { get; set; }
        
         public int ServiceId { get; set; }
-        public TouristDTO reviewer { get; set; }
-        public static ServiceReviewDTO fromServiceReview(ServiceReview review)
+        public TouristDTO reviewer { get; set; } = new();
+        public static ServiceReviewDTO FromServiceReview(ServiceReview review)
         {
             return new ServiceReviewDTO
             {
