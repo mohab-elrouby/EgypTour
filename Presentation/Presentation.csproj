@@ -35,6 +35,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="wwwroot\service-images\" />
     <Folder Include="wwwroot\trip-images\" />
   </ItemGroup>
 

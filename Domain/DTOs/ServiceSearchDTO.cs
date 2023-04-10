@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Domain.DTOs
@@ -14,11 +15,14 @@ namespace Domain.DTOs
         public string Name { get; set; }
         public string Description { get; set; }
 
-        public int MatchHeurstic { get; set; }
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+        public int MatchHeurstic { get; set; } = 0;
 
         public float AvgRating { get; set; }
 
-        public static ServiceSearchDTO FromService(Service service,string searchString ,string matchString,float avgRating)
+        public string ProfileImage { get;set; }
+
+        public static ServiceSearchDTO FromService(Service service,string searchString="" ,string matchString = "",float avgRating=0)
         {
             return new ServiceSearchDTO
             {
@@ -26,7 +30,8 @@ namespace Domain.DTOs
                 Name = service.Name,
                 Description = service.Description,
                 MatchHeurstic = LevenshteinDistance.Calculate(matchString, searchString),
-                AvgRating = avgRating
+                AvgRating = avgRating,
+                ProfileImage = service.ProfileImage
             };
         }
     }

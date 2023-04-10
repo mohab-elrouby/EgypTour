@@ -16,14 +16,14 @@ namespace Presentation.Controllers
             _unitOfWork = unitOfWork;
         }
 
-        [Route("[Action]")]
+        [Route("[Action]/{id}")]
         [HttpPut]
-        public IActionResult UpdateToDoList([FromHeader] int id, [FromBody] ToDOListDTO toDOListDTO)
+        public IActionResult UpdateToDoList( int id, ToDOListDTO toDOListDTO)
         {
             ToDoList toDoList = _unitOfWork._toDoLists.GetById(id);
             if (toDoList == null)
             {
-                return NotFound("ToDoList doesn't exist or Already Deleted");
+                return NotFound("ToDoList doesn't exist");
             }
             toDoList.Update(toDOListDTO);
             _unitOfWork._toDoLists.Update(toDoList);
@@ -31,7 +31,7 @@ namespace Presentation.Controllers
             return Ok();
         }
 
-        [Route("[Action]")]
+        [Route("[Action]/{id}")]
         [HttpDelete]
         public IActionResult Delete(int id)
         {
@@ -44,9 +44,9 @@ namespace Presentation.Controllers
             _unitOfWork.Commit();
             return Ok();
         }
-        [Route("[Action]")]
+        [Route("[Action]/{id}")]
         [HttpPost]
-        public IActionResult AddToDoItem(int id , [FromBody]ToDoItemDTO toDoItemDTO)
+        public IActionResult AddToDoItem(int id , ToDoItemDTO toDoItemDTO)
         {
             ToDoList toDoList = _unitOfWork._toDoLists.GetById(id);
             if (toDoList == null)
@@ -56,6 +56,5 @@ namespace Presentation.Controllers
             toDoList.AddToDoItem(toDoItemDTO);
             return Ok();
         }
-
     }
 }

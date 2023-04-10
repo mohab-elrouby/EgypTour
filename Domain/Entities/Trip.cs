@@ -72,9 +72,9 @@ namespace Domain.Entities
             images.Add(image);
         }
 
-        public void RemoveImage(string imageParth)
+        public void RemoveImage(string imagePath)
         {
-            Image image = images.Where(i => i.Url == imageParth).FirstOrDefault();
+            Image image = images.Where(i => i.Url == imagePath).FirstOrDefault();
             if (image == null)
             {
                 throw new KeyNotFoundException($"Trip{Id} doesn't have such image");

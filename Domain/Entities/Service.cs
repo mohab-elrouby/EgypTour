@@ -26,7 +26,7 @@ namespace Domain.Entities
         public string ProfileImage { get; private set;}
         public List<Image> Images { get; private set; } = new();
 
-        public Service(string name, string description, DateTime workingHoursStart, DateTime workingHoursEnd, string phone, Location location,string profileImage)
+        public Service(string name, string description, DateTime workingHoursStart, DateTime workingHoursEnd, string phone, Location location,string profileImage="")
         {
             ProfileImage = profileImage;
             Name = name;
@@ -75,6 +75,23 @@ namespace Domain.Entities
             this.WorkingHoursStart = serviceDTO.WorkingHoursStart;
         }
 
-    
+        public void UpdateProfileImage(string path)
+        {
+            ProfileImage = path;
+        }
+        public void RemoveImage(string imagePath)
+        {
+            Image image = Images.Where(i => i.Url == imagePath).FirstOrDefault();
+            if (image == null)
+            {
+                throw new KeyNotFoundException($"Service {Id} doesn't have such image");
+            }
+            else
+            {
+                Images.Remove(image);
+            }
+
+        }
+
     }
 }

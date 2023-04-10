@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("/[controller]")]
     [ApiController]
     public class ActivityController : ControllerBase
     {
@@ -18,14 +18,14 @@ namespace Presentation.Controllers
             _unitOfWork = unitOfWork;
         }
 
-        [Route("[Action]")]
+        [Route("[Action]/{id}")]
         [HttpPut]
-        public IActionResult UpdateActivity([FromHeader] int id, [FromBody] ActivityDTO activityDto)
-        {
+        public IActionResult UpdateActivity(int id, ActivityDTO activityDto)
+        {           
             Activity activity = _unitOfWork._activities.GetById(id);
             if (activity == null)
             {
-                return NotFound("Trip doesn't exist or Already Deleted");
+                return NotFound("Activity doesn't exist");
             }
             activity.Update(activityDto);
             _unitOfWork._activities.Update(activity);
@@ -33,20 +33,18 @@ namespace Presentation.Controllers
             return Ok();
         }
 
-        [Route("[Action]")]
+        [Route("[Action]/{id}")]
         [HttpDelete]
         public IActionResult Delete(int id)
         {
             Activity activity = _unitOfWork._activities.GetById(id);
             if (activity == null)
             {
-                return NotFound("Trip doesn't exist or Already Deleted");
+                return NotFound("Activity doesn't exist");
             }
             _unitOfWork._activities.Delete(id);
             _unitOfWork.Commit();
             return Ok();
         }
-
-
     }
 }
