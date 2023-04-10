@@ -1,4 +1,4 @@
-﻿using Domain.DTO;
+﻿using Domain.DTOs;
 using Domain.Entities;
 using Domain.ValueObjects;
 using System;

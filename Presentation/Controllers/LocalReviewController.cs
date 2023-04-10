@@ -1,7 +1,7 @@
 ﻿using Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Domain.Response;
-using Domain.DTO;
+using Domain.DTOs;
 using Domain.Entities;
 
 namespace Presentation.Controllers
