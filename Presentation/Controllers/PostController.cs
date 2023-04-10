@@ -1,8 +1,10 @@
 ﻿using Domain.DTOs;
 using Domain.Entities;
 using Domain.Interfaces;
+using Infrastructure.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Presentation.Services;
 using System;
 
 namespace Presentation.Controllers
@@ -225,5 +227,30 @@ namespace Presentation.Controllers
                 return StatusCode(statusCode: 500, ex.StackTrace);
             }
         }
+
+        [Route("{PostId}/AddImage")]
+        [HttpPost]
+        public IActionResult AddPostImage([FromForm] IFormFile file, int postId)
+        {
+            try
+            {
+                Post post = unitOfWork.Posts.GetById(postId);
+                if (post == null)
+                {
+                    return NotFound("Post doesn't exist");
+                }
+                string uniqueName = WriteDeleteFileService.Write(file, "wwwroot/post-images/");
+                string imageUrl = $"/post-images/{uniqueName}";
+                post.AddImage(imageUrl);
+                unitOfWork.Commit();
+                return Ok("image uploaded successfually");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.StackTrace);
+            }
+        }
+
     }
+
 }

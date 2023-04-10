@@ -44,5 +44,10 @@ namespace Domain.Entities
         {
             Likers.Remove(tourist);
         }
+        public void AddImage(string url)
+        {
+            var image = new Image(url);
+            Pictures.Add(image);
+        }
     }
 }
