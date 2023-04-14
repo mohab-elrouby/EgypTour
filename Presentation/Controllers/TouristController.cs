@@ -27,7 +27,7 @@ namespace Presentation.Controllers
             try
             {
                 var allTourists = unitOfWork._tourists.GetAll().ToList();
-                if(allTourists != null) 
+                if (allTourists != null)
                 {
                     return Ok(allTourists);
                 }
@@ -58,12 +58,12 @@ namespace Presentation.Controllers
 
         }
 
-        [HttpPost]
+        [HttpPost("add")]
         public IActionResult Add(UserDTO userDTO)
         {
             if(userDTO == null)
             {
-                return BadRequest();
+                return Ok();
             }
             var newUser = UserDTO.ToTourist(userDTO);
             _authenticationService.CreatePasswordHash(newUser.Password, out byte[] passwordHash, out byte[] passwordSalt);

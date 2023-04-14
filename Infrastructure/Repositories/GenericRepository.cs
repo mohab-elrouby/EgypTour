@@ -74,7 +74,7 @@ namespace Infrastructure.Repositories
 
         public virtual IEnumerable<T> GetAll()
         {
-            _context.Set<T>().SingleOrDefault<T>();
+            _context.Set<T>();
             return _context.Set<T>();
         }
 
