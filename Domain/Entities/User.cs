@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain.DTOs;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -53,6 +54,20 @@ namespace Domain.Entities
         public void UploadImage(string imageUrl)
         {
             this.ProfilePictureUrl = imageUrl;
+        }
+
+        public void UpdateInfo(UserDTO userDTO)
+        {
+            if (userDTO == null)
+            {
+                return;
+            }
+            this.Fname = userDTO.Fname;
+            this.Lname = userDTO.Lname;
+            this.Email = userDTO.Email;
+            this.UserName = userDTO.UsernameName;
+            this.Password = userDTO.Password;
+            this.Phone = userDTO.Phone;                
         }
     }
 }

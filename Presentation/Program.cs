@@ -21,6 +21,18 @@ namespace Presentation
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy(name: MyAllowSpecificOrigins,
+                                  builder =>
+                                  {
+                                      builder.WithOrigins("http://localhost:4200")//allows angular, which uses port 4200
+                                      .AllowAnyMethod()
+                                      .AllowAnyHeader();
+                                  });
+            });
             builder.Services.AddEndpointsApiExplorer();
             // Add services to the container.
             builder.Services.AddSwaggerGen(options =>
@@ -73,6 +85,7 @@ namespace Presentation
 
             app.UseRouting();
             app.UseStaticFiles();
+            app.UseCors(MyAllowSpecificOrigins);
             app.UseAuthorization();
             app.MapControllers();
             app.UseSwaggerUI(options =>

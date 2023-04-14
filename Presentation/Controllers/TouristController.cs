@@ -59,18 +59,15 @@ namespace Presentation.Controllers
         }
 
         [HttpPost]
-        public IActionResult Add(UserDTO userDTO, [FromForm] IFormFile file)
+        public IActionResult Add(UserDTO userDTO)
         {
             if(userDTO == null)
             {
                 return BadRequest();
             }
             var newUser = UserDTO.ToTourist(userDTO);
-            string uniqueName = WriteDeleteFileService.Write(file, "wwwroot/user-images/");
-            string imageUrl = $"/user-images/{uniqueName}";
             _authenticationService.CreatePasswordHash(newUser.Password, out byte[] passwordHash, out byte[] passwordSalt);
             newUser.EncryptPassword(passwordHash, passwordSalt);
-            newUser.UploadImage(imageUrl);
             try
             {
                 unitOfWork._tourists.Add(newUser);
@@ -150,6 +147,50 @@ namespace Presentation.Controllers
                     return NotFound();
                 }
                 user.DeleteFriend(touristFriend.FirstOrDefault());
+                unitOfWork._tourists.Update(user);
+                unitOfWork.Commit();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.StackTrace);
+            }
+        }
+
+        [Route("{Id}/AddImage")]
+        [HttpPost]
+        public IActionResult AddImage([FromForm] IFormFile file, int touristId)
+        {
+            try
+            {
+                var tourist = unitOfWork._tourists.GetById(touristId);
+                if (tourist == null)
+                {
+                    return NotFound("User doesn't exist");
+                }
+                string uniqueName = WriteDeleteFileService.Write(file, "wwwroot/user-images/");
+                string imageUrl = $"/user-images/{uniqueName}";
+                tourist.UploadImage(imageUrl);
+                unitOfWork.Commit();
+                return Ok("image uploaded successfually");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.StackTrace);
+            }
+        }
+
+        [HttpPut]
+        public IActionResult Update(UserDTO userDTO)
+        {
+            try
+            {
+                var user = unitOfWork._tourists.GetById(userDTO.Id);
+                if(user == null)
+                {
+                    return NotFound();
+                }
+                user.UpdateInfo(userDTO);
                 unitOfWork._tourists.Update(user);
                 unitOfWork.Commit();
                 return Ok();
