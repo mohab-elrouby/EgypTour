@@ -19,6 +19,7 @@ namespace Presentation
     {
         public static void Main(string[] args)
         {
+            var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
             var builder = WebApplication.CreateBuilder(args);
             builder.Services.AddEndpointsApiExplorer();
             // Add services to the container.
@@ -42,6 +43,19 @@ namespace Presentation
             builder.Services.AddScoped<IGenericRepository<ToDoList>, GenericRepository<ToDoList>>();
             builder.Services.AddScoped<IGenericRepository<ToDoItem>, GenericRepository<ToDoItem>>();
             builder.Services.AddScoped<IGenericRepository<LocalPerson>, GenericRepository<LocalPerson>>();
+
+
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy(name: MyAllowSpecificOrigins,
+                                  policy =>
+                                  {
+                                      policy.WithOrigins("http://localhost:4200").AllowAnyHeader().AllowAnyMethod();
+                                  });
+            });
+
+
             var app = builder.Build(); 
             
             // Configure the HTTP request pipeline.
@@ -55,9 +69,10 @@ namespace Presentation
             app.UseHttpsRedirection();
 
             app.UseRouting();
+            app.UseCors(MyAllowSpecificOrigins);
+
             app.UseStaticFiles();
             app.UseAuthorization();
-
 
             app.MapControllers();
             app.UseSwaggerUI(options =>
