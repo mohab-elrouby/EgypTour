@@ -64,6 +64,9 @@ namespace Presentation
             builder.Services.AddScoped<IGenericRepository<LocalPerson>, GenericRepository<LocalPerson>>();
             builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
             builder.Services.AddScoped<IJwtProvider, JwtProvider>();
+            builder.Services.AddScoped<IGenericRepository<TouristFriend>, GenericRepository<TouristFriend>>();
+            builder.Services.AddScoped<IPostRepository, PostRepository>();
+            builder.Services.AddScoped<IPostService, PostService>();
             #endregion
             var app = builder.Build();
             // Configure the HTTP request pipeline.
