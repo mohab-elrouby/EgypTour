@@ -23,11 +23,11 @@ namespace Presentation.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public IActionResult Get(int skip = 0, int take = 8)
         {
             try 
             {
-                var allPosts = unitOfWork.Posts.GetAll().Select(p => PostDTO.FromEntity(p));
+                List<PostDTO> allPosts = unitOfWork.Posts.Find(p => true, skip: skip, take: take, includeProperties: "Writer").Select(p => PostDTO.FromEntity(p)).ToList();
                 if(allPosts == null)
                 {
                     return NotFound();
@@ -46,7 +46,7 @@ namespace Presentation.Controllers
         {
             try
             {
-                var post = unitOfWork.Posts.GetById(id);
+                Post post = unitOfWork.Posts.Find(p=>p.Id == id, includeProperties: "Writer").FirstOrDefault();
                 if(post == null)
                 {
                     return NotFound();
@@ -116,7 +116,7 @@ namespace Presentation.Controllers
         {
             try
             {
-                var posts = unitOfWork.Posts.Find(p => p.WriterId == id, skip: skip, take:skip).Select(p => PostDTO.FromEntity(p));
+                var posts = unitOfWork.Posts.Find(p => p.WriterId == id, skip: skip, take:skip, includeProperties: "Writer").Select(p => PostDTO.FromEntity(p));
                 if(posts == null)
                 {
                     return BadRequest();

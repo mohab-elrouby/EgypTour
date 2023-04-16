@@ -14,6 +14,7 @@ namespace Domain.DTOs
         public DateTime DatePosted { get; set; }
         public List<int> LikersIds { get; set; } = new List<int>();
         public List<CommentDTO> Comments { get; set; } = new List<CommentDTO>();
+        public UserDTO? Writer { get; set; }
         public int WriterId { get; set; }
         public string Content { get; set; }
         public static PostDTO FromEntity(Post post)
@@ -23,7 +24,8 @@ namespace Domain.DTOs
                 Id = post.Id,
                 DatePosted = post.DatePosted,
                 WriterId = post.WriterId,
-                Content = post.Content
+                Content = post.Content,
+                Writer = UserDTO.FromEntity(post.Writer)
             };
 
             dto.Comments = post.Comments.Select(c => CommentDTO.FromEntity(c)).ToList();

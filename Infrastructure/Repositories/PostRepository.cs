@@ -19,7 +19,7 @@ namespace Infrastructure.Repositories
         {
             return _context.Posts.Where(p => friendsId.Contains(p.WriterId))
                 .Skip(skip).Take(take).Include(p => p.Comments).Include(p=>p.Pictures)
-                .Include(p=>p.Likers).ToList();
+                .Include(p=>p.Likers).Include(p=>p.Writer).ToList();
         }
     }
 }
