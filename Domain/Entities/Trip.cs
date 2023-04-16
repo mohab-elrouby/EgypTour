@@ -12,6 +12,7 @@ namespace Domain.Entities
         public int Id { get; private set;}
         public string Name { get; private set; }
 
+        public string Description { get; private set; }
         public DateTime? Start { get; private set; }
 
         public DateTime? End { get; private set; } 
@@ -30,13 +31,14 @@ namespace Domain.Entities
             Start = DateTime.Now;
             End = DateTime.MinValue;
         }
-        public Trip(string name, DateTime? start, DateTime? end, Location? location, string backgroundImage="")
+        public Trip(string name, DateTime? start, DateTime? end, Location? location, string backgroundImage= "", string description = "")
         {
-           Name=name;
-           Start = (start == null) ? DateTime.Now : start;
-           End = (end == null) ? DateTime.MinValue : end;
-           Location = location;
-           BackgroundImage = backgroundImage;
+            Name = name;
+            Start = (start == null) ? DateTime.Now : start;
+            End = (end == null) ? DateTime.MinValue : end;
+            Location = location;
+            BackgroundImage = backgroundImage;
+            Description = description;
         }
 
         public void Update(TripDTO tripDTO)
@@ -47,6 +49,7 @@ namespace Domain.Entities
             End = tripDTO.End;
             Location = tripDTO.Location;
             BackgroundImage = tripDTO.BackgroundImage;
+
           
         }
 

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class initialCreate : Migration
+    public partial class m1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -402,19 +402,20 @@ namespace Infrastructure.Migrations
                 name: "Notes",
                 columns: table => new
                 {
+                    ActivityId = table.Column<int>(type: "int", nullable: false),
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ActivityId = table.Column<int>(type: "int", nullable: true)
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Notes", x => x.Id);
+                    table.PrimaryKey("PK_Notes", x => new { x.ActivityId, x.Id });
                     table.ForeignKey(
                         name: "FK_Notes_Activity_ActivityId",
                         column: x => x.ActivityId,
                         principalTable: "Activity",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -467,11 +468,6 @@ namespace Infrastructure.Migrations
                 name: "IX_Messeges_SenderId",
                 table: "Messeges",
                 column: "SenderId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Notes_ActivityId",
-                table: "Notes",
-                column: "ActivityId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Posts_WriterId",

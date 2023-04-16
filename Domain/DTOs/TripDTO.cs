@@ -13,6 +13,8 @@ namespace Domain.DTOs
         public int Id { get;  set; }
         public string Name { get;  set; }
 
+        public string Description { get; set; }
+
         public DateTime? Start { get;  set; }
 
         public DateTime? End { get;  set; }
@@ -38,6 +40,7 @@ namespace Domain.DTOs
                 Activities = trip.Activities.Select(t => ActivityDTO.FromActivity(t)).ToList(),
                 Viewers = trip.TripViewers.Select(t => TouristDTO.FromTourist(t)).ToList(),
                 ToDOLists = trip.ToDoLists.Select(list => ToDOListDTO.FromToDoList(list)).ToList(),
+                Description =trip.Description
             };              
         }
     }
