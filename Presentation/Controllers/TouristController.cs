@@ -84,12 +84,8 @@ namespace Presentation.Controllers
         [HttpPost("login")]
         public IActionResult Login(LoginDTO loginDTO)
         {
-            var token = _authenticationService.Login(loginDTO.Username, loginDTO.Password);
-            if (token == string.Empty)
-            {
-                return Ok(new { Token = token, Status = "Wrong Credientials" });
-            }
-            return Ok(new {Token = token, Status = "Successful Login" });
+            var response = _authenticationService.Login(loginDTO.Username, loginDTO.Password);
+            return Ok(response);
         }
 
         [HttpGet("GetFriends")]

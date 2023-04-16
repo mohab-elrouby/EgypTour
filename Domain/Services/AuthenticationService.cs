@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Domain.DTOs;
+using Domain.Entities;
 using Domain.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -39,20 +40,36 @@ namespace Domain.Services
             }
         }
 
-        public string Login(string username, string password)
+        public LoginResponse Login(string username, string password)
         {
             var user = touristRepository.Find(t => t.UserName == username).FirstOrDefault();
             
             if (user == null)
             {
-                return string.Empty;//should i return specific response?
+                return new LoginResponse()
+                {
+                    UserDTO= null,
+                    Status = "Wrong Credintials",
+                    Token = string.Empty
+                };//should i return specific response?
             }
             if (!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
             {
-                return string.Empty;//should i return specific response?
+                return new LoginResponse()
+                {
+                    UserDTO= null,
+                    Status = "Wrong Credintials",
+                    Token = string.Empty
+                };
             }
             string token = jwtProvider.CreateToken(user);
-            return token;
+
+            return new LoginResponse()
+            {
+                UserDTO= UserDTO.FromEntity(user),
+                Status = "Suucessful Login",
+                Token = token
+            }; 
         }
     }
 }
