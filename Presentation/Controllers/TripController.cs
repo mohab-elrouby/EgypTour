@@ -23,7 +23,7 @@ namespace Presentation.Controllers
         [HttpGet]
         public IActionResult GetByID(int id)
         {
-            Trip trip = _unitOfWork.Trips.Find(predicate: i => i.Id == id, includeProperties: "Owner,TripViewers,ToDoLists.ToDoItems,Activities").FirstOrDefault();
+            Trip trip = _unitOfWork.Trips.Find(predicate: i => i.Id == id, includeProperties: "Owner,TripViewers,ToDoLists.ToDoItems,Activities.Location,Location").FirstOrDefault();
             if (trip == null)
             {
                 return NotFound("trip Doesn't exist");
