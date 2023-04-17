@@ -83,7 +83,7 @@ namespace Presentation.Controllers
 
         [Route("[Action]/{id}")]
         [HttpPut]
-        public IActionResult Update([FromHeader] int id, [FromBody] TripDTO tripDto)
+        public IActionResult Update(int id, [FromBody] TripDTO tripDto)
         {
             Trip trip = _unitOfWork.Trips.GetById(id);
             if (trip == null)
@@ -98,7 +98,7 @@ namespace Presentation.Controllers
 
         [Route("[Action]/{id}")]
         [HttpPost]
-        public IActionResult AddToDOList([FromHeader] int id, [FromBody] ToDOListDTO toDOListDTO)
+        public IActionResult AddToDOList(int id, [FromBody] ToDOListDTO toDOListDTO)
         {
             Trip trip = _unitOfWork.Trips.GetById(id);
             if (trip == null)
