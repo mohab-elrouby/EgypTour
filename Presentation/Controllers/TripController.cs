@@ -2,6 +2,7 @@
 using Domain.Entities;
 using Domain.Enums;
 using Domain.Interfaces;
+using Infrastructure.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Services;
@@ -32,7 +33,7 @@ namespace Presentation.Controllers
             return Ok(tripDTO);
         }
 
-        [Route("[Action]/{id}")]
+        [Route("[Action]/{id}", Name = "GetTripById")]
         [HttpGet]
 
         public IActionResult GetAllTrips(int id, int skip = 0, int take = 8)
@@ -47,6 +48,33 @@ namespace Presentation.Controllers
                 return NotFound("Trip List is Empty");
             }
             return Ok(trips);
+        }
+
+        [Route("[Action]")]
+        [HttpPost]
+        public IActionResult Add(TripDTO tripDto)
+        {
+            if (tripDto != null)
+            {
+                try
+                {
+                    var owner = _unitOfWork._tourists.GetById(tripDto.OwnerId);
+                    if (owner == null)
+                    {
+                        return NotFound("No such user");
+                    }
+                    var trip = TripDTO.ToEntity(tripDto);
+                    _unitOfWork.Trips.Add(trip);
+                    _unitOfWork.Commit();
+                    string url = Url.Link("GetTripById", new { id = trip.Id });
+                    return Created(url, tripDto);
+                }
+                catch (Exception ex)
+                {
+                    return StatusCode(statusCode: 500, ex.StackTrace);
+                }
+            }
+            return BadRequest();
         }
 
         [Route("[Action]")]
