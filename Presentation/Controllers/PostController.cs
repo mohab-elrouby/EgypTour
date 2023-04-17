@@ -204,17 +204,17 @@ namespace Presentation.Controllers
             }
         }
 
-        [HttpPatch("{PostId:int}/uncomment", Name = "UnCommentPost")]
-        public IActionResult UnComment(int PostId, CommentDTO comment)
+        [HttpDelete("{PostId:int}/uncomment", Name = "UnCommentPost")]
+        public IActionResult UnComment(int PostId, int commentId)
         {
             try
             {
-                var post = unitOfWork.Posts.GetById(PostId);
+                var post = unitOfWork.Posts.Find(predicate:x=>x.Id == PostId,includeProperties:"Comments").FirstOrDefault();
                 if (post!=null)
                 {
-                    var cmnt = CommentDTO.ToEntity(comment);
-                    post.RemoveComment(cmnt);
-                    unitOfWork.Posts.Update(post);
+                    //var cmnt = CommentDTO.ToEntity(comment);
+                    post.RemoveComment(commentId);
+                    //unitOfWork.Posts.Update(post);
                     unitOfWork.Commit();
                     return Ok();
                 }

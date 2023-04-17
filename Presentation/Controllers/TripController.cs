@@ -83,7 +83,7 @@ namespace Presentation.Controllers
 
         [Route("[Action]/{id}")]
         [HttpPut]
-        public IActionResult Update(int id, [FromBody] TripDTO tripDto)
+        public IActionResult Update([FromHeader]int id, [FromBody] TripDTO tripDto)
         {
             Trip trip = _unitOfWork.Trips.GetById(id);
             if (trip == null)
@@ -91,7 +91,7 @@ namespace Presentation.Controllers
                 return NotFound("Trip doesn't exist or Already Deleted");
             }
             trip.Update(tripDto);
-            _unitOfWork.Trips.Update(trip);
+            //_unitOfWork.Trips.Update(trip);
             _unitOfWork.Commit();
             return Ok();
         }

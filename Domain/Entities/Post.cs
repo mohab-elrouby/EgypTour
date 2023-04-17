@@ -1,4 +1,5 @@
-﻿using Domain.ValueObjects;
+﻿using Domain.DTOs;
+using Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -32,9 +33,10 @@ namespace Domain.Entities
         {
             Comments.Add(comment);
         }
-        public void RemoveComment(Comment comment) 
+        public void RemoveComment(int commentId) 
         { 
-            Comments.Remove(comment); 
+            Comment c = Comments.Where(i=>i.Id == commentId).FirstOrDefault();
+            Comments.Remove(c); 
         }
         public void AddLiker(Tourist tourist)
         {
