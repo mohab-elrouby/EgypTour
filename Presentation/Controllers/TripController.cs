@@ -81,7 +81,7 @@ namespace Presentation.Controllers
             return Ok();
         }
 
-        [Route("[Action]")]
+        [Route("[Action]/{id}")]
         [HttpPut]
         public IActionResult Update([FromHeader] int id, [FromBody] TripDTO tripDto)
         {
@@ -96,7 +96,7 @@ namespace Presentation.Controllers
             return Ok();
         }
 
-        [Route("[Action]")]
+        [Route("[Action]/{id}")]
         [HttpPost]
         public IActionResult AddToDOList([FromHeader] int id, [FromBody] ToDOListDTO toDOListDTO)
         {
