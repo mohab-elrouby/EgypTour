@@ -20,11 +20,12 @@ namespace Domain.DTOs
         public DateTime? End { get;  set; }
 
         public string BackgroundImage { get; set; }
+        public int OwnerId { get; set; }
         public Location? Location { get;  set; } 
-        public TouristDTO Owner { get; private set; }
-        public List<TouristDTO> Viewers { get; set; }
-        public List<ActivityDTO> Activities { get; private set; }
-        public List<ToDOListDTO> ToDOLists { get; set; }
+        public TouristDTO? Owner { get;  set; }
+        public List<TouristDTO>? Viewers { get; set; }
+        public List<ActivityDTO>? Activities { get;  set; }
+        public List<ToDOListDTO>? ToDOLists { get; set; }
 
         public static TripDTO FromTrip(Trip trip)
         {
@@ -42,6 +43,11 @@ namespace Domain.DTOs
                 ToDOLists = trip.ToDoLists.Select(list => ToDOListDTO.FromToDoList(list)).ToList(),
                 Description =trip.Description
             };              
+        }
+
+        public static Trip ToEntity(TripDTO dto)
+        {
+            return new Trip(dto.OwnerId, dto.Name, dto.Start, dto.End, dto.Location, dto.BackgroundImage, dto.Description);
         }
     }
 }

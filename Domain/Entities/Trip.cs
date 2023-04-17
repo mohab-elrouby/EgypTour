@@ -1,4 +1,5 @@
 ﻿using Domain.DTOs;
+using Domain.Enums;
 using Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,7 @@ namespace Domain.Entities
         public DateTime? End { get; private set; } 
 
         public Location? Location { get; private set; }
+        public int OwnerId { get; private set; }
         public Tourist Owner { get; private set; }
         public string BackgroundImage { get; private set; }
 
@@ -31,14 +33,15 @@ namespace Domain.Entities
             Start = DateTime.Now;
             End = DateTime.MinValue;
         }
-        public Trip(string name, DateTime? start, DateTime? end, Location? location, string backgroundImage= "", string description = "")
+        public Trip(int ownerId, string name, DateTime? start, DateTime? end, Location? location, string backgroundImage= "", string description = "")
         {
             Name = name;
             Start = (start == null) ? DateTime.Now : start;
             End = (end == null) ? DateTime.MinValue : end;
-            Location = location;
+            Location = (location == null) ? new Location(CityName.Cairo, Country.Egypt) : location;
             BackgroundImage = backgroundImage;
             Description = description;
+            OwnerId = ownerId;
         }
 
         public void Update(TripDTO tripDTO)
