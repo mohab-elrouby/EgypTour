@@ -52,8 +52,9 @@ namespace Domain.Entities
             End = tripDTO.End;
             Location = tripDTO.Location;
             BackgroundImage = tripDTO.BackgroundImage;
+            Description = tripDTO.Description;
 
-          
+
         }
 
         public void AddTourist(Tourist tourist)
