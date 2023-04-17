@@ -14,16 +14,20 @@ namespace Domain.DTOs
         public DateTime Date { get; set; }
         public int PostId { get; set; }
         public int WriterId { get; set; }
+        public string? Fname { get; set; }
+        public string? Lname { get; set; }
 
         public static CommentDTO FromEntity(Comment comment)
         {
             return new CommentDTO
             {
                 Id = comment.Id,
-                Content= comment.Content,
+                Content = comment.Content,
                 Date = comment.Date,
                 PostId = comment.PostId,
-                WriterId = comment.WriterId
+                WriterId = comment.WriterId,
+                Fname = comment.Writer.Fname,
+                Lname = comment.Writer.Lname,
             };
         }
         public static Comment ToEntity(CommentDTO comment)

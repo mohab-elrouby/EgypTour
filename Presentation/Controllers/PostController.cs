@@ -27,7 +27,7 @@ namespace Presentation.Controllers
         {
             try 
             {
-                List<PostDTO> allPosts = unitOfWork.Posts.Find(p => true, skip: skip, take: take, includeProperties: "Writer").Select(p => PostDTO.FromEntity(p)).ToList();
+                List<PostDTO> allPosts = unitOfWork.Posts.Find(p => true, skip: skip, take: take, includeProperties: "Writer,Comments.Writer").Select(p => PostDTO.FromEntity(p)).ToList();
                 if(allPosts == null)
                 {
                     return NotFound();
