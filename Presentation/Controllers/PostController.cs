@@ -27,7 +27,7 @@ namespace Presentation.Controllers
         {
             try 
             {
-                List<PostDTO> allPosts = unitOfWork.Posts.Find(p => true, skip: skip, take: take, includeProperties: "Writer,Comments.Writer").Select(p => PostDTO.FromEntity(p)).ToList();
+                List<PostDTO> allPosts = unitOfWork.Posts.Find(p => true, skip: skip, take: take, includeProperties: "Writer,Comments.Writer", orderBy: i => i.OrderByDescending(x =>  x.DatePosted)).Select(p => PostDTO.FromEntity(p)).ToList();
                 if(allPosts == null)
                 {
                     return NotFound();
@@ -181,6 +181,7 @@ namespace Presentation.Controllers
         [HttpPatch("{PostId:int}/comment", Name = "CommentPost")]
         public IActionResult Comment(int PostId, CommentDTO comment)
         {
+            Console.WriteLine(comment);
             try
             {
                 var post = unitOfWork.Posts.GetById(PostId);
