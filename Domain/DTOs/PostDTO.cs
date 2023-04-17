@@ -28,7 +28,7 @@ namespace Domain.DTOs
                 Writer = UserDTO.FromEntity(post.Writer)
             };
 
-            dto.Comments = post.Comments.Select(c => CommentDTO.FromEntity(c)).ToList();
+            dto.Comments = post.Comments.Select(c => CommentDTO.FromEntity(c)).OrderByDescending(i=>i.Date).ToList();
             dto.PictureIds = post.Pictures.Select(p => p.Url).ToList();
             dto.LikersIds = post.Likers.Select(l => l.Id).ToList();
             return dto;

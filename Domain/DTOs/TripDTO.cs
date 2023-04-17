@@ -21,11 +21,11 @@ namespace Domain.DTOs
 
         public string BackgroundImage { get; set; }
         public int OwnerId { get; set; }
-        public Location? Location { get;  set; } 
-        public TouristDTO? Owner { get;  set; }
-        public List<TouristDTO>? Viewers { get; set; }
-        public List<ActivityDTO>? Activities { get;  set; }
-        public List<ToDOListDTO>? ToDOLists { get; set; }
+        public Location? Location { get;  set; }
+        public TouristDTO Owner { get; set; } = new();
+        public List<TouristDTO>? Viewers { get; set; } = new();
+        public List<ActivityDTO>? Activities { get; set; } = new();
+        public List<ToDOListDTO>? ToDOLists { get; set; } = new();
 
         public static TripDTO FromTrip(Trip trip)
         {

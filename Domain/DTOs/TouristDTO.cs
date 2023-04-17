@@ -10,8 +10,8 @@ namespace Domain.DTOs
     public class TouristDTO
     {
         public int Id { get; set; }
-        public string Fname { get; set; }
-        public string Lname { get; set; }
+        public string Fname { get; set; } = "";
+        public string Lname { get; set; } = "";
         
         public string? ProfilePicUrl { get; set; }
 
