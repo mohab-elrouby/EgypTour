@@ -22,8 +22,10 @@ namespace Domain.DTOs
 
         public string ProfileImage { get;set; }
         public string FirstReview { get; set; }
+        public DateTime WorkingHoursStart { get; set; }
+        public DateTime WorkingHoursEnd { get; set; }
 
-        public static ServiceSearchDTO FromService(Service service,string searchString="" ,string matchString = "",float avgRating=0 , string firstReview="")
+        public static ServiceSearchDTO FromService(Service service, string searchString="" ,string matchString = "",float avgRating=0 , string firstReview="")
         {
             return new ServiceSearchDTO
             {
@@ -34,7 +36,8 @@ namespace Domain.DTOs
                 AvgRating = avgRating,
                 ProfileImage = service.ProfileImage,
                 FirstReview = firstReview,
-
+                WorkingHoursStart = service.WorkingHoursStart,
+                WorkingHoursEnd = service.WorkingHoursEnd,
             };
         }
     }
