@@ -143,7 +143,7 @@ namespace Infrastructure.Migrations
                         column: x => x.TouristId,
                         principalTable: "User",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -211,7 +211,7 @@ namespace Infrastructure.Migrations
                         column: x => x.ReviwerId,
                         principalTable: "User",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -259,7 +259,7 @@ namespace Infrastructure.Migrations
                         column: x => x.WriterId,
                         principalTable: "User",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -303,7 +303,7 @@ namespace Infrastructure.Migrations
                         column: x => x.LikersId,
                         principalTable: "User",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -377,7 +377,7 @@ namespace Infrastructure.Migrations
                         column: x => x.TripViewersId,
                         principalTable: "User",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -522,8 +522,7 @@ namespace Infrastructure.Migrations
                 column: "TripsId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Trips_LocationId",
-                table: "Trips",
+                name: "IX_Trips_LocationId",               table: "Trips",
                 column: "LocationId");
 
             migrationBuilder.CreateIndex(
