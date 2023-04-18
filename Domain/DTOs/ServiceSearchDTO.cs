@@ -1,5 +1,6 @@
 ﻿using Domain.Entities;
 using Domain.Services;
+using Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +25,7 @@ namespace Domain.DTOs
         public string FirstReview { get; set; }
         public DateTime WorkingHoursStart { get; set; }
         public DateTime WorkingHoursEnd { get; set; }
+        public List<Image> Images { get;  set; } = new();
 
         public static ServiceSearchDTO FromService(Service service, string searchString="" ,string matchString = "",float avgRating=0 , string firstReview="")
         {
@@ -38,6 +40,7 @@ namespace Domain.DTOs
                 FirstReview = firstReview,
                 WorkingHoursStart = service.WorkingHoursStart,
                 WorkingHoursEnd = service.WorkingHoursEnd,
+                Images = service.Images,
             };
         }
     }
