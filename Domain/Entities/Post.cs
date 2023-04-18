@@ -51,5 +51,10 @@ namespace Domain.Entities
             var image = new Image(url);
             Pictures.Add(image);
         }
+        public bool hasLike(int tourisId)
+        {
+            return Likers.Where(i => i.Id == tourisId).Any();
+           
+        }
     }
 }

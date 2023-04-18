@@ -27,7 +27,7 @@ namespace Presentation.Controllers
         {
             try 
             {
-                List<PostDTO> allPosts = unitOfWork.Posts.Find(p => true, skip: skip, take: take, includeProperties: "Writer,Comments.Writer", orderBy: i => i.OrderByDescending(x =>  x.DatePosted)).Select(p => PostDTO.FromEntity(p)).ToList();
+                List<PostDTO> allPosts = unitOfWork.Posts.Find(p => true, skip: skip, take: take, includeProperties: "Writer,Comments.Writer,Likers", orderBy: i => i.OrderByDescending(x =>  x.DatePosted)).Select(p => PostDTO.FromEntity(p)).ToList();
                 if(allPosts == null)
                 {
                     return NotFound();
@@ -134,11 +134,20 @@ namespace Presentation.Controllers
         {
             try
             {
-                var post = unitOfWork.Posts.GetById(PostId); 
+
+                var post = unitOfWork.Posts.Find(predicate: x => x.Id == PostId, includeProperties: "Likers").FirstOrDefault();
                 var liker = unitOfWork._tourists.GetById(likerId);
-                if (post!=null && liker !=null)
+                if ((post!=null && liker !=null)  )
                 {
-                    post.AddLiker(liker);
+                    if (!post.hasLike(likerId))
+                    {
+                        post.AddLiker(liker);
+
+                        unitOfWork.Posts.Update(post);
+                        unitOfWork.Commit();
+                        return Ok();
+                    }
+                    post.RemoveLiker(liker);
                     unitOfWork.Posts.Update(post);
                     unitOfWork.Commit();
                     return Ok();
