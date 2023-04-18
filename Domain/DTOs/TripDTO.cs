@@ -18,7 +18,7 @@ namespace Domain.DTOs
         public DateTime? Start { get;  set; }
 
         public DateTime? End { get;  set; }
-        public int? Ypostion { get;  set; }
+        public float? Ypostion { get;  set; }
 
         public string BackgroundImage { get; set; }
         public int OwnerId { get; set; }

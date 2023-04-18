@@ -22,7 +22,7 @@ namespace Domain.Entities
         public int OwnerId { get; private set; }
         public Tourist Owner { get; private set; }
         public string BackgroundImage { get; private set; }
-        public int? Ypostion { get; private set; }
+        public float? Ypostion { get; private set; }
         public List<Image> images { get; private set; } = new();
         public virtual List<Activity> Activities { get; private set; } = new();
         public virtual List<ToDoList> ToDoLists { get; private set; } = new();

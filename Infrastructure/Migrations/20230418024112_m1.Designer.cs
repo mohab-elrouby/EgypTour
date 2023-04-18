@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(EgyTourContext))]
-    [Migration("20230418003806_addedYposition")]
-    partial class addedYposition
+    [Migration("20230418024112_m1")]
+    partial class m1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -316,8 +316,8 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime?>("Start")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("Ypostion")
-                        .HasColumnType("int");
+                    b.Property<float?>("Ypostion")
+                        .HasColumnType("real");
 
                     b.HasKey("Id");
 
