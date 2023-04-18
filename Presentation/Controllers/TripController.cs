@@ -36,7 +36,7 @@ namespace Presentation.Controllers
         [Route("[Action]/{id}", Name = "GetTripById")]
         [HttpGet]
 
-        public IActionResult GetAllTrips(int id, int skip = 0, int take = 8)
+        public IActionResult GetAllTrips(int id, int skip = 0, int take = 20)
         {
 
             List<TripCardDTO> trips = _unitOfWork.Trips.Find(predicate: x => x.Owner.Id == id
@@ -95,7 +95,7 @@ namespace Presentation.Controllers
             }
         }
 
-        [Route("[Action]")]
+        [Route("[Action]/{id}")]
         [HttpDelete]
         public IActionResult Delete(int id)
         {
