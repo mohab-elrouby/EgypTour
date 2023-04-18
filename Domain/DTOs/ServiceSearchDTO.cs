@@ -1,5 +1,6 @@
 ﻿using Domain.Entities;
 using Domain.Services;
+using Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,11 +19,15 @@ namespace Domain.DTOs
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public int MatchHeurstic { get; set; } = 0;
 
+        public  List<Image> Images { get; private set; } = new();
+
         public float AvgRating { get; set; }
 
         public string ProfileImage { get;set; }
 
-        public static ServiceSearchDTO FromService(Service service,string searchString="" ,string matchString = "",float avgRating=0)
+        public string FirstReview { get; set; }
+
+        public static ServiceSearchDTO FromService(Service service,string searchString="" ,string matchString = "",float avgRating=0, string firstReview="")
         {
             return new ServiceSearchDTO
             {
@@ -31,7 +36,9 @@ namespace Domain.DTOs
                 Description = service.Description,
                 MatchHeurstic = LevenshteinDistance.Calculate(matchString, searchString),
                 AvgRating = avgRating,
-                ProfileImage = service.ProfileImage
+                ProfileImage = service.ProfileImage,
+                Images = service.Images.ToList(),
+                FirstReview = firstReview,
             };
         }
     }

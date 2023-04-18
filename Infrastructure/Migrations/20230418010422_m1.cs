@@ -18,7 +18,7 @@ namespace Infrastructure.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CityName = table.Column<int>(type: "int", nullable: false),
-                    Street = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Country = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -39,17 +39,11 @@ namespace Infrastructure.Migrations
                     ProfilePictureUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    City = table.Column<int>(type: "int", nullable: true),
-                    TouristId = table.Column<int>(type: "int", nullable: true)
+                    City = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_User", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_User_User_TouristId",
-                        column: x => x.TouristId,
-                        principalTable: "User",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -147,7 +141,7 @@ namespace Infrastructure.Migrations
                         column: x => x.TouristId,
                         principalTable: "User",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -213,7 +207,7 @@ namespace Infrastructure.Migrations
                         column: x => x.ReviwerId,
                         principalTable: "User",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -261,7 +255,7 @@ namespace Infrastructure.Migrations
                         column: x => x.WriterId,
                         principalTable: "User",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -305,7 +299,7 @@ namespace Infrastructure.Migrations
                         column: x => x.LikersId,
                         principalTable: "User",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -379,7 +373,7 @@ namespace Infrastructure.Migrations
                         column: x => x.TripViewersId,
                         principalTable: "User",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -406,19 +400,20 @@ namespace Infrastructure.Migrations
                 name: "Notes",
                 columns: table => new
                 {
+                    ActivityId = table.Column<int>(type: "int", nullable: false),
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ActivityId = table.Column<int>(type: "int", nullable: true)
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Notes", x => x.Id);
+                    table.PrimaryKey("PK_Notes", x => new { x.ActivityId, x.Id });
                     table.ForeignKey(
                         name: "FK_Notes_Activity_ActivityId",
                         column: x => x.ActivityId,
                         principalTable: "Activity",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -471,11 +466,6 @@ namespace Infrastructure.Migrations
                 name: "IX_Messeges_SenderId",
                 table: "Messeges",
                 column: "SenderId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Notes_ActivityId",
-                table: "Notes",
-                column: "ActivityId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Posts_WriterId",
@@ -536,11 +526,6 @@ namespace Infrastructure.Migrations
                 name: "IX_Trips_OwnerId",
                 table: "Trips",
                 column: "OwnerId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_User_TouristId",
-                table: "User",
-                column: "TouristId");
         }
 
         /// <inheritdoc />

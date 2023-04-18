@@ -42,11 +42,14 @@ namespace Presentation.Controllers
         [HttpGet]
         public IActionResult GetAllByCity(CityName city,int skip=0,int take=8)
         {
-            List<ServiceSearchDTO> services = _unitOfWork._services.Find(predicate: i => i.Location.CityName == city,includeProperties: "Reviews.Reviwer,Location",
-                orderBy:i=>i.OrderByDescending(a=>a.Reviews.Average(b=>b.Rating)), skip : skip, take : take).
-                Select(i=>ServiceSearchDTO.FromService(service:i,avgRating:i.Reviews.Average(a=>a.Rating))).ToList();
+            int count = _unitOfWork._services.Find(predicate:i=>i.Location.CityName==city,take:8000).Count();
 
-            return Ok(services);
+            List<ServiceSearchDTO> services = _unitOfWork._services.Find(predicate: i => i.Location.CityName == city,includeProperties: "Reviews.Reviwer,Location,Images",
+                orderBy:i=>i.OrderByDescending(a=>a.Reviews.Average(b=>b.Rating)), skip : skip, take : take).
+                Select(i=>ServiceSearchDTO.FromService(service:i,avgRating:i.Reviews.Average(a=>a.Rating),firstReview:i.Reviews.FirstOrDefault().Content)).ToList();
+
+
+            return Ok(new { Count = count, Services = services});
         }
 
 
