@@ -18,6 +18,7 @@ namespace Domain.DTOs
         public DateTime? Start { get;  set; }
 
         public DateTime? End { get;  set; }
+        public int? Ypostion { get;  set; }
 
         public string BackgroundImage { get; set; }
         public int OwnerId { get; set; }
@@ -41,7 +42,8 @@ namespace Domain.DTOs
                 Activities = trip.Activities.Select(t => ActivityDTO.FromActivity(t)).ToList(),
                 Viewers = trip.TripViewers.Select(t => TouristDTO.FromTourist(t)).ToList(),
                 ToDOLists = trip.ToDoLists.Select(list => ToDOListDTO.FromToDoList(list)).ToList(),
-                Description =trip.Description
+                Description =trip.Description,
+                Ypostion = trip.Ypostion
             };              
         }
 
