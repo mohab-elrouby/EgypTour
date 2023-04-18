@@ -21,8 +21,9 @@ namespace Domain.DTOs
         public float AvgRating { get; set; }
 
         public string ProfileImage { get;set; }
+        public string FirstReview { get; set; }
 
-        public static ServiceSearchDTO FromService(Service service,string searchString="" ,string matchString = "",float avgRating=0)
+        public static ServiceSearchDTO FromService(Service service,string searchString="" ,string matchString = "",float avgRating=0 , string firstReview="")
         {
             return new ServiceSearchDTO
             {
@@ -31,7 +32,9 @@ namespace Domain.DTOs
                 Description = service.Description,
                 MatchHeurstic = LevenshteinDistance.Calculate(matchString, searchString),
                 AvgRating = avgRating,
-                ProfileImage = service.ProfileImage
+                ProfileImage = service.ProfileImage,
+                FirstReview = firstReview,
+
             };
         }
     }
