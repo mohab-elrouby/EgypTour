@@ -244,7 +244,7 @@ namespace Presentation.Controllers
                 string imageUrl = $"/post-images/{uniqueName}";
                 post.AddImage(imageUrl);
                 unitOfWork.Commit();
-                return Ok("image uploaded successfually");
+                return Ok(imageUrl);
             }
             catch (Exception ex)
             {

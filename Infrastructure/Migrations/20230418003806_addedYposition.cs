@@ -5,24 +5,23 @@
 namespace Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class m2 : Migration
+    public partial class addedYposition : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>(
-                name: "Description",
+            migrationBuilder.AddColumn<int>(
+                name: "Ypostion",
                 table: "Trips",
-                type: "nvarchar(max)",
-                nullable: false,
-                defaultValue: "");
+                type: "int",
+                nullable: true);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Description",
+                name: "Ypostion",
                 table: "Trips");
         }
     }
