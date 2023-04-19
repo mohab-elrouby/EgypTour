@@ -109,7 +109,7 @@ namespace Presentation.Controllers
                 {
                     int count = _unitOfWork._services.Search(rating, searchString, city, skip,8000).Count();
                     matchingItems.AddRange(_unitOfWork._services.Search(rating, searchString, city, skip, take).ToList());
-                    return Ok((new { Count = count, matchingItems = matchingItems }));
+                    return Ok((new { Count = count, Services = matchingItems }));
                 }
                 else
                 {
