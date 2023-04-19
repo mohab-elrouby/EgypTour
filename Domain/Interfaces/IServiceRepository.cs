@@ -12,6 +12,6 @@ namespace Domain.Interfaces
     public interface IServiceRepository:IGenericRepository<Service>
     {
         IEnumerable<ServiceSearchDTO> Search(float rating, string searchString, CityName? city, int skip = 0, int take = 8);
-
+        ServiceSearchDTO GetWithAvgRating(int id);
     }
 }

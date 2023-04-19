@@ -202,5 +202,18 @@ namespace Presentation.Controllers
                 return BadRequest("Can't Delete image , Try Again Later");
             }
         }
+        [Route("[Action]/{id}")]
+        [HttpGet]
+
+        public IActionResult GetByIdWithAvg(int id)
+        {
+
+            var service = _unitOfWork._services.GetWithAvgRating(id);
+            if (service == null)
+            {
+                return NotFound("Service Doesn't Exist");
+            }
+            return Ok(service);
+        }
     }
 }

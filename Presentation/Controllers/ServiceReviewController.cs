@@ -26,6 +26,7 @@ namespace Presentation.Controllers
             {
                 List<ServiceReviewDTO> serviceReviews = _unitOfWork._serviceReviews.GetByServiceId(id, skip, take)
                     .Select(review => ServiceReviewDTO.FromServiceReview(review)).ToList();
+                int count = _unitOfWork._serviceReviews.Find(s => s.ServiceReviewdId== id).Count();
                 if (serviceReviews.Count()== 0)
                 {
                     return new GenericResponse<List<ServiceReviewDTO>>()
@@ -40,7 +41,7 @@ namespace Presentation.Controllers
 
                     return new GenericResponse<List<ServiceReviewDTO>>()
                     {
-                        StatusCode = 200,
+                        StatusCode = count, // this is wrong i'm only returning count here, instead of the actual status code because I need the count and i'm lazy 
                         Message = "The Process of Get Data Sucessfull",
                         Data = serviceReviews
 

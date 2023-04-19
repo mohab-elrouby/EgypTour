@@ -4,6 +4,7 @@ using Domain.Enums;
 using Domain.Interfaces;
 using Domain.Services;
 using Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +28,10 @@ namespace Infrastructure.Repositories
             .ThenBy(i => (LevenshteinDistance.Calculate(searchString, i.Name)))
             .Skip(skip).Take(take).Select(i => ServiceSearchDTO.FromService(i, searchString , i.Name, i.Reviews.Average(i => i.Rating),i.Reviews.FirstOrDefault().Content));
             return result;
+        }
+        public ServiceSearchDTO GetWithAvgRating(int id)
+        {
+            return _context.Services.Where(i => i.Id == id).Include(i=>i.Location).Select(i => ServiceSearchDTO.FromService(i, "","",  i.Reviews.Average(i => i.Rating), "")).FirstOrDefault();            
         }
     }
 }
