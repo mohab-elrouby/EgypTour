@@ -41,6 +41,7 @@ namespace Domain.DTOs
                 FirstReview = firstReview,
                 WorkingHoursStart = service.WorkingHoursStart,
                 WorkingHoursEnd = service.WorkingHoursEnd,
+                Images = service.Images,
             };
         }
     }
