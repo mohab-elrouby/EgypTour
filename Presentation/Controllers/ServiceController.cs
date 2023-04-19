@@ -107,8 +107,9 @@ namespace Presentation.Controllers
                 List<ServiceSearchDTO> matchingItems = new List<ServiceSearchDTO>();
                 if (searchString != "")
                 {
+                    int count = _unitOfWork._services.Search(rating, searchString, city, skip,8000).Count();
                     matchingItems.AddRange(_unitOfWork._services.Search(rating, searchString, city, skip, take).ToList());
-                    return Ok(matchingItems);
+                    return Ok((new { Count = count, Services = matchingItems }));
                 }
                 else
                 {

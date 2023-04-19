@@ -26,6 +26,7 @@ namespace Domain.DTOs
         public DateTime WorkingHoursStart { get; set; }
         public DateTime WorkingHoursEnd { get; set; }
         public Location? Location { get; set; }
+        public List<Image> Images { get;  set; } = new();
 
         public static ServiceSearchDTO FromService(Service service, string searchString="" ,string matchString = "",float avgRating=0 , string firstReview="")
         {
@@ -40,7 +41,6 @@ namespace Domain.DTOs
                 FirstReview = firstReview,
                 WorkingHoursStart = service.WorkingHoursStart,
                 WorkingHoursEnd = service.WorkingHoursEnd,
-                Location = service.Location
             };
         }
     }

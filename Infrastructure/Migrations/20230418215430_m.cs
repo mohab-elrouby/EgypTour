@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class m1 : Migration
+    public partial class m : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -205,13 +205,13 @@ namespace Infrastructure.Migrations
                         column: x => x.PersonReviewdId,
                         principalTable: "User",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_Reviews_User_ReviwerId",
                         column: x => x.ReviwerId,
                         principalTable: "User",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -522,7 +522,8 @@ namespace Infrastructure.Migrations
                 column: "TripsId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Trips_LocationId",               table: "Trips",
+                name: "IX_Trips_LocationId",
+                table: "Trips",
                 column: "LocationId");
 
             migrationBuilder.CreateIndex(
