@@ -26,7 +26,7 @@ namespace Infrastructure.Repositories
             i.Reviews.Average(r => r.Rating) > rating &&
             i.Location.CityName == city).OrderByDescending(i=>i.Reviews.Average(i=>i.Rating))
             .ThenBy(i => (LevenshteinDistance.Calculate(searchString, i.Name)))
-            .Skip(skip).Take(take).Select(i => ServiceSearchDTO.FromService(i, searchString , i.Name, i.Reviews.Average(i => i.Rating),i.Reviews.FirstOrDefault().Content));
+            .Skip(skip).Take(take).Include("Images").Select(i => ServiceSearchDTO.FromService(i, searchString , i.Name, i.Reviews.Average(i => i.Rating),i.Reviews.FirstOrDefault().Content));
             return result;
         }
         public ServiceSearchDTO GetWithAvgRating(int id)
